@@ -1,0 +1,38 @@
+.sass-NavigationBar {
+  .navbar {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+  }
+
+  form {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: nowrap;
+
+    input {
+      border-radius: 0px;
+      border-color: #eeeeee;
+    }
+
+    .form-control {
+      width: 300px;
+    }
+
+    button {
+      border-radius: 0px;
+      background: #eeeeee;
+
+      i {
+        color: #a9a9a9;
+      }
+    }
+  }
+
+  ul {
+    .nav-link {
+      color: red;
+      font-weight: 600;
+    }
+  }
+}
