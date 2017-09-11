@@ -1,3 +1,5 @@
+/* eslint linebreak-style: ["error", "windows"] */
+
 import { ADD_VIDEO } from '../actions/types';
 
 export default ( state = [], action = {}) => {

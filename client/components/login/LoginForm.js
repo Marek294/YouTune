@@ -38,7 +38,11 @@ class LoginForm extends Component {
         this.setState({ errors });
 
         if(Object.keys(errors).length === 0) {
-            this.props.submit(this.state.data);
+            this.setState({
+                loading: true
+            })
+            this.props.submit(this.state.data)
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
         }
     }
 
@@ -52,10 +56,13 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { data, errors } = this.state;
+        const { data, errors, loading } = this.state;
         return (
             <div className="sass-LoginForm">
-                <form onSubmit={this.onSubmit}>
+                { errors.global && <div className="alert alert-danger" role="alert">
+                    { errors.global }
+                    </div>}
+                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit}>
                     <div className="form-group">
                         <label htmlFor="Email">Email address</label>
                         <input type="email" className="form-control" id="Email" placeholder="Adres email" name="email" value={data.email} onChange={this.onChange} />
@@ -67,7 +74,7 @@ class LoginForm extends Component {
                         {errors.password && <InlineError text={errors.password} />}
                     </div>
                     <button type="submit" className="btn btn-primary">Submit</button>
-                </form>
+                </form> }
             </div>
         );
     }

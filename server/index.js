@@ -9,6 +9,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 import webpackConfig from '../webpack.config.dev';
+import auth from './api/auth';
 
 const app = express();
 const server = http.Server(app);
@@ -24,6 +25,8 @@ app.use(webpackHotMiddleware(compiler));
 app.use(express.static('public'));
 app.use(bodyParser());
 app.use(morgan('dev'));
+
+app.use('/api/auth', auth);
 
 app.get('/*', (req,res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
