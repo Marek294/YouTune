@@ -1,3 +1,5 @@
+/* eslint linebreak-style: ["error", "windows"] */
+
 const path = require('path');
 const webpack = require('webpack');
 

@@ -1,3 +1,5 @@
+/* eslint linebreak-style: ["error", "windows"] */
+
 import React from 'react';
 import {
     Link
@@ -5,36 +7,31 @@ import {
 
 require('../sass/_Categories.scss');
 
-class MainPage extends React.Component {
-    render() {
-        return (
-            <div className="sass-Categories">
-                <div className="title">
-                    <h2>Kategorie</h2>
-                </div>
-                <div className="categories">
-                    <Link to="/player">
-                        <div className="card">
-                            <img src="pop.jpg" alt="" className="img-thumbnail" />
-                            <h4>Pop</h4>
-                        </div>
-                    </Link>
-                    <Link to="/player">
-                        <div className="card">
-                            <img src="reggae.jpg" alt="" className="img-thumbnail" />
-                            <h4>Reggae</h4>
-                        </div>
-                    </Link>
-                    <Link to="/player">
-                        <div className="card">
-                            <img src="rock.jpg" alt="" className="img-thumbnail" />
-                            <h4>Rock</h4>
-                        </div>
-                    </Link>
-                </div>
+const Categories = () => 
+        <div className="sass-Categories">
+            <div className="title">
+                <h2>Kategorie</h2>
             </div>
-        );
-    }
-}
+            <div className="categories">
+                <Link to="/player">
+                    <div className="card">
+                        <img src="pop.jpg" alt="" className="img-thumbnail" />
+                        <h4>Pop</h4>
+                    </div>
+                </Link>
+                <Link to="/player">
+                    <div className="card">
+                        <img src="reggae.jpg" alt="" className="img-thumbnail" />
+                        <h4>Reggae</h4>
+                    </div>
+                </Link>
+                <Link to="/player">
+                    <div className="card">
+                        <img src="rock.jpg" alt="" className="img-thumbnail" />
+                        <h4>Rock</h4>
+                    </div>
+                </Link>
+            </div>
+        </div>
 
-export default MainPage;
+export default Categories;
