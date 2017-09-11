@@ -6,13 +6,15 @@ import { connect } from 'react-redux'
 import LoginForm from './LoginForm';
 import { login } from '../../actions/auth';
 
+require('../../sass/_LoginPage.scss');
+
 class LoginPage extends Component {
     submit = data => this.props.login(data).then(() => this.props.history.push("/"));
 
     render() {
         return (
-            <div>
-                <h1>Login Page</h1>
+            <div className="sass-LoginPage">
+                <h1>Logowanie</h1>
                 <LoginForm submit={this.submit} />
             </div>
         );

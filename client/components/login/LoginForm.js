@@ -64,16 +64,16 @@ class LoginForm extends Component {
                     </div>}
                 {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <label htmlFor="Email">Email address</label>
-                        <input type="email" className="form-control" id="Email" placeholder="Adres email" name="email" value={data.email} onChange={this.onChange} />
+                        <label htmlFor="Email">Adres Email</label>
+                        <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} />
                         {errors.email && <InlineError text={errors.email} />}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="Password">Password</label>
+                        <label htmlFor="Password">Hasło</label>
                         <input type="password" className="form-control" id="Password" placeholder="Hasło" name="password" value={data.password} onChange={this.onChange}  />
                         {errors.password && <InlineError text={errors.password} />}
                     </div>
-                    <button type="submit" className="btn btn-primary">Submit</button>
+                    <button type="submit" className="btn btn-danger">Zaloguj</button>
                 </form> }
             </div>
         );

@@ -21,7 +21,10 @@ const NavigationBar = () =>
 
                 <ul className="nav nav-pills justify-content-end">
                     <li className="nav-item">
-                        <Link to="/login" className="nav-link">Zaloguj</Link>
+                        <Link to="/login" className="nav-link">Logowanie</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/signup" className="nav-link">Rejestracja</Link>
                     </li>
                 </ul>
             </nav>

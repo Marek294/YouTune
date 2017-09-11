@@ -8,9 +8,11 @@ import bodyParser from 'body-parser';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import dotenv from 'dotenv';
 import webpackConfig from '../webpack.config.dev';
 import auth from './api/auth';
 
+dotenv.config();
 const app = express();
 const server = http.Server(app);
 
