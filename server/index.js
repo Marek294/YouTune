@@ -11,6 +11,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import dotenv from 'dotenv';
 import webpackConfig from '../webpack.config.dev';
 import auth from './api/auth';
+import users from './api/users';
 
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use(bodyParser());
 app.use(morgan('dev'));
 
 app.use('/api/auth', auth);
+app.use('/api/users', users);
 
 app.get('/*', (req,res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
