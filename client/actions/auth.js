@@ -28,3 +28,9 @@ export const logout = () => dispatch => {
     localStorage.removeItem('youtuneJWT');
     return dispatch(userLoggedOut());
 }
+
+export const confirm = (token) => dispatch => 
+    api.user.confirm(token).then(user => {
+        localStorage.youtuneJWT = user.token;
+        return dispatch(userLoggedIn(user));
+    });

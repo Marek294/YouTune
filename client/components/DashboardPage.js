@@ -5,9 +5,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ConfirmEmailMessage from './messages/ConfirmEmailMessage';
 
+require('../sass/_DashboardPage.scss');
+
 const DashboardPage = ({ isConfirmed }) => 
-        <div>
-           {!isConfirmed && <ConfirmEmailMessage />} 
+        <div className="sass-DashboardPage">
+           {isConfirmed ? <h1>Email potwierdzony</h1> : <ConfirmEmailMessage />} 
         </div>
 
 

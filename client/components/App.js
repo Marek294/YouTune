@@ -14,16 +14,18 @@ import LoginPage from "./login/LoginPage";
 import SignupPage from "./signup/SignupPage";
 import UserRoute from './routes/UserRoute';
 import GuestRoute from './routes/GuestRoute';
+import ConfirmationPage from './ConfirmationPage';
 
 const App = ({ location }) => {
         return (
             <div>
                 <NavigationBar/>
                 <Route location={location} exact path="/" component={Categories} />
-                <Route location={location} path="/player" component={Player} />
-                <GuestRoute location={location} path="/login" component={LoginPage} />
-                <GuestRoute location={location} path="/signup" component={SignupPage} />
-                <UserRoute location={location} path="/dashboard" component={DashboardPage} />
+                <Route location={location} exact path="/player" component={Player} />
+                <Route location={location} exact path="/confirmation/:token" component={ConfirmationPage} />
+                <GuestRoute location={location} exact path="/login" component={LoginPage} />
+                <GuestRoute location={location} exact path="/signup" component={SignupPage} />
+                <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
             </div>
         )
 }
