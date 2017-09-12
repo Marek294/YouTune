@@ -2,7 +2,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -24,7 +24,7 @@ if(localStorage.youtuneJWT) {
 ReactDOM.render(
     <BrowserRouter>
         <Provider store={store}>
-            <App />
+            <Route component={App} />
         </Provider>
     </BrowserRouter>,
     document.getElementById('app')
