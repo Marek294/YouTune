@@ -9,7 +9,7 @@ import { login } from '../../actions/auth';
 require('../../sass/_LoginPage.scss');
 
 class LoginPage extends Component {
-    submit = data => this.props.login(data).then(() => this.props.history.push("/"));
+    submit = data => this.props.login(data).then(() => this.props.history.push("/dashboard"));
 
     render() {
         return (
