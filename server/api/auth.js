@@ -4,6 +4,7 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/user';
 import { generateJWT, toAuthJSON } from '../utils';
+import { sendConfirmationEmail } from '../mailer';
 
 const router = express.Router();
 
@@ -46,5 +47,27 @@ router.post('/confirmation', (req, res) => {
         } else res.status(403).json({ errors: { global: 'Link jest nieaktywny' } });
     })
 });
+
+router.post('/sendConfirmationEmail', (req, res) => {
+    const { data } = req.body;
+    User.query({
+        where: { email: data.email},
+        andWhere: { confirmed: false }
+    }).fetch().then(user => {
+        if(user) {
+            const confirmationToken = generateJWT(user);
+            
+            user.set('confirmationToken', confirmationToken);
+            user.set('confirmed', false);
+            user.save();
+
+            sendConfirmationEmail(user);
+
+            res.json({
+                user: toAuthJSON(user)
+            });
+        } else res.status(403).json({ errors: { global: 'Adres email został już zweryfikowany, bądź nie istnieje' } });
+    })
+})
 
 export default router;

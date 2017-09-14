@@ -34,3 +34,5 @@ export const confirm = (token) => dispatch =>
         localStorage.youtuneJWT = user.token;
         return dispatch(userLoggedIn(user));
     });
+
+export const sendConfirmationEmail = (data) => () => api.user.sendConfirmationEmail(data);

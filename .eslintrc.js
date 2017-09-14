@@ -15,6 +15,7 @@ module.exports = {
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "class-methods-use-this": [0],
       "linebreak-style": [0],
-      "arrow-body-style": [0]
+      "arrow-body-style": [0],
+      "no-underscore-dangle": [0]
     }
   }

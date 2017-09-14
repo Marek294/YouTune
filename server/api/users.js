@@ -15,12 +15,13 @@ router.post('/', (req, res) => {
 
         User.forge({ email: data.email, password_digest },{ hasTimestamps: true }).save()
             .then(user => {
+                user.set('confirmed', false);
+                
                 const token = generateJWT(user);
 
                 const confirmationToken = generateJWT(user);
 
                 user.set('confirmationToken', confirmationToken);
-                user.set('confirmed', false);
                 user.save();
 
                 sendConfirmationEmail(user);
