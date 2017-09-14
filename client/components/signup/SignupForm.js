@@ -63,7 +63,7 @@ class SignupForm extends Component {
                 { errors.global && <div className="alert alert-danger" role="alert">
                     { errors.global }
                     </div>}
-                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit}>
+                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
                     <div className="form-group">
                         <label htmlFor="Email">Adres Email</label>
                         <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} />
@@ -79,7 +79,7 @@ class SignupForm extends Component {
                         <input type="password" className="form-control" id="ConfirmPassword" placeholder="Potwierdź Hasło" name="confirmPassword" value={data.confirmPassword} onChange={this.onChange}  />
                         {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
                     </div>
-                    <button type="submit" className="btn btn-danger">Rejestruj</button>
+                    <button type="submit" className="btn">Rejestruj</button>
                 </form> }
             </div>
         );

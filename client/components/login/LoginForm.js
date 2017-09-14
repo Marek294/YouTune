@@ -34,6 +34,7 @@ class LoginForm extends Component {
 
     onSubmit(e) {
         e.preventDefault();
+
         const errors = this.validate(this.state.data);
         this.setState({ errors });
 
@@ -41,8 +42,10 @@ class LoginForm extends Component {
             this.setState({
                 loading: true
             })
-            this.props.submit(this.state.data)
-                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
+        
+            console.log(this.state);
+            // this.props.submit(this.state.data)
+            //     .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
         }
     }
 
@@ -62,18 +65,18 @@ class LoginForm extends Component {
                 { errors.global && <div className="alert alert-danger" role="alert">
                     { errors.global }
                     </div>}
-                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit}>
+                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
                     <div className="form-group">
                         <label htmlFor="Email">Adres Email</label>
-                        <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} />
+                        <input type="formEmail" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} autoComplete="false"/>
                         {errors.email && <InlineError text={errors.email} />}
                     </div>
                     <div className="form-group">
                         <label htmlFor="Password">Hasło</label>
-                        <input type="password" className="form-control" id="Password" placeholder="Hasło" name="password" value={data.password} onChange={this.onChange}  />
+                        <input type="password" className="form-control" id="Password" placeholder="Hasło" name="password"  onChange={this.onChange}/>
                         {errors.password && <InlineError text={errors.password} />}
                     </div>
-                    <button type="submit" className="btn btn-danger">Zaloguj</button>
+                    <button type="submit" className="btn">Zaloguj</button>
                 </form> }
             </div>
         );

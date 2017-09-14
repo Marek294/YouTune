@@ -14,13 +14,8 @@ const NavigationBar = ({ isAuthenticated, logout }) =>
         <div className="sass-NavigationBar">
             <nav className="navbar navbar-light bg-faded">
                 <Link to="/" className="navbar-brand" >
-                    <img src="/logo.png" height="70" alt="" />
+                    <img src="/brand.png" height="70" alt="" />
                 </Link>
-
-                <form className="form-inline">
-                    <input className="form-control" type="text" placeholder="Szukaj" />
-                    <button className="btn" type="submit"><i className="fa fa-search" aria-hidden="true"/></button>
-                </form>
 
                 {isAuthenticated ? <ul className="nav nav-pills justify-content-end">
                     <li className="nav-item">

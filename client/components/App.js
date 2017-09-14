@@ -7,8 +7,7 @@ import {
 import PropTypes from 'prop-types';
 
 import NavigationBar from "./NavigationBar";
-import Categories from "./Categories";
-import Player from "./Player";
+import HomePage from "./HomePage";
 import DashboardPage from "./DashboardPage";
 import LoginPage from "./login/LoginPage";
 import SignupPage from "./signup/SignupPage";
@@ -20,8 +19,7 @@ const App = ({ location }) => {
         return (
             <div>
                 <NavigationBar/>
-                <Route location={location} exact path="/" component={Categories} />
-                <Route location={location} exact path="/player" component={Player} />
+                <Route location={location} exact path="/" component={HomePage} />
                 <Route location={location} exact path="/confirmation/:token" component={ConfirmationPage} />
                 <GuestRoute location={location} exact path="/login" component={LoginPage} />
                 <GuestRoute location={location} exact path="/signup" component={SignupPage} />

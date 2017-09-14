@@ -1,12 +1,17 @@
 @import 'loader';
+@import 'colors';
 
 .sass-SignupForm {
-    width: 500px;
     text-align: left;
     display: flex;
     flex-direction: column;
+    color: $secondary-color;
+    font-weight: 600;
 
     .btn {
         margin-top: 20px;
+        background-color: $primary-color;
+        color: $secondary-color;
+        font-weight: 600;
     }
 }

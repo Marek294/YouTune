@@ -1,44 +1,24 @@
+@import 'colors';
+
 .sass-NavigationBar {
+  background: $fourth-color;
+
   .navbar {
     display: flex;
     align-items: baseline;
     flex-wrap: nowrap;
   }
 
-  form {
-    display: flex;
-    align-items: stretch;
-    flex-wrap: nowrap;
-
-    input {
-      border-radius: 0px;
-      border-color: #eeeeee;
-    }
-
-    .form-control {
-      width: 300px;
-    }
-
-    button {
-      border-radius: 0px;
-      background: #eeeeee;
-
-      i {
-        color: #a9a9a9;
-      }
-    }
-  }
-
   ul {
     .nav-link {
-      color: red;
+      color: $secondary-color;
       font-weight: 600;
+      font-size: 20px;
+      transition: color 0.5s;
     }
-  }
 
-  button {
-    box-shadow: none;
-    background: transparent;
-    border: none;
+    .nav-link:hover {
+      color: $primary-color;
+    }
   }
 }
