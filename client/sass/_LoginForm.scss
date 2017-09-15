@@ -2,6 +2,7 @@
 @import 'colors';
 
 .sass-LoginForm {
+    width: 100%;
     text-align: left;
     display: flex;
     flex-direction: column;
@@ -11,7 +12,14 @@
     .btn {
         margin-top: 20px;
         background-color: $primary-color;
-        color: $secondary-color;
+        color: $fourth-color;
         font-weight: 600;
+
+        transition: all 0.5s;
+    }
+
+    .btn:hover {
+        color: $primary-color;
+        background-color: $fourth-color;
     }
 }

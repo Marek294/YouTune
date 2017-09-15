@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { sendConfirmationEmail } from '../../actions/auth';
 import Notificator from './Notificator';
 
-require('../../sass/_ConfirmEmailMessage.scss');
+import '../../sass/_ConfirmEmailMessage.scss';
 
 class ConfirmEmailMessage extends Component {
     constructor(props) {

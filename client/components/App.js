@@ -8,22 +8,20 @@ import PropTypes from 'prop-types';
 
 import NavigationBar from "./NavigationBar";
 import HomePage from "./HomePage";
-import DashboardPage from "./DashboardPage";
-import LoginPage from "./login/LoginPage";
-import SignupPage from "./signup/SignupPage";
+import DashboardPage from "./user/DashboardPage";
 import UserRoute from './routes/UserRoute';
 import GuestRoute from './routes/GuestRoute';
 import ConfirmationPage from './ConfirmationPage';
+import Catalog from './user/Catalog';
 
 const App = ({ location }) => {
         return (
             <div>
                 <NavigationBar/>
-                <Route location={location} exact path="/" component={HomePage} />
+                <GuestRoute location={location} exact path="/" component={HomePage} />
                 <Route location={location} exact path="/confirmation/:token" component={ConfirmationPage} />
-                <GuestRoute location={location} exact path="/login" component={LoginPage} />
-                <GuestRoute location={location} exact path="/signup" component={SignupPage} />
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
+                <UserRoute location={location} exact path="/catalog" component={Catalog} />
             </div>
         )
 }

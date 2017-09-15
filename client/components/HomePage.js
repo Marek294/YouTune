@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import LoginPage from "./login/LoginPage";
 import SignupPage from "./signup/SignupPage";
 
-require('../sass/_HomePage.scss');
+import '../sass/_HomePage.scss';
 
 class HomePage extends Component {
     constructor(props) {
@@ -13,24 +13,38 @@ class HomePage extends Component {
 
         this.state = {
             login: true,
-            signup: false
+            signup: false,
+            fetching: false
         };
 
         this.login = this.login.bind(this);
         this.signup = this.signup.bind(this);
+        this.fetching = this.fetching.bind(this);
     }
 
     login() {
-        this.setState({
-            login: true,
-            signup: false
-        });
+        if(!this.state.fetching)
+        {
+            this.setState({
+                login: true,
+                signup: false
+            });
+        }
     }
 
     signup() {
+        if(!this.state.fetching)
+        {
+            this.setState({
+                login: false,
+                signup: true
+            });
+        }
+    }
+
+    fetching(isFetching) {
         this.setState({
-            login: false,
-            signup: true
+            fetching: isFetching
         });
     }
 
@@ -54,8 +68,8 @@ class HomePage extends Component {
                     </ul>
                 </div>
                 <div className="card-body">
-                    { login && <LoginPage />}
-                    { signup && <SignupPage />}
+                    { login && <LoginPage fetching={this.fetching} />}
+                    { signup && <SignupPage fetching={this.fetching} />}
                 </div>
                 </div>
         </div>

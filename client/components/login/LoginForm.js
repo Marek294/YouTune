@@ -5,7 +5,7 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
-require('../../sass/_LoginForm.scss');
+import '../../sass/_LoginForm.scss';
 
 class LoginForm extends Component {
     constructor(props) {
@@ -25,12 +25,17 @@ class LoginForm extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    componentDidUpdate(nextProps) {
+        if(!this.state.loading) {
+            nextProps.notFetching();
+        }
+    }
+
     onChange(e) { 
         this.setState({ 
             data: { ...this.state.data, [e.target.name]: e.target.value }
         });
     }
-
 
     onSubmit(e) {
         e.preventDefault();
@@ -43,9 +48,8 @@ class LoginForm extends Component {
                 loading: true
             })
         
-            console.log(this.state);
-            // this.props.submit(this.state.data)
-            //     .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
+            this.props.submit(this.state.data)
+                .catch(err => this.setState({ errors: err.response.data.errors, loading: false }))
         }
     }
 
@@ -59,7 +63,7 @@ class LoginForm extends Component {
     }
 
     render() {
-        const { data, errors, loading } = this.state;
+        const { errors, loading } = this.state;
         return (
             <div className="sass-LoginForm">
                 { errors.global && <div className="alert alert-danger" role="alert">
@@ -68,12 +72,12 @@ class LoginForm extends Component {
                 {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
                     <div className="form-group">
                         <label htmlFor="Email">Adres Email</label>
-                        <input type="formEmail" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} autoComplete="false"/>
+                        <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" onChange={this.onChange} autoComplete="false"/>
                         {errors.email && <InlineError text={errors.email} />}
                     </div>
                     <div className="form-group">
                         <label htmlFor="Password">Hasło</label>
-                        <input type="password" className="form-control" id="Password" placeholder="Hasło" name="password"  onChange={this.onChange}/>
+                        <input type="password" spellCheck="false" className="form-control" id="Password" placeholder="Hasło" name="password" onChange={this.onChange}/>
                         {errors.password && <InlineError text={errors.password} />}
                     </div>
                     <button type="submit" className="btn">Zaloguj</button>
@@ -84,7 +88,8 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-    submit: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired,
+    notFetching: PropTypes.func.isRequired
 };
 
 export default LoginForm;

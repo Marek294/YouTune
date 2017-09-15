@@ -6,26 +6,37 @@ import { connect } from 'react-redux'
 import LoginForm from './LoginForm';
 import { login } from '../../actions/auth';
 
-require('../../sass/_LoginPage.scss');
+import '../../sass/_LoginPage.scss';
 
 class LoginPage extends Component {
-    submit = data => this.props.login(data).then(() => this.props.history.push("/dashboard"));
+    constructor(props) {
+        super(props);
+
+        this.notFetching = this.notFetching.bind(this);
+    }
+
+    submit = data => {
+        this.props.fetching(true);
+        return this.props.login(data);
+    }
+
+    notFetching() {
+        this.props.fetching(false);
+    }
 
     render() {
         return (
             <div className="sass-LoginPage">
                 <h1>Logowanie</h1>
-                <LoginForm submit={this.submit} />
+                <LoginForm submit={this.submit} notFetching={this.notFetching}/>
             </div>
         );
     }
 }
 
 LoginPage.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired
-    }).isRequired,
-    login: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired,
+    fetching: PropTypes.func.isRequired
 }
 
 export default connect(null, { login })(LoginPage);

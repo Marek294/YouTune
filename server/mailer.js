@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-const from = '"YouTune" <info@youtune.com>'
+const from = '"MyLib" <info@mylib.com>'
 
 function setup() {
     return nodemailer.createTransport({
@@ -18,9 +18,9 @@ export function sendConfirmationEmail(user) {
     const email = {
         from,
         to: user.get('email'),
-        subject: "Witamy w YouTune",
+        subject: "Witamy w MyLib",
         text: `
-        Witamy w YouTune. Aby kontynuować pracę na naszym serwisie proszę potwierdzić adres email.
+        Witamy w MyLib. Aby kontynuować pracę na naszym serwisie proszę potwierdzić adres email.
 
         ${process.env.HOST}/confirmation/${user.get('confirmationToken')}
         `

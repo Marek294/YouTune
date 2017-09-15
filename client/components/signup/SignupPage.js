@@ -6,26 +6,38 @@ import { connect } from 'react-redux'
 import SignupForm from './SignupForm';
 import { signup } from '../../actions/users';
 
-require('../../sass/_SignupPage.scss');
+import '../../sass/_SignupPage.scss';
 
 class SignupPage extends Component {
-    submit = data => this.props.signup(data).then(() => this.props.history.push("/dashboard"));
+    constructor(props) {
+        super(props);
+
+        this.notFetching = this.notFetching.bind(this);
+    }
+
+    submit = data => {
+        this.props.fetching(true);
+        return this.props.signup(data);
+    }
+
+    notFetching() {
+        this.props.fetching(false);
+    }
 
     render() {
         return (
             <div className="sass-SignupPage">
                 <h1>Rejestracja</h1>
-                <SignupForm submit={this.submit} />
+                <p>Zarejestruj się aby w pełni korzystać z katalogu książek dostępnych w twojej bibliotece. Szukaj pozycji które cię interesują, wypożycz i odbierz książkę w bibliotece.</p>
+                <SignupForm submit={this.submit} notFetching={this.notFetching} />
             </div>
         );
     }
 }
 
 SignupPage.propTypes = {
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired
-    }).isRequired,
-    signup: PropTypes.func.isRequired
+    signup: PropTypes.func.isRequired,
+    fetching: PropTypes.func.isRequired
 }
 
 export default connect(null, { signup })(SignupPage);

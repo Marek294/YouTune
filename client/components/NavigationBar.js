@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import * as actions from '../actions/auth';
 
-require('../sass/_NavigationBar.scss');
+import '../sass/_NavigationBar.scss';
 
 const NavigationBar = ({ isAuthenticated, logout }) => 
         <div className="sass-NavigationBar">
@@ -17,17 +17,12 @@ const NavigationBar = ({ isAuthenticated, logout }) =>
                     <img src="/brand.png" height="70" alt="" />
                 </Link>
 
-                {isAuthenticated ? <ul className="nav nav-pills justify-content-end">
+                {isAuthenticated && <ul className="nav nav-pills justify-content-end">
+                    <li className="nav-item">
+                        <Link to="/catalog" className="nav-link">Katalog</Link>
+                    </li>
                     <li className="nav-item">
                         <Link to="/" className="nav-link" onClick={() => logout()}>Wyloguj</Link>
-                    </li>
-                </ul> :
-                <ul className="nav nav-pills justify-content-end">
-                    <li className="nav-item">
-                        <Link to="/login" className="nav-link">Zaloguj</Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link to="/signup" className="nav-link">Rejestracja</Link>
                     </li>
                 </ul> }
             </nav>

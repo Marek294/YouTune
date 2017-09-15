@@ -1,0 +1,36 @@
+@import 'colors';
+
+.sass-Catalog {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    .card {
+        border-color: $secondary-color;
+        margin: 20px 0px 50px 0px;
+    }
+
+
+    .search-form {
+        width: 40%;
+
+        .btn {
+            color: $fourth-color;
+            background-color: $primary-color;
+        }
+
+        .btn:hover {
+            cursor: pointer;
+        }
+    }
+
+    .extended {
+        width: 90%;
+        height: 80%;
+    }
+
+    .books {
+        width: 90%;
+    }
+}

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { confirm } from '../actions/auth';
 
-require('../sass/_ConfirmationPage.scss');
+import '../sass/_ConfirmationPage.scss';
 
 class ConfirmationPage extends Component {
     constructor(props) {

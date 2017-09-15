@@ -5,7 +5,7 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
-require('../../sass/_SignupForm.scss');
+import '../../sass/_SignupForm.scss';
 
 class SignupForm extends Component {
     constructor(props) {
@@ -26,6 +26,12 @@ class SignupForm extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    componentDidUpdate(nextProps) {
+        if(!this.state.loading) {
+            nextProps.notFetching();
+        }
+    }
+
     onChange(e) { 
         this.setState({ 
             data: { ...this.state.data, [e.target.name]: e.target.value }
@@ -42,6 +48,7 @@ class SignupForm extends Component {
             this.setState({
                 loading: true
             })
+            
             this.props.submit(this.state.data)
                 .catch(err => this.setState({ errors: err.response.data.errors, loading: false }));
         }
@@ -87,7 +94,8 @@ class SignupForm extends Component {
 }
 
 SignupForm.propTypes = {
-    submit: PropTypes.func.isRequired
+    submit: PropTypes.func.isRequired,
+    notFetching: PropTypes.func.isRequired
 };
 
 export default SignupForm;
