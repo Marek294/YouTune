@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { search } from '../../actions/books';
 
 import '../../sass/_SearchForm.scss';
 
@@ -8,11 +10,23 @@ class SearchForm extends Component {
         super(props);
 
         this.state = {
-            advanced: false
+            advanced: false,
+            loading: false,
+            error: '',
+            data: {
+                title: ''
+            }
         };
 
         this.submit = this.submit.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onChange(e) { 
+        this.setState({ 
+            data: { ...this.state.data, [e.target.name]: e.target.value }
+        });
     }
 
     toggle() {
@@ -24,10 +38,16 @@ class SearchForm extends Component {
 
     submit(e) {
         e.preventDefault();
+        this.setState({
+            error: ''
+        });
+
+        this.props.search(this.state.data.title);
     }
 
     render() {
         const { advanced } = this.state;
+        const { fetch } = this.props;
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
@@ -35,7 +55,7 @@ class SearchForm extends Component {
                         <div className="form-group row">
                             <label htmlFor="title" className="col-sm-2 col-form-label">Tytuł</label>
                             <div className="col-sm-10">
-                                <input type="text" className="form-control" id="title" placeholder="Tytuł" />
+                                <input type="text" className="form-control" id="title" placeholder="Tytuł" name="title" onChange={this.onChange} />
                             </div>
                         </div>
                         <div className="form-group row">
@@ -55,6 +75,7 @@ class SearchForm extends Component {
                     </div>
                     <div className="buttons">
                         <button type="submit" className="btn">Szukaj</button>
+                        {fetch.error && <p className="error">{fetch.error.global}</p>}
                         <div className="sizeFormBtn" onClick={this.toggle}>{advanced ? 'Wyszukiwanie podstawowe' : 'Wyszukiwanie zaawansowane'}</div>
                     </div>
                 </form>
@@ -64,7 +85,18 @@ class SearchForm extends Component {
 }
 
 SearchForm.propTypes = {
-    toggle: PropTypes.func.isRequired
+    toggle: PropTypes.func.isRequired,
+    search: PropTypes.func.isRequired,
+    fetch: PropTypes.shape({
+        isFetching: PropTypes.bool.isRequired,
+        error: PropTypes.object.isRequired
+    }).isRequired
 }
 
-export default SearchForm;
+function mapStateToProps(state) {
+    return {
+        fetch: state.fetch
+    }
+}
+
+export default connect(mapStateToProps, { search })(SearchForm);

@@ -8,5 +8,8 @@ export default {
         signup: (data) => axios.post('/api/users', { data }).then(res => res.data.user),
         confirm: (token) => axios.post('/api/auth/confirmation', { token }).then(res => res.data.user),
         sendConfirmationEmail: (data) => axios.post('/api/auth/sendConfirmationEmail', { data }).then(res => res.data.user)
+    },
+    book: {
+        search: (searchData) => axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchData}`).then(res => res.data.items)
     }
 }

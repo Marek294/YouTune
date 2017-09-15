@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'loader';
 
 .sass-SearchForm {
     color: $secondary-color;
@@ -13,6 +14,7 @@
     .buttons {
         display: flex;
         justify-content: space-between;
+        align-items: center;
     }
 
     .sizeFormBtn {
@@ -28,5 +30,14 @@
     .btn {
         color: $fourth-color;
         font-weight: 600;
+    }
+
+    .loader {
+        height: 50px;
+        width: 50px;
+    }
+
+    .error {
+        color: red;
     }
 }
