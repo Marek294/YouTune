@@ -28,7 +28,7 @@ class LoginPage extends Component {
         return (
             <div className="sass-LoginPage">
                 <h1>Logowanie</h1>
-                <LoginForm submit={this.submit} notFetching={this.notFetching}/>
+                <LoginForm submit={this.submit} notFetching={this.notFetching} signupLink={this.props.signupLink} />
             </div>
         );
     }
@@ -36,7 +36,8 @@ class LoginPage extends Component {
 
 LoginPage.propTypes = {
     login: PropTypes.func.isRequired,
-    fetching: PropTypes.func.isRequired
+    fetching: PropTypes.func.isRequired,
+    signupLink: PropTypes.func.isRequired
 }
 
 export default connect(null, { login })(LoginPage);

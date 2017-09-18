@@ -1,6 +1,6 @@
-import { START_FETCHING, STOP_FETCHING, SET_ERROR } from '../actions/types';
+import { START_FETCHING, STOP_FETCHING, SET_ERRORS } from '../actions/types';
 
-export default (state = { isFetching: false, error: {} }, action) => {
+export default (state = { isFetching: false, errors: {} }, action) => {
     switch (action.type) {
         case START_FETCHING:
             return {
@@ -11,10 +11,10 @@ export default (state = { isFetching: false, error: {} }, action) => {
                 ...state,
                 isFetching: false
             };
-        case SET_ERROR:
+        case SET_ERRORS:
             return {
                 ...state,
-                error: action.error
+                errors: action.errors
             };
         default:
             return state;

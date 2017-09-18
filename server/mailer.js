@@ -28,3 +28,19 @@ export function sendConfirmationEmail(user) {
 
     transport.sendMail(email);
 }
+
+export function sendResetPasswordEmail(user) {
+    const transport = setup();
+    const email = {
+        from,
+        to: user.get('email'),
+        subject: "Resetowanie hasła",
+        text: `
+        Aby zresetować hasło kliknij w poniższy link
+
+        ${process.env.HOST}/resetPassword/${user.get('resetPasswordToken')}
+        `
+    }
+
+    transport.sendMail(email);
+}

@@ -12,7 +12,6 @@ class SearchForm extends Component {
         this.state = {
             advanced: false,
             loading: false,
-            error: '',
             data: {
                 title: ''
             }
@@ -38,9 +37,6 @@ class SearchForm extends Component {
 
     submit(e) {
         e.preventDefault();
-        this.setState({
-            error: ''
-        });
 
         this.props.search(this.state.data.title);
     }
@@ -75,7 +71,7 @@ class SearchForm extends Component {
                     </div>
                     <div className="buttons">
                         <button type="submit" className="btn">Szukaj</button>
-                        {fetch.error && <p className="error">{fetch.error.global}</p>}
+                        {fetch.errors && <p className="error">{fetch.errors.global}</p>}
                         <div className="sizeFormBtn" onClick={this.toggle}>{advanced ? 'Wyszukiwanie podstawowe' : 'Wyszukiwanie zaawansowane'}</div>
                     </div>
                 </form>
@@ -87,10 +83,7 @@ class SearchForm extends Component {
 SearchForm.propTypes = {
     toggle: PropTypes.func.isRequired,
     search: PropTypes.func.isRequired,
-    fetch: PropTypes.shape({
-        isFetching: PropTypes.bool.isRequired,
-        error: PropTypes.object.isRequired
-    }).isRequired
+    fetch: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {

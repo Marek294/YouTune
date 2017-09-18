@@ -82,7 +82,7 @@ class SignupForm extends Component {
                         {errors.password && <InlineError text={errors.password} />}
                     </div>
                     <div className="form-group">
-                        <label htmlFor="ConfirmPassword">Hasło</label>
+                        <label htmlFor="ConfirmPassword">Potwierdź hasło</label>
                         <input type="password" className="form-control" id="ConfirmPassword" placeholder="Potwierdź Hasło" name="confirmPassword" value={data.confirmPassword} onChange={this.onChange}  />
                         {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
                     </div>

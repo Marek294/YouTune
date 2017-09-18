@@ -1,6 +1,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
@@ -69,19 +70,28 @@ class LoginForm extends Component {
                 { errors.global && <div className="alert alert-danger" role="alert">
                     { errors.global }
                     </div>}
-                {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
-                    <div className="form-group">
-                        <label htmlFor="Email">Adres Email</label>
-                        <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" onChange={this.onChange} autoComplete="false"/>
-                        {errors.email && <InlineError text={errors.email} />}
+                { loading ? <div className="loader" /> : 
+                <div>
+                    <form onSubmit={this.onSubmit} autoComplete="off">
+                        <div className="form-group">
+                            <label htmlFor="Email">Adres Email</label>
+                            <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" onChange={this.onChange} autoComplete="false"/>
+                            {errors.email && <InlineError text={errors.email} />}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="Password">Hasło</label>
+                            <input type="password" spellCheck="false" className="form-control" id="Password" placeholder="Hasło" name="password" onChange={this.onChange}/>
+                            {errors.password && <InlineError text={errors.password} />}
+                        </div>
+                        <div className="btnGroup">
+                            <button type="submit" className="btn">Zaloguj</button>
+                            <button onClick={this.props.signupLink} className="signupLink">Nie posiadasz konta? Zarejestruj się</button>
+                        </div>
+                    </form>
+                    <div className="forgotContainer">
+                        <Link className="forgotLink" to="/forgotPassword">Zapomniałem hasło...</Link>
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="Password">Hasło</label>
-                        <input type="password" spellCheck="false" className="form-control" id="Password" placeholder="Hasło" name="password" onChange={this.onChange}/>
-                        {errors.password && <InlineError text={errors.password} />}
-                    </div>
-                    <button type="submit" className="btn">Zaloguj</button>
-                </form> }
+                </div> }
             </div>
         );
     }
@@ -89,7 +99,8 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
     submit: PropTypes.func.isRequired,
-    notFetching: PropTypes.func.isRequired
+    notFetching: PropTypes.func.isRequired,
+    signupLink: PropTypes.func.isRequired
 };
 
 export default LoginForm;

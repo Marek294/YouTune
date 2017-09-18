@@ -90,7 +90,8 @@ class Catalog extends Component {
                     </div>
                 </div>
 
-                { isFetching ? <div className="loader" /> : <div className="card books">
+                { isFetching ? <div className="loader" /> :
+                    books.length > 0 && <div className="card books">
                     <div className="card-header">
                         <h4>Pozycje</h4>
                     </div>

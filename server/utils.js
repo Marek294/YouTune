@@ -14,3 +14,10 @@ export const toAuthJSON = (user, token) => {
         token
     }
 }
+
+export const generateResetPasswordJWT = (user) => {
+    return jwt.sign({
+        email: user.get('email')
+    }, process.env.JWT_SECRET,
+    { expiresIn: "1h" } );
+}
