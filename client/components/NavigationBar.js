@@ -19,7 +19,13 @@ const NavigationBar = ({ isAuthenticated, logout }) =>
 
                 {isAuthenticated && <ul className="nav nav-pills justify-content-end">
                     <li className="nav-item">
+                        <Link to="/users" className="nav-link">Czytelnicy</Link>
+                    </li>
+                    <li className="nav-item">
                         <Link to="/catalog" className="nav-link">Katalog</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link to="/settings" className="nav-link">Ustawienia</Link>
                     </li>
                     <li className="nav-item">
                         <Link to="/" className="nav-link" onClick={() => logout()}>Wyloguj</Link>

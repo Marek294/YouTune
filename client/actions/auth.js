@@ -20,18 +20,18 @@ export const userLoggedOut = () => ({
 
 export const login = (credentials) => dispatch => 
     api.user.login(credentials).then(user => {
-        localStorage.youtuneJWT = user.token;
+        localStorage.mylibJWT = user.token;
         return dispatch(userLoggedIn(user));
     });
 
 export const logout = () => dispatch => {
-    localStorage.removeItem('youtuneJWT');
+    localStorage.removeItem('mylibJWT');
     return dispatch(userLoggedOut());
 }
 
 export const confirm = (token) => dispatch => 
     api.user.confirm(token).then(user => {
-        localStorage.youtuneJWT = user.token;
+        localStorage.mylibJWT = user.token;
         return dispatch(userLoggedIn(user));
     });
 

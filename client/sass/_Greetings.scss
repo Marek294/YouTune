@@ -1,0 +1,18 @@
+@import 'colors';
+
+.sass-Greetings {
+    width: 90%;
+
+    .card {
+        display: flex;
+        
+
+        border-color: $secondary-color;
+        margin: 50px 0px 50px 0px;
+        padding-bottom: 50px;
+    }
+
+    .grey {
+        color: grey;
+    }
+}

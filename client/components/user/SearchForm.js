@@ -47,28 +47,26 @@ class SearchForm extends Component {
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
-                    <div className="inputs">
-                        <div className="form-group row">
-                            <label htmlFor="title" className="col-sm-2 col-form-label">Tytuł</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="title" placeholder="Tytuł" name="title" onChange={this.onChange} />
-                            </div>
+                    <div className="form-group row">
+                        <label htmlFor="title" className="col-sm-2 col-form-label">Tytuł</label>
+                        <div className="col-sm-10">
+                            <input type="text" className="form-control" id="title" placeholder="Tytuł" name="title" onChange={this.onChange} />
                         </div>
-                        <div className="form-group row">
-                            <label htmlFor="author" className="col-sm-2 col-form-label">Autor</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="author" placeholder="Autor" />
-                            </div>
-                        </div>
-                        { advanced && 
-                            <div className="form-group row">
-                                <label htmlFor="genre" className="col-sm-2 col-form-label">Gatunek</label>
-                                <div className="col-sm-10">
-                                    <input type="text" className="form-control" id="genre" placeholder="Gatunek" />
-                                </div> 
-                            </div>
-                        }
                     </div>
+                    <div className="form-group row">
+                        <label htmlFor="author" className="col-sm-2 col-form-label">Autor</label>
+                        <div className="col-sm-10">
+                            <input type="text" className="form-control" id="author" placeholder="Autor" />
+                        </div>
+                    </div>
+                    { advanced && 
+                        <div className="form-group row">
+                            <label htmlFor="genre" className="col-sm-2 col-form-label">Gatunek</label>
+                            <div className="col-sm-10">
+                                <input type="text" className="form-control" id="genre" placeholder="Gatunek" />
+                            </div> 
+                        </div>
+                    }
                     <div className="buttons">
                         <button type="submit" className="btn">Szukaj</button>
                         {fetch.errors && <p className="error">{fetch.errors.global}</p>}

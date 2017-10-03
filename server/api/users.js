@@ -7,13 +7,19 @@ import { generateJWT, toAuthJSON } from '../utils';
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+    User.fetchAll({columns: ['firstname', 'lastname', 'email', 'confirmed']}).then(users => {
+        res.json({users});
+    })
+});
+
 router.post('/', (req, res) => {
     const { data } = req.body;
     const { errors, isValid } = signupValidation(data);
     if(isValid) {
         const password_digest = bcrypt.hashSync(data.password,10);
 
-        User.forge({ email: data.email, password_digest },{ hasTimestamps: true }).save()
+        User.forge({ firstname: data.firstname, lastname: data.lastname, email: data.email, password_digest },{ hasTimestamps: true }).save()
             .then(user => {
                 user.set('confirmed', false);
                 

@@ -13,6 +13,8 @@ class SignupForm extends Component {
 
         this.state = {
             data: {
+                firstname: '',
+                lastname: '',
                 email: '',
                 password: '',
                 confirmPassword: ''
@@ -59,6 +61,8 @@ class SignupForm extends Component {
 
         if(!Validator.isEmail(data.email)) errors.email = "Niepoprawny email";
         if(!data.password) errors.password = "Wpisz hasło";
+        if(!data.firstname) errors.firstname = "Podaj imię";
+        if(!data.lastname) errors.lastname = "Podaj nazwisko";
 
         return errors;
     }
@@ -71,6 +75,16 @@ class SignupForm extends Component {
                     { errors.global }
                     </div>}
                 {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
+                    <div className="form-group">
+                        <label htmlFor="Firstname">Imię</label>
+                        <input type="firstname" className="form-control" id="Firstname" placeholder="Jan" name="firstname" value={data.firstname} onChange={this.onChange} />
+                        {errors.firstname && <InlineError text={errors.firstname} />}
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="Lastname">Nazwisko</label>
+                        <input type="lastname" className="form-control" id="Lastname" placeholder="Kowalski" name="lastname" value={data.lastname} onChange={this.onChange} />
+                        {errors.lastname && <InlineError text={errors.lastname} />}
+                    </div>
                     <div className="form-group">
                         <label htmlFor="Email">Adres Email</label>
                         <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" value={data.email} onChange={this.onChange} />

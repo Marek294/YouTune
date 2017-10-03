@@ -7,3 +7,4 @@ export const DELETE_BOOKS = 'DELETE_BOOKS';
 export const START_FETCHING = 'START_FETCHING';
 export const STOP_FETCHING = 'STOP_FETCHING';
 export const SET_ERRORS = 'SET_ERRORS';
+export const SET_USERS = 'SET_USERS';

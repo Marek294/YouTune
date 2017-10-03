@@ -17,12 +17,15 @@ const store = createStore(
     composeWithDevTools(applyMiddleware(thunk))
 );
 
-if(localStorage.youtuneJWT) {
-    const payload = jwtDecode(localStorage.youtuneJWT);
+if(localStorage.mylibJWT) {
+    const payload = jwtDecode(localStorage.mylibJWT);
     const user = { 
+        created_at: payload.created_at,
+        firstname: payload.firstname,
+        lastname: payload.lastname,
         email: payload.email,
         confirmed: payload.confirmed,
-        token: localStorage.youtuneJWT };
+        token: localStorage.mylibJWT };
     store.dispatch(userLoggedIn(user));
 }
 

@@ -15,6 +15,8 @@ import ConfirmationPage from './ConfirmationPage';
 import Catalog from './user/Catalog';
 import ForgotPasswordPage from './forgotPassword/ForgotPasswordPage';
 import ResetPasswordPage from './resetPassword/ResetPasswordPage';
+import Users from './user/Users';
+import Settings from './settings/Settings'
 
 const App = ({ location }) => {
         return (
@@ -26,6 +28,8 @@ const App = ({ location }) => {
                 <Route location={location} exact path="/resetPassword/:token" component={ResetPasswordPage} />
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
                 <UserRoute location={location} exact path="/catalog" component={Catalog} />
+                <UserRoute location={location} exact path="/users" component={Users} />
+                <UserRoute location={location} exact path="/settings" component={Settings} />
             </div>
         )
 }
