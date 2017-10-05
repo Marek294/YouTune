@@ -68,7 +68,11 @@ class Users extends Component {
                     </div>
                 </div>
                 { error.global  && <div className="alert alert-danger" role="alert"> { error.global } </div> }
-                { loading ? <div className="loader" /> :
+                { loading ? 
+                        <div className="loading">
+                            <div className="loader" />
+                            <h2>Trwa wczytywanie czytelników...</h2>
+                        </div> :
                         users.length > 0 && <div className="card users">
                         <div className="card-header">
                             <h4>Czytelnicy</h4>

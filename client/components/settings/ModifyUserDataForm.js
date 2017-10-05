@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import InlineError from '../messages/InlineError';
 
 import './_ModifyUserDataForm.scss';
 
@@ -11,7 +11,8 @@ class ModifyUserDataForm extends Component {
             data: {
                 firstname: '',
                 lastname: ''
-            }
+            },
+            errors: {}
         }
 
         this.submit = this.submit.bind(this);
@@ -19,12 +20,12 @@ class ModifyUserDataForm extends Component {
     }
 
     componentWillMount() {
-        const { user } = this.props;
+        const { firstname, lastname } = this.props.userData;
 
         this.setState({
             data: {
-                firstname: user.firstname,
-                lastname: user.lastname
+                firstname,
+                lastname
             }
         })
     }
@@ -37,11 +38,27 @@ class ModifyUserDataForm extends Component {
 
     submit(e) {
         e.preventDefault();
-        console.log(this.state);
+        const errors = this.validate(this.state.data);
+        this.setState({ errors });
+
+        if(Object.keys(errors).length === 0) {       
+            this.props.submitUserDataForm(this.state);
+        }
+    }
+
+    validate(data) {
+        const errors = {};
+
+        if(!data.firstname) errors.firstname = "Podaj imię";
+        if(!data.lastname) errors.lastname = "Podaj nazwisko";
+
+        return errors;
     }
 
     render() {
         const { firstname, lastname } = this.state.data;
+        const { errors } = this.state
+
         return (
             <div className="sass-ModifyUserDataForm">
                 <form onSubmit={this.submit}>
@@ -49,12 +66,14 @@ class ModifyUserDataForm extends Component {
                         <label htmlFor="firstname" className="col-sm-2 col-form-label">Imię</label>
                         <div className="col-sm-10">
                             <input type="text" className="form-control" id="firstname" placeholder="Imię" name="firstname" onChange={this.onChange} value={firstname} />
+                            {errors.firstname && <InlineError text={errors.firstname} />}
                         </div>
                     </div>
                     <div className="form-group row">
                         <label htmlFor="lastname" className="col-sm-2 col-form-label">Nazwisko</label>
                         <div className="col-sm-10">
                             <input type="text" className="form-control" id="lastname" placeholder="Nazwisko" name="lastname" onChange={this.onChange} value={lastname} />
+                            {errors.lastname && <InlineError text={errors.lastname} />}
                         </div>
                     </div>
                     <button type="submit" className="btn">Zapisz</button>
@@ -64,10 +83,4 @@ class ModifyUserDataForm extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        user: state.user
-    }
-}
-
-export default connect(mapStateToProps)(ModifyUserDataForm);
+export default ModifyUserDataForm;

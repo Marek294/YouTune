@@ -15,7 +15,6 @@ class ChangePasswordForm extends Component {
             errors: {}
         }
 
-        this.validate = this.validate.bind(this);
         this.submit = this.submit.bind(this);
         this.onChange = this.onChange.bind(this);
     }
@@ -33,7 +32,7 @@ class ChangePasswordForm extends Component {
         this.setState({ errors });
 
         if(Object.keys(errors).length === 0) {
-            console.log('Change');
+            this.props.submitUserPasswordForm(this.state);
         }
     }
 
@@ -46,8 +45,9 @@ class ChangePasswordForm extends Component {
 
         return errors;
     }
+
     render() {
-        const { data, errors } = this.state;
+        const { errors } = this.state;
 
         return (
             <div className="sass-ChangePasswordForm">

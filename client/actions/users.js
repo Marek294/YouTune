@@ -10,6 +10,8 @@ export const saveUsers = (users) => ({
 
 export const getCurrentUser = () => () => api.user.getCurrentUser()
 export const getUsers = () => () => api.user.getUsers()
+export const setUserData = (data) => () => api.user.setUserData(data)
+export const setUserPassword = (data) => () => api.user.setUserPassword(data)
 
 export const signup = (data) => dispatch => 
 api.user.signup(data).then(user => {
