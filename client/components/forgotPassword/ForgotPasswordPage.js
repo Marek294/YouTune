@@ -5,7 +5,7 @@ import ForgotPasswordForm from './ForgotPasswordForm';
 import ForgotPasswordMessage from '../messages/ForgotPasswordMessage';
 import { resetPasswordRequest } from '../../actions/auth';
 
-import '../../sass/_ForgotPasswordPage.scss';
+import './_ForgotPasswordPage.scss';
 
 class ForgotPasswordPage extends Component {
     constructor(props) {

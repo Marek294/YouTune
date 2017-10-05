@@ -5,7 +5,7 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
-import '../../sass/_SignupForm.scss';
+import './_SignupForm.scss';
 
 class SignupForm extends Component {
     constructor(props) {

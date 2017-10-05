@@ -1,0 +1,28 @@
+.sass-ConfirmationPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+
+    .card {
+        width: 80%;
+        text-align: center;
+    }
+
+    .card-body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        .btn {
+            width: 300px;
+        }
+    }
+
+    .card-header {
+        h4 {
+            font-weight: 700;
+        }
+    }
+}

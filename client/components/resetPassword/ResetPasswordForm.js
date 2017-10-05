@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
-import '../../sass/_ResetPasswordForm.scss';
+import './_ResetPasswordForm.scss';
 
 class ResetPasswordForm extends Component {
     constructor(props) {

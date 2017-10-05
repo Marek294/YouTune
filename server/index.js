@@ -12,6 +12,7 @@ import dotenv from 'dotenv';
 import webpackConfig from '../webpack.config.dev';
 import auth from './api/auth';
 import users from './api/users';
+import librarianUsers from './api/librarian/users';
 
 dotenv.config();
 const app = express();
@@ -31,6 +32,7 @@ app.use(morgan('dev'));
 
 app.use('/api/auth', auth);
 app.use('/api/users', users);
+app.use('/api/librarian/users', librarianUsers);
 
 app.get('/*', (req,res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

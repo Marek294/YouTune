@@ -1,0 +1,90 @@
+@import '../../sass/colors';
+
+.sass-Catalog {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    .card {
+        border-color: $secondary-color;
+        margin: 50px 0px 50px 0px;
+    }
+
+
+    .search-form {
+        width: 40%;
+
+        .btn {
+            color: $fourth-color;
+            background-color: $primary-color;
+        }
+
+        .btn:hover {
+            cursor: pointer;
+        }
+    }
+
+    .extended {
+        width: 90%;
+        height: 80%;
+    }
+
+    .books {
+        width: 90%;
+
+        .list-group-item {
+            border: none;
+            border-bottom: 4px solid $secondary-color;
+            height: 250px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 100px;
+
+            img {
+                max-height: 200px;
+            }
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 100%;
+            padding-left: 100px;
+            color: $fourth-color;
+
+            .bold {
+                font-weight: 600;
+                width: 100px;
+            }
+
+            .title {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .authors {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .author-list {
+            display: flex;
+            flex-direction: column;
+            list-style-type: none;
+        }
+
+        .author-item {
+            color: grey;
+        }
+    }
+}

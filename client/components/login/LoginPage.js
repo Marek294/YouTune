@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import LoginForm from './LoginForm';
 import { login } from '../../actions/auth';
 
-import '../../sass/_LoginPage.scss';
+import './_LoginPage.scss';
 
 class LoginPage extends Component {
     constructor(props) {

@@ -1,0 +1,66 @@
+@import '../../sass/colors';
+
+.sass-LoginForm {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    color: $secondary-color;
+    font-weight: 600;
+
+    .btnGroup {
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .btn {
+            background-color: $primary-color;
+            color: $fourth-color;
+            font-weight: 600;
+    
+            transition: all 0.5s;
+        }
+    
+        .btn:hover {
+            color: $primary-color;
+            background-color: $fourth-color;
+        }
+
+        .signupLink {
+            border: none;
+            background: none;
+            color: $secondary-color;
+            text-decoration: underline;
+            transition: all 0.5s;
+        }
+
+        .signupLink:hover {
+            color: $fourth-color;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .signupLink:focus {
+            outline: none;
+        }
+    }
+
+    .forgotContainer {
+        padding-top: 50px;
+
+        .forgotLink {
+            color: $secondary-color;
+            transition: all 0.5s;
+        }
+    
+        .forgotLink:hover {
+            color: $fourth-color;
+            text-decoration: none;
+        }
+
+        .forgotLink:focus {
+            outline: none;
+        }
+    }
+}

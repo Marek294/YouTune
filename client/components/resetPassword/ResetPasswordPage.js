@@ -5,7 +5,7 @@ import { validateToken, resetPassword } from '../../actions/auth';
 import ResetPasswordForm from './ResetPasswordForm';
 import InvalidTokenMessage from '../messages/InvalidTokenMessage';
 
-import '../../sass/_ResetPasswordPage.scss';
+import './_ResetPasswordPage.scss';
 
 class ResetPasswordPage extends Component {
     constructor(props) {

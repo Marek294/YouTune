@@ -1,0 +1,17 @@
+@import '../../sass/colors';
+
+.sass-SignupPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: $secondary-color;
+
+    p {
+        text-align: center;
+        color: $fourth-color;
+    }
+
+    h1 {
+        margin: 10px 0px 50px 0px;
+    }
+}

@@ -6,17 +6,19 @@ import {
 } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
-import NavigationBar from "./NavigationBar";
-import HomePage from "./HomePage";
-import DashboardPage from "./user/DashboardPage";
+import NavigationBar from "./navigation/NavigationBar";
+import HomePage from "./home/HomePage";
+import DashboardPage from "./dashboard/DashboardPage";
 import UserRoute from './routes/UserRoute';
 import GuestRoute from './routes/GuestRoute';
-import ConfirmationPage from './ConfirmationPage';
-import Catalog from './user/Catalog';
+import ConfirmationPage from './confirmation/ConfirmationPage';
+import Catalog from './catalog/Catalog';
 import ForgotPasswordPage from './forgotPassword/ForgotPasswordPage';
 import ResetPasswordPage from './resetPassword/ResetPasswordPage';
-import Users from './user/Users';
+import Users from './users/Users';
 import Settings from './settings/Settings'
+
+require('../sass/_loader.scss');
 
 const App = ({ location }) => {
         return (

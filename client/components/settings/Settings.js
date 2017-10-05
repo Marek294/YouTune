@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ModifyUserDataForm from './ModifyUserDataForm';
 import ChangePasswordForm from './ChangePasswordForm';
 
-import '../../sass/_Settings.scss';
+import './_Settings.scss';
 
 class Settings extends Component {
     render() {

@@ -3,7 +3,7 @@ import shortid from 'shortid';
 import classNames from 'classnames';
 import _ from 'lodash';
 
-import '../../sass/_Notificator.scss';
+import './_Notificator.scss';
 
 class Notificator extends Component {
     constructor(props) {

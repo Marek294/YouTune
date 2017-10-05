@@ -2,16 +2,13 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import User from '../models/user';
 import signupValidation from '../validations/signup';
+import updateDataValidation from '../validations/updateData';
+import updatePasswordValidation from '../validations/updatePassword';
 import { sendConfirmationEmail } from '../mailer';
 import { generateJWT, toAuthJSON } from '../utils';
+import authenticate from '../middlewares/authenticate';
 
 const router = express.Router();
-
-router.get('/', (req, res) => {
-    User.fetchAll({columns: ['firstname', 'lastname', 'email', 'confirmed']}).then(users => {
-        res.json({users});
-    })
-});
 
 router.post('/', (req, res) => {
     const { data } = req.body;
@@ -43,5 +40,51 @@ router.post('/', (req, res) => {
 
     } else res.status(403).json({ errors });
 });
+
+router.get('/currentUser', authenticate, (req, res) => {
+    User.query({
+        where: { id: req.currentUser.id }
+    }).fetch({ columns: ['firstname', 'lastname', 'created_at']}).then(user => {
+        if(user) {
+            res.json({ user });
+        } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
+    })
+})
+
+router.put('/updateData', authenticate, (req, res) => {
+    const { data } = req.body;
+    const { errors, isValid } = updateDataValidation(data);
+    if(isValid) {
+        User.query({
+            where: { id: req.currentUser.id }
+        }).fetch().then(user => {
+            if(user) {
+                user.set('firstname', data.firstname);
+                user.set('lastname', data.lastname);
+                user.save().then(() => res.json({ success: true  }));
+
+            } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
+        })
+    } else res.status(403).json({ errors });
+})
+
+router.put('/updatePassword', authenticate, (req, res) => {
+    const { data } = req.body;
+    const { errors, isValid } = updatePasswordValidation(data);
+    if(isValid) {
+        User.query({
+            where: { id: req.currentUser.id }
+        }).fetch().then(user => {
+            if(user) {
+                const password_digest = bcrypt.hashSync(data.password,10);
+                
+                user.set('password_digest', password_digest);
+
+                user.save().then(() => res.json({ success: true  }));
+                
+            } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
+        })
+    } else res.status(403).json({ errors });
+})
 
 export default router;

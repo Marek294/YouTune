@@ -11,6 +11,7 @@ import jwtDecode from 'jwt-decode';
 import rootReducer from './rootReducer';
 import App from './components/App';
 import { userLoggedIn } from './actions/auth';
+import setAuthorizationToken from './utils/setAuthorizationToken';
 
 const store = createStore(
     rootReducer,
@@ -18,11 +19,9 @@ const store = createStore(
 );
 
 if(localStorage.mylibJWT) {
+    setAuthorizationToken(localStorage.mylibJWT);
     const payload = jwtDecode(localStorage.mylibJWT);
-    const user = { 
-        created_at: payload.created_at,
-        firstname: payload.firstname,
-        lastname: payload.lastname,
+    const user = {
         email: payload.email,
         confirmed: payload.confirmed,
         token: localStorage.mylibJWT };

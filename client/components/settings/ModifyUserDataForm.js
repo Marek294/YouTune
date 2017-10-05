@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import '../../sass/_ModifyUserDataForm.scss';
+import './_ModifyUserDataForm.scss';
 
 class ModifyUserDataForm extends Component {
     constructor(props) {

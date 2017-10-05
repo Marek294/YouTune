@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import isEmail from 'validator/lib/isEmail';
 import InlineError from '../messages/InlineError';
 
-import '../../sass/_ForgotPasswordForm.scss';
+import './_ForgotPasswordForm.scss';
 
 class ForgotPasswordForm extends Component {
     constructor(props) {

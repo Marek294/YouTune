@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import SignupForm from './SignupForm';
 import { signup } from '../../actions/users';
 
-import '../../sass/_SignupPage.scss';
+import './_SignupPage.scss';
 
 class SignupPage extends Component {
     constructor(props) {

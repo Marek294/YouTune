@@ -1,0 +1,51 @@
+@import '../../sass/colors';
+
+.sass-HomePage {
+  margin-top: 50px;
+  min-height: 650px;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+
+  .card {
+    border-color: $secondary-color;
+  }
+
+  .home-text {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 50px 50px 50px 50px;
+    color: $fourth-color;
+
+    img {
+      margin-bottom: 20px;
+      width: 250px;
+    }
+
+  }
+
+  .home-form {
+    width: 30%;
+
+    .nav-link {
+      background: transparent;
+      color: $secondary-color;
+    }
+
+    .nav-link:hover {
+      cursor: pointer; 
+    }
+
+    .notActive:hover {
+      border: 1px solid transparent;
+    }
+
+    .active {
+      background: white;
+    }
+
+  }
+}

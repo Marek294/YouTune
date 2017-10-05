@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import InlineError from '../messages/InlineError';
 
-import '../../sass/_ChangePasswordForm.scss';
+import './_ChangePasswordForm.scss';
 
 class ChangePasswordForm extends Component {
     constructor(props) {

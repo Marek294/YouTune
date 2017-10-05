@@ -1,5 +1,5 @@
 import { SET_USERS } from './types';
-import { startFetch, stopFetch, setErrors } from './fetch';
+// import { startFetch, stopFetch, setErrors } from './fetch';
 import { userLoggedIn } from './auth';
 import api from '../api';
 
@@ -8,24 +8,28 @@ export const saveUsers = (users) => ({
     users
 })
 
+export const getCurrentUser = () => () => api.user.getCurrentUser()
+export const getUsers = () => () => api.user.getUsers()
+
 export const signup = (data) => dispatch => 
 api.user.signup(data).then(user => {
     localStorage.youtuneJWT = user.token;
     return dispatch(userLoggedIn(user));
 });
 
-export const getUsers = () => dispatch => {
-    dispatch(startFetch());
-    api.user.getUsers()
-        .then(users => {
-            dispatch(stopFetch());
-            return dispatch(saveUsers(users));
-        })
-        .catch(() => {
-            const errors = {
-                global: 'Błąd wyszukiwania'
-            }
-            dispatch(setErrors(errors));
-            dispatch(stopFetch());
-        })
-}
+// export const getUsers = () => dispatch => {
+//     dispatch(startFetch());
+//     api.user.getUsers()
+//         .then(users => {
+//             console.log(users);
+//             dispatch(stopFetch());
+//             return dispatch(saveUsers(users));
+//         })
+//         .catch(() => {
+//             const errors = {
+//                 global: 'Błąd wyszukiwania'
+//             }
+//             dispatch(setErrors(errors));
+//             dispatch(stopFetch());
+//         })
+// }

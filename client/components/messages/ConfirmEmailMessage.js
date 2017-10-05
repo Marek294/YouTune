@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { sendConfirmationEmail } from '../../actions/auth';
 import Notificator from './Notificator';
 
-import '../../sass/_ConfirmEmailMessage.scss';
+import './_Message.scss';
 
 class ConfirmEmailMessage extends Component {
     constructor(props) {
@@ -32,7 +32,7 @@ class ConfirmEmailMessage extends Component {
 
     render() {
         return (
-            <div className="sass-ConfirmEmailMessage card border-primary">
+            <div className="sass-Message card border-primary">
                 <div className="card-header text-primary"><h4>Witamy!</h4></div>
                 <div className="card-body text-primary">
                     <p className="card-text">Konto zostało utworzone.<br/>Na podany adres email została wysłana wiadomość. Aby korzystać

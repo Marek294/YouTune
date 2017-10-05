@@ -6,7 +6,7 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
-import '../../sass/_LoginForm.scss';
+import './_LoginForm.scss';
 
 class LoginForm extends Component {
     constructor(props) {
