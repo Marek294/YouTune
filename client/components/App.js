@@ -11,6 +11,7 @@ import HomePage from "./home/HomePage";
 import DashboardPage from "./dashboard/DashboardPage";
 import UserRoute from './routes/UserRoute';
 import GuestRoute from './routes/GuestRoute';
+import LibrarianRoute from './routes/LibrarianRoute';
 import ConfirmationPage from './confirmation/ConfirmationPage';
 import Catalog from './catalog/Catalog';
 import ForgotPasswordPage from './forgotPassword/ForgotPasswordPage';
@@ -30,8 +31,8 @@ const App = ({ location }) => {
                 <Route location={location} exact path="/resetPassword/:token" component={ResetPasswordPage} />
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
                 <UserRoute location={location} exact path="/catalog" component={Catalog} />
-                <UserRoute location={location} exact path="/users" component={Users} />
                 <UserRoute location={location} exact path="/settings" component={Settings} />
+                <LibrarianRoute location={location} exact path="/users" component={Users} />
             </div>
         )
 }

@@ -24,6 +24,7 @@ if(localStorage.mylibJWT) {
     const user = {
         email: payload.email,
         confirmed: payload.confirmed,
+        librarian: payload.librarian,
         token: localStorage.mylibJWT };
     store.dispatch(userLoggedIn(user));
 }
