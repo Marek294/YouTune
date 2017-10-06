@@ -7,6 +7,7 @@ import {
 import PropTypes from 'prop-types';
 
 import NavigationBar from "./navigation/NavigationBar";
+import DropdownNavigation from "./navigation/DropdownNavigation";
 import HomePage from "./home/HomePage";
 import DashboardPage from "./dashboard/DashboardPage";
 import UserRoute from './routes/UserRoute';
@@ -24,7 +25,7 @@ require('../sass/_loader.scss');
 const App = ({ location }) => {
         return (
             <div>
-                <NavigationBar/>
+                <DropdownNavigation/>
                 <GuestRoute location={location} exact path="/" component={HomePage} />
                 <GuestRoute location={location} exact path="/forgotPassword" component={ForgotPasswordPage} />
                 <Route location={location} exact path="/confirmation/:token" component={ConfirmationPage} />

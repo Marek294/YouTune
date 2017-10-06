@@ -1,0 +1,46 @@
+@import '../../sass/colors';
+
+.sass-DropdownNavigation {
+  background: $fourth-color;
+
+  .navbar {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: nowrap;
+  }
+
+  .nav {
+    margin-right: 50px;
+
+    .dropdown-toggle {
+      color: $secondary-color;
+      font-weight: 600;
+      font-size: 20px;
+      transition: color 0.5s;
+    }
+
+    .dropdown-toggle:hover {
+      color: $primary-color;
+      cursor: pointer;
+    }
+
+    .dropdown-menu {
+      .nav-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 15px;
+
+        p {
+          margin-left: 10px;
+          margin-bottom: 0px;
+          font-weight: 600;
+        }
+
+        i {
+          width: 15px;
+        }
+      }
+    }
+  }
+}

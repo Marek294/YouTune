@@ -10,7 +10,7 @@ import * as actions from '../../actions/auth';
 
 import './_NavigationBar.scss';
 
-const NavigationBar = ({ isAuthenticated, logout }) => 
+const NavigationBar = ({ isAuthenticated, isLibrarian, logout }) => 
         <div className="sass-NavigationBar">
             <nav className="navbar navbar-light bg-faded">
                 <Link to="/" className="navbar-brand" >
@@ -18,9 +18,16 @@ const NavigationBar = ({ isAuthenticated, logout }) =>
                 </Link>
 
                 {isAuthenticated && <ul className="nav nav-pills justify-content-end">
-                    <li className="nav-item">
-                        <Link to="/users" className="nav-link">Czytelnicy</Link>
-                    </li>
+                    { isLibrarian && 
+                        <div>
+                            <li className="nav-item">
+                                <Link to="/addBook" className="nav-link">Dodaj nową książkę</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link to="/users" className="nav-link">Czytelnicy</Link>
+                            </li>
+                        </div>
+                        }
                     <li className="nav-item">
                         <Link to="/catalog" className="nav-link">Katalog</Link>
                     </li>
@@ -36,12 +43,14 @@ const NavigationBar = ({ isAuthenticated, logout }) =>
 
 NavigationBar.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
+    isLibrarian: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
     return {
-        isAuthenticated: !!state.user.token
+        isAuthenticated: !!state.user.token,
+        isLibrarian: state.user.librarian
     }
 }
 
