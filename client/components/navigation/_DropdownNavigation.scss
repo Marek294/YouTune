@@ -12,14 +12,27 @@
   .nav {
     margin-right: 50px;
 
-    .dropdown-toggle {
+    .dropdown-link {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
       color: $secondary-color;
       font-weight: 600;
       font-size: 20px;
       transition: color 0.5s;
+
+      p {
+        margin-right: 10px;
+        margin-bottom: 0px;
+      }
+
+      i {
+        font-size: 25px;
+      }
     }
 
-    .dropdown-toggle:hover {
+    .dropdown-link:hover {
       color: $primary-color;
       cursor: pointer;
     }
@@ -40,6 +53,10 @@
         i {
           width: 15px;
         }
+      }
+
+      .nav-link:hover {
+        color: $primary-color;
       }
     }
   }

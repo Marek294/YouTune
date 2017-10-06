@@ -47,7 +47,10 @@ class DropdownNavigation extends Component {
 
                     {isAuthenticated && <ul className="nav nav-pills">
                         <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')}>
-                            <a className="nav-link dropdown-toggle" onClick={this.toggleDropdown}>Menu</a>
+                            <a className="nav-link dropdown-link" onClick={this.toggleDropdown}>
+                                <p>Menu</p>
+                                <i className="fa fa-bars" aria-hidden="true"></i>
+                            </a>
                             <div className={classNames("dropdown-menu", toggleDropdown && 'show')}>
                                 { isLibrarian && 
                                      <div>    
