@@ -1,5 +1,96 @@
 @import '../../sass/colors';
 
+.ReactModal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: transparent;
+    transform: translate(-50%, -50%);
+
+    .waitingDiv {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        padding: 50px 50px 50px 50px;
+        
+        .loader {
+            border-top-color: $secondary-color;
+        }
+        
+        p {
+            color: $secondary-color;
+            font-weight: 600;
+            font-size: 20px;
+        }
+    }
+
+    .ModalCard {
+        background-color: white;
+        outline: red solid 1px;
+    
+        .card-header {
+            border-radius: 0px;
+            color: white;
+            font-weight: 600;
+            font-size: 20px;
+            padding-bottom: 0px;
+        }
+    
+        .card-body {
+            display: flex;
+            flex-direction: column;
+    
+            color: red;
+            font-weight: 600;
+        }
+    
+        .bg-lightdanger {
+            background-color: #FE8081;
+        }
+    
+        .buttons {
+            align-self: flex-end;
+    
+            button {
+                background-color: transparent;
+                border: none;
+                margin: 0px 10px 0px 10px;
+                border-radius: 20px;
+                padding: 5px 20px 5px 20px;
+                font-weight: 600;
+            }
+    
+            button:hover {
+                cursor: pointer;
+            }
+    
+            button:focus {
+                outline: none;
+            }
+    
+            .delete {
+                color: #FE8081;
+                border: 1px solid #FE8081;
+            }
+    
+            .cancel {
+                color: #98DB40;
+                border: 1px solid #98DB40;
+            }
+        }
+    }
+}
+
+.Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .sass-Users {
     display: flex;
     align-items: center;
@@ -35,6 +126,7 @@
             border-bottom: 4px solid $secondary-color;
             display: flex;
             flex-direction: row;
+            justify-content: space-between;
             align-items: center;
             padding-left: 100px;
         }
@@ -56,8 +148,53 @@
             }
         }
 
+        .buttons {
+            margin-right: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            height: 100%;
+
+            .delete {
+                color: red;
+                font-size: 30px;
+                padding: 0;
+
+                background: transparent;
+                border: none;
+            }
+
+            .profile {
+                color: green;
+                font-size: 30px;
+                padding: 0;
+
+                background: transparent;
+                border: none;
+            }
+
+            button:hover {
+                cursor: pointer;
+            }
+
+            button:focus {
+                outline: 0;
+            }
+
+            .red {
+                border-top-color: red;
+            }
+
+            .loader {
+                width: 30px;
+                height: 30px;
+                border-width: 7px;
+            }
+        }
+
         .grey {
             color: grey;
         }
+
     }
 }

@@ -1,6 +1,7 @@
 import { SET_USERS } from './types';
 // import { startFetch, stopFetch, setErrors } from './fetch';
 import { userLoggedIn } from './auth';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
 import api from '../api';
 
 export const saveUsers = (users) => ({
@@ -12,10 +13,12 @@ export const getCurrentUser = () => () => api.user.getCurrentUser()
 export const getUsers = () => () => api.user.getUsers()
 export const setUserData = (data) => () => api.user.setUserData(data)
 export const setUserPassword = (data) => () => api.user.setUserPassword(data)
+export const deleteUser = (id) => () => api.user.deleteUser(id)
 
 export const signup = (data) => dispatch => 
 api.user.signup(data).then(user => {
-    localStorage.youtuneJWT = user.token;
+    localStorage.mylibJWT = user.token;
+    setAuthorizationToken(user.token);
     return dispatch(userLoggedIn(user));
 });
 

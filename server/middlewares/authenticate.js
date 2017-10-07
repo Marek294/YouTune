@@ -14,7 +14,7 @@ export default (req, res, next) => {
                res.status(401).json({ error: 'Failed to authenticate' });
            } else {
                User.query({
-                   select: ['id', 'email'],
+                   select: ['id', 'email', 'librarian'],
                    where: { email: decoded.email }
                }).fetch().then(user => {
                    if(user) {
@@ -27,6 +27,6 @@ export default (req, res, next) => {
            }
         });
     } else {
-        res.status(403).json({ error: 'No token provided' });
+        res.status(404).json({ error: 'No token provided' });
     }
 };

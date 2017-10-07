@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUsers } from '../../actions/users';
+import Modal from 'react-modal';
+import _ from 'lodash';
+import { getUsers, deleteUser } from '../../actions/users';
 import SearchUser from './SearchUser';
+import Notificator from '../messages/Notificator';
 
 import './_Users.scss';
 
@@ -16,16 +19,35 @@ class Users extends Component {
                 lastname: ''
             },
             loading: true,
+            deleteLoading: false,
+            modalIsOpen: false,
+            deleteUserId: -1,
             error: {}
         }
 
         this.search = this.search.bind(this);
+        this.deleteUser = this.deleteUser.bind(this);
+        this.showNotification = this.showNotification.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.closeModal = this.closeModal.bind(this);
     }
 
     componentWillMount() {
         this.props.getUsers()
             .then(users => this.setState({ users, loading: false }))
             .catch(() => this.setState({ loading: false, error: { global: "Nie jesteś pracownikiem"}}))
+    }
+
+    showNotification(title, body, type, duration) {
+        this.refs.notificator.show(title, body, type, duration);
+      }
+
+    openModal(id) {
+        this.setState({modalIsOpen: true, deleteUserId: id});
+    }
+
+    closeModal() {
+        this.setState({modalIsOpen: false, deleteUserId: -1});
     }
 
     search(data) {
@@ -37,8 +59,37 @@ class Users extends Component {
         });
     }
 
+    deleteUser() {
+        const id = this.state.deleteUserId;
+
+        const findUserIndex = _.findIndex(this.state.users, { 'id': id });
+        const usersArray = this.state.users;
+
+        this.setState({
+            deleteLoading: true
+        })
+
+        setTimeout(() => {
+            usersArray.splice(findUserIndex, 1);
+
+            this.closeModal();
+
+            this.setState({
+                users: usersArray,
+                deleteLoading: false
+            }) }, 2000);
+        // this.props.deleteUser(id)
+        //     .then(() => {
+        //         this.showNotification('Sukces!', 'Czytelnik został pomyślnie usunięty z systemu', 'success', 3000);
+        //     })
+        //     .catch(err => {
+        //         this.showNotification('Błąd!', 'Coś poszło nie tak', 'danger', 3000);
+        //     })
+    }
+
     render() {
         const { users, loading, search, error } = this.state;
+        const currentUser = this.props.user;
         
         let displayUsers;
         if(users.length > 0) {
@@ -50,6 +101,10 @@ class Users extends Component {
                             <h3 className="bold">{user.firstname} {user.lastname}</h3>
                             <p className="grey">{user.email}</p>
                             <p className="grey">{user.confirmed ? 'Zatwierdzony' : 'Niezatwierdzony'}</p>
+                        </div>
+                        <div className="buttons">
+                            {currentUser.email !== user.email && <button className="delete" onClick={() => this.openModal(user.id)}><i className="fa fa-trash" aria-hidden="true"></i></button>}
+                            <button className="profile"><i className="fa fa-address-book-o" aria-hidden="true"></i></button>
                         </div>
                     </li>
                     )
@@ -84,6 +139,34 @@ class Users extends Component {
                         </div>
                     </div>
                     }
+                <Notificator ref="notificator"/>
+                
+                <Modal
+                    isOpen={this.state.modalIsOpen}
+                    onRequestClose={this.closeModal}
+                    className="ReactModal"
+                    overlayClassName="Overlay"
+                >
+
+                { this.state.deleteLoading ? 
+                    <div className="waitingDiv">
+                            <div className="loader red"></div>
+                            <p>Czekaj trwa wprowadzanie zmian...</p>
+                    </div> :
+                    <div className="ModalCard">
+                        <div className="card-header bg-lightdanger">
+                            <p>Potwierdzenie usunięcia</p>
+                        </div>
+                        <div className="card-body">
+                            <p>Czy jesteś pewien, że chcesz usunąć tego użytkownika z systemu?</p>
+                            <div className="buttons">
+                                <button className="cancel" onClick={this.closeModal}>Anuluj</button>
+                                <button className="delete" onClick={this.deleteUser}>Tak</button>
+                            </div>
+                        </div>
+                    </div> }
+                </Modal> 
+
             </div>
         );
     }
@@ -91,10 +174,8 @@ class Users extends Component {
 
 function mapStateToProps(state) {
     return {
-        isFetching: state.fetch.isFetching,
-        users: state.users
-
+        user: state.user
     }
 }
 
-export default connect(mapStateToProps, { getUsers })(Users);
+export default connect(mapStateToProps, { getUsers, deleteUser })(Users);
