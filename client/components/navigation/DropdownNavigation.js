@@ -24,6 +24,12 @@ class DropdownNavigation extends Component {
     }
 
     toggleDropdown() {
+        if (!this.state.toggleDropdown) {
+            document.addEventListener('click', this.toggleDropdown, false);
+          } else {
+            document.removeEventListener('click', this.toggleDropdown, false);
+          }
+
         this.setState({
             toggleDropdown: !this.state.toggleDropdown
         });
@@ -46,30 +52,31 @@ class DropdownNavigation extends Component {
                     </Link>
 
                     {isAuthenticated && <ul className="nav nav-pills">
-                        <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')}>
+                        <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')} >
                             <a className="nav-link dropdown-link" onClick={this.toggleDropdown}>
+                                <img src="noAvatar.jpg" alt="" />
                                 <p>Menu</p>
                                 <i className="fa fa-bars" aria-hidden="true"></i>
                             </a>
                             <div className={classNames("dropdown-menu", toggleDropdown && 'show')}>
                                 { isLibrarian && 
                                      <div>    
-                                        <Link to="/addBook" className="nav-link" onClick={this.toggleDropdown}>
+                                        <Link to="/addBook" className="nav-link">
                                             <i className="fa fa-plus" aria-hidden="true"></i>
                                             <p>Dodaj książkę</p>
                                         </Link>
-                                        <Link to="/users" className="nav-link" onClick={this.toggleDropdown}>
+                                        <Link to="/users" className="nav-link">
                                             <i className="fa fa-users" aria-hidden="true"></i>
                                             <p>Czytelnicy</p>
                                         </Link>
                                         <div className="dropdown-divider"></div>
                                      </div>                 
                                 }
-                                <Link to="/catalog" className="nav-link" onClick={this.toggleDropdown}>
+                                <Link to="/catalog" className="nav-link">
                                     <i className="fa fa-book" aria-hidden="true"></i>
                                     <p>Katalog</p>
                                 </Link>
-                                <Link to="/settings" className="nav-link" onClick={this.toggleDropdown}>
+                                <Link to="/settings" className="nav-link">
                                     <i className="fa fa-cog" aria-hidden="true"></i>
                                     <p>Ustawienia</p>
                                 </Link>
