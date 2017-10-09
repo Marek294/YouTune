@@ -69,22 +69,22 @@ class Users extends Component {
             deleteLoading: true
         })
 
-        setTimeout(() => {
-            usersArray.splice(findUserIndex, 1);
+        this.props.deleteUser(id)
+            .then(() => {
+                usersArray.splice(findUserIndex, 1);
 
-            this.closeModal();
-
-            this.setState({
-                users: usersArray,
-                deleteLoading: false
-            }) }, 2000);
-        // this.props.deleteUser(id)
-        //     .then(() => {
-        //         this.showNotification('Sukces!', 'Czytelnik został pomyślnie usunięty z systemu', 'success', 3000);
-        //     })
-        //     .catch(err => {
-        //         this.showNotification('Błąd!', 'Coś poszło nie tak', 'danger', 3000);
-        //     })
+                this.setState({
+                    users: usersArray,
+                    deleteLoading: false
+                })
+                
+                this.closeModal();
+                
+                this.showNotification('Sukces!', 'Czytelnik został pomyślnie usunięty z systemu', 'success', 3000);
+            })
+            .catch(err => {
+                this.showNotification('Błąd!', 'Coś poszło nie tak', 'danger', 3000);
+            })
     }
 
     render() {
