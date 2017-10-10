@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom'
 import PropTypes from 'prop-types';
 
-import NavigationBar from "./navigation/NavigationBar";
 import DropdownNavigation from "./navigation/DropdownNavigation";
 import HomePage from "./home/HomePage";
 import DashboardPage from "./dashboard/DashboardPage";
@@ -18,7 +17,8 @@ import Catalog from './catalog/Catalog';
 import ForgotPasswordPage from './forgotPassword/ForgotPasswordPage';
 import ResetPasswordPage from './resetPassword/ResetPasswordPage';
 import Users from './users/Users';
-import Settings from './settings/Settings'
+import Settings from './settings/Settings';
+import AddBook from './book/addBook';
 
 require('../sass/_loader.scss');
 
@@ -34,6 +34,7 @@ const App = ({ location }) => {
                 <UserRoute location={location} exact path="/catalog" component={Catalog} />
                 <UserRoute location={location} exact path="/settings" component={Settings} />
                 <LibrarianRoute location={location} exact path="/users" component={Users} />
+                <LibrarianRoute location={location} exact path="/addBook" component={AddBook} />
             </div>
         )
 }

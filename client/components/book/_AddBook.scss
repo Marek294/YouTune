@@ -1,0 +1,49 @@
+@import '../../sass/colors';
+
+.sass-BookForm {
+    color: $secondary-color;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+
+    .card {
+        border-color: $secondary-color;
+        margin: 50px 0px 50px 0px;
+        width: 90%;
+    }
+
+    .loader {
+        border-top-color: $secondary-color;
+        width: 100px;
+        height: 100px;
+    }
+
+    .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .btn {
+        background-color: $primary-color;
+        color: $fourth-color;
+        font-weight: 600;
+        padding: 10px 50px 10px 50px;
+        align-self: left;
+        margin-top: 30px;
+
+        transition: all 0.5s;
+    }
+
+    .btn:hover {
+        color: $primary-color;
+        background-color: $fourth-color;
+    }
+}
