@@ -25,6 +25,8 @@ if(localStorage.mylibJWT) {
         email: payload.email,
         confirmed: payload.confirmed,
         librarian: payload.librarian,
+        firstname: payload.firstname,
+        lastname: payload.lastname,
         token: localStorage.mylibJWT };
     store.dispatch(userLoggedIn(user));
 }

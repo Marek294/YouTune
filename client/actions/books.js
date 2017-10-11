@@ -27,3 +27,5 @@ export const search = (searchData) => dispatch => {
             dispatch(stopFetch());
         })
 }
+
+export const addBook = (data) => () => api.book.addBook(data);

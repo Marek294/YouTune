@@ -3,9 +3,16 @@
 import React, { Component } from 'react';
 import Validator from 'validator';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Dropzone from 'react-dropzone';
+import request from 'superagent';
 import InlineError from '../messages/InlineError';
+import { addBook } from '../../actions/books';
 
 import './_AddBook.scss';
+
+const CLOUDINARY_UPLOAD_PRESET = 'mnywgy3d';
+const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/myLib/upload';
 
 class AddBook extends Component {
     constructor(props) {
@@ -18,12 +25,14 @@ class AddBook extends Component {
                 cover: ''
             },
             loading: false,
-            errors: {}
+            errors: {},
+            uploadedFile: {}
         }
 
         this.validate = this.validate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.addBook = this.addBook.bind(this);
     }
 
     onChange(e) { 
@@ -43,7 +52,41 @@ class AddBook extends Component {
                 loading: true
             })
 
-            setTimeout(() => {
+            const { uploadedFile } = this.state;
+
+            if(uploadedFile.name) {
+                this.handleImageUpload(uploadedFile)
+                    .then(res => {
+                        const imageUrl = res.body.secure_url;
+                        if(imageUrl) {
+                            this.setState({
+                                data: {
+                                    ...this.state.data,
+                                    cover: imageUrl
+                                }
+                            });
+
+                            this.addBook(this.state.data);
+                        } else console.log('Brak adresu to okładki');
+                    })
+                    .catch(err => {
+                        console.log('Błąd przy zapisie okładki', err);
+                    })
+            } else {
+                this.addBook(this.state.data);
+            }
+        }
+    }
+
+    onImageDrop(files) {
+        this.setState({
+            uploadedFile: files[0]
+          });
+    }
+
+    addBook(data) {
+        this.props.addBook(data)
+            .then(book =>{
                 this.setState({
                     loading: false,
                     data: {
@@ -53,9 +96,20 @@ class AddBook extends Component {
                     },
                     errors: {}
                 });
-            }, 2000)
-        }
+                console.log('Dodano książkę');
+            })
+            .catch(err => {
+                console.log('Wystąpił błąd przy dodawaniu pozycji do systemu');
+            })
     }
+
+    handleImageUpload(file) {
+        let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                            .field('file', file);
+
+        return upload;
+      }
 
     validate(data) {
         const errors = {};
@@ -84,17 +138,30 @@ class AddBook extends Component {
                                     </div> : 
                         <div>
                             <form onSubmit={this.onSubmit} autoComplete="off">
-                                <div className="form-group">
-                                    <label htmlFor="Title">Tytuł</label>
-                                    <input type="name" className="form-control" id="Title" placeholder="Tytuł" name="title" onChange={this.onChange} autoComplete="false"/>
-                                    {errors.title && <InlineError text={errors.title} />}
+                                <div className="formData">
+                                    <div className="form-group">
+                                        <label htmlFor="Title">Tytuł</label>
+                                        <input type="name" className="form-control" id="Title" placeholder="Tytuł" name="title" onChange={this.onChange} autoComplete="false"/>
+                                        {errors.title && <InlineError text={errors.title} />}
+                                    </div>
+                                    <div className="form-group">
+                                        <label htmlFor="Author">Autor</label>
+                                        <input type="name" spellCheck="false" className="form-control" id="Author" placeholder="Autor" name="author" onChange={this.onChange}/>
+                                        {errors.author && <InlineError text={errors.author} />}
+                                    </div>
+                                    <button type="submit" className="btn">Dodaj</button>
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="Author">Autor</label>
-                                    <input type="name" spellCheck="false" className="form-control" id="Author" placeholder="Autor" name="author" onChange={this.onChange}/>
-                                    {errors.author && <InlineError text={errors.author} />}
-                                </div>
-                                <button type="submit" className="btn">Dodaj</button>
+                                <Dropzone
+                                    multiple={false}
+                                    accept="image/*"
+                                    onDrop={this.onImageDrop.bind(this)}
+                                    className="dropZone text-center">
+                                        { this.state.uploadedFile.preview ? <img src={this.state.uploadedFile.preview} /> 
+                                            : <div className="noUploadedFile">
+                                                <h4>Brak okładki</h4>
+                                                <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
+                                              </div> }
+                                </Dropzone>
                             </form>
                         </div> }
                     </div>
@@ -104,4 +171,4 @@ class AddBook extends Component {
     }
 }
 
-export default AddBook;
+export default connect(null, { addBook })(AddBook);

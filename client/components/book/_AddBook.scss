@@ -1,5 +1,7 @@
 @import '../../sass/colors';
 
+$coverSize: 300;
+
 .sass-BookForm {
     color: $secondary-color;
     display: flex;
@@ -27,8 +29,41 @@
 
     form {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        flex-direction: row;
+        justify-content: space-around;
+
+        .formData {
+            width: 50%;
+        }
+
+            .dropZone {
+                margin-top: 10px;
+
+                .noUploadedFile {
+                    border: 2px dashed $secondary-color;
+                    background-color: rgba(0,0,0,0.1);
+                    width: $coverSize;
+                    height: $coverSize*1.6;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+
+                    h4 {
+                        color: $secondary-color;
+                        font-weight: 600;
+                    }
+
+                    p {
+                        color: $fourth-color;
+                    }
+                }
+
+                img {
+                    width: $coverSize;
+                    height: $coverSize*1.6;
+                }
+            }    
     }
 
     .btn {
