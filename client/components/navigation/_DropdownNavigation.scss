@@ -12,6 +12,16 @@
   .nav {
     margin-right: 50px;
 
+    .nav-item {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      .loading-pulse {
+        margin-right: 50px;
+      }
+    }
+
     .dropdown-link {
       display: flex;
       flex-direction: row;
@@ -19,7 +29,7 @@
 
       color: $secondary-color;
       font-weight: 600;
-      font-size: 20px;
+      font-size: 15px;
       transition: color 0.5s;
 
       p {
@@ -28,7 +38,7 @@
       }
 
       i {
-        font-size: 25px;
+        font-size: 13px;
       }
 
       img {

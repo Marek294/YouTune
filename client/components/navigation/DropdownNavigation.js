@@ -41,7 +41,7 @@ class DropdownNavigation extends Component {
     }
 
     render() {
-        const { isAuthenticated, isLibrarian } = this.props;
+        const { isAuthenticated, isLibrarian, personalData } = this.props;
         const { toggleDropdown } = this.state;
 
         return (
@@ -51,12 +51,12 @@ class DropdownNavigation extends Component {
                         <img src="/brand.png" height="70" alt="" />
                     </Link>
 
-                    {isAuthenticated && <ul className="nav nav-pills">
+                    { isAuthenticated && <ul className="nav nav-pills">
                         <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')} >
                             <a className="nav-link dropdown-link" onClick={this.toggleDropdown}>
                                 <img src="noAvatar.jpg" alt="" />
-                                <p>Menu</p>
-                                <i className="fa fa-bars" aria-hidden="true"></i>
+                                <p>{personalData.firstname} {personalData.lastname}</p>
+                                <i className="fa fa-chevron-down" aria-hidden="true"></i>
                             </a>
                             <div className={classNames("dropdown-menu", toggleDropdown && 'show')}>
                                 { isLibrarian && 
@@ -97,13 +97,21 @@ class DropdownNavigation extends Component {
 DropdownNavigation.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
     isLibrarian: PropTypes.bool.isRequired,
-    logout: PropTypes.func.isRequired
+    logout: PropTypes.func.isRequired,
+    personalData: PropTypes.shape({
+        firstname: PropTypes.string.isRequired,
+        lastname: PropTypes.string.isRequired
+    }).isRequired
 }
 
 function mapStateToProps(state) {
     return {
         isAuthenticated: !!state.user.token,
-        isLibrarian: state.user.librarian
+        isLibrarian: state.user.librarian,
+        personalData: {
+            firstname: state.user.firstname,
+            lastname: state.user.lastname
+        }
     }
 }
 

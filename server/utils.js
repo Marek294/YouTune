@@ -4,7 +4,9 @@ export const generateJWT = (user) => {
     return jwt.sign({
         email: user.get('email'),
         confirmed: user.get('confirmed'),
-        librarian: user.get('librarian')
+        librarian: user.get('librarian'),
+        firstname: user.get('firstname'),
+        lastname: user.get('lastname')
     }, process.env.JWT_SECRET );
 }
 
@@ -13,6 +15,8 @@ export const toAuthJSON = (user, token) => {
         email: user.get('email'),
         confirmed: user.get('confirmed'),
         librarian: user.get('librarian'),
+        firstname: user.get('firstname'),
+        lastname: user.get('lastname'),
         token
     }
 }
