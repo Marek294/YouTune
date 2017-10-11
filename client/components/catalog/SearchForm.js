@@ -10,10 +10,10 @@ class SearchForm extends Component {
         super(props);
 
         this.state = {
-            advanced: false,
             loading: false,
             data: {
-                title: ''
+                select: '',
+                query: ''
             }
         };
 
@@ -38,39 +38,29 @@ class SearchForm extends Component {
     submit(e) {
         e.preventDefault();
 
-        this.props.search(this.state.data.title);
+        this.props.search(this.state.data);
     }
 
     render() {
-        const { advanced } = this.state;
         const { fetch } = this.props;
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
                     <div className="form-group row">
-                        <label htmlFor="title" className="col-sm-2 col-form-label">Tytuł</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="title" placeholder="Tytuł" name="title" onChange={this.onChange} />
+                        <div className="col-sm-4">
+                            <select className="form-control" name="select" onChange={this.onChange}>
+                                <option value="" hidden selected>Wybierz opcję...</option>
+                                <option value="title">Tytuł</option>
+                                <option value="author">Autor</option>
+                            </select>
+                        </div>
+                        <div className="col-sm-8">
+                            <input type="text" className="form-control" id="query" name="query" onChange={this.onChange} />
                         </div>
                     </div>
-                    <div className="form-group row">
-                        <label htmlFor="author" className="col-sm-2 col-form-label">Autor</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="author" placeholder="Autor" />
-                        </div>
-                    </div>
-                    { advanced && 
-                        <div className="form-group row">
-                            <label htmlFor="genre" className="col-sm-2 col-form-label">Gatunek</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="genre" placeholder="Gatunek" />
-                            </div> 
-                        </div>
-                    }
                     <div className="buttons">
                         <button type="submit" className="btn">Szukaj</button>
                         {fetch.errors && <p className="error">{fetch.errors.global}</p>}
-                        <div className="sizeFormBtn" onClick={this.toggle}>{advanced ? 'Wyszukiwanie podstawowe' : 'Wyszukiwanie zaawansowane'}</div>
                     </div>
                 </form>
             </div>
