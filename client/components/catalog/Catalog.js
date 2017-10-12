@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { search } from '../../actions/books';
 
 import SearchForm from './SearchForm';
 
@@ -12,46 +13,40 @@ class Catalog extends Component {
         super(props);
 
         this.state = {
-            advanced: false
+            books: [],
+            errors: {},
+            loading: false
         };
 
-        this.toggle = this.toggle.bind(this);
+        this.search = this.search.bind(this);
     }
 
-    toggle() {
-        this.setState({
-            advanced: !this.state.advanced
-        });
+    search(searchData) {
+        this.setState({ loading: true });
+        this.props.search(searchData)
+            .then(books => this.setState({ books, loading: false }))
+            .catch(() => this.setState({ errors: { globals: 'Błąd wyszukiwania' }, loading: false }));
     }
 
     render() {
-        const { advanced } = this.state
-        const { books, isFetching } = this.props;
+        const { books, loading } = this.state
 
         let displayBooks;
         if(books) {
             displayBooks = books.map((item, i) => {
                 let returnItem;
-                let authors;
-                if(item.volumeInfo.authors){
-                    authors = item.volumeInfo.authors.map((author,i) => {
-                        return (
-                            <li className="author-item">{author}</li>
-                        )
-                    })
-                }
-                if(item.volumeInfo.imageLinks) {
+                if(item.cover) {
                     returnItem = (
                         <li key={i} className="list-group-item">
-                            <img src={item.volumeInfo.imageLinks.thumbnail} alt="" />
+                            <img src={item.cover} alt="" />
                             <div className="book-info">
                                 <div className="title">
                                     <h3 className="bold">Tytuł:</h3>
-                                    <h3>{item.volumeInfo.title}</h3>
+                                    <h3>{item.title}</h3>
                                 </div>
                                 <div className="authors">
                                     <h5 className="bold">Autor: </h5>
-                                    <div className="author-list">{authors}</div>
+                                    <div className="author-list">{item.author}</div>
                                 </div>
                             </div>
                         </li>
@@ -64,11 +59,11 @@ class Catalog extends Component {
                             <div className="book-info">
                                 <div className="title">
                                     <h3 className="bold">Tytuł:</h3>
-                                    <h3>{item.volumeInfo.title}</h3>
+                                    <h3>{item.title}</h3>
                                 </div>
                                 <div className="authors">
                                     <h5 className="bold">Autor: </h5>
-                                    <div className="author-list">{authors}</div>
+                                    <div className="author-list">{item.author}</div>
                                 </div>
                             </div>
                         </li>
@@ -81,16 +76,16 @@ class Catalog extends Component {
 
         return (
             <div className="sass-Catalog container-fluid">
-                <div className={classNames("card","search-form",advanced && 'extended')}>
+                <div className="card search-form">
                     <div className="card-header">
                         <h4>Wyszukiwanie</h4>
                     </div>
                     <div className="card-body">
-                        <SearchForm toggle={this.toggle}/>
+                        <SearchForm search={this.search}/>
                     </div>
                 </div>
 
-                { isFetching ? <div className="loader" /> :
+                { loading ? <div className="loader" /> :
                     books.length > 0 && <div className="card books">
                     <div className="card-header">
                         <h4>Pozycje</h4>
@@ -107,16 +102,4 @@ class Catalog extends Component {
     }
 }
 
-Catalog.propTypes = {
-    books: PropTypes.array.isRequired,
-    isFetching: PropTypes.bool.isRequired
-}
-
-function mapStateToProps(state) {
-    return {
-        books: state.books,
-        isFetching: state.fetch.isFetching
-    }
-}
-
-export default connect(mapStateToProps)(Catalog);
+export default connect(null, { search })(Catalog);

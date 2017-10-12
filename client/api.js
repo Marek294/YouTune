@@ -18,7 +18,7 @@ export default {
         deleteUser: (id) => axios.delete(`/api/librarian/users/${id}`)
     },
     book: {
-        search: (searchData) => axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchData}`).then(res => res.data.items),
+        search: (searchData) => axios.get(`/api/books/${searchData.select}/${searchData.query}`).then(res => res.data),
         addBook: (data) => axios.post('/api/librarian/books', { data }).then(res => res.data.book)
     }
 }

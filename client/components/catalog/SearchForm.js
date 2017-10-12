@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { search } from '../../actions/books';
 
 import './_SearchForm.scss';
 
@@ -10,7 +8,6 @@ class SearchForm extends Component {
         super(props);
 
         this.state = {
-            loading: false,
             data: {
                 select: '',
                 query: ''
@@ -18,7 +15,6 @@ class SearchForm extends Component {
         };
 
         this.submit = this.submit.bind(this);
-        this.toggle = this.toggle.bind(this);
         this.onChange = this.onChange.bind(this);
     }
 
@@ -28,21 +24,20 @@ class SearchForm extends Component {
         });
     }
 
-    toggle() {
-        this.props.toggle();
-        this.setState({
-            advanced: !this.state.advanced
-        })
-    }
-
     submit(e) {
         e.preventDefault();
 
         this.props.search(this.state.data);
+
+        this.setState({
+            data: {
+                ...this.state.data,
+                query: ''
+            }
+        })
     }
 
     render() {
-        const { fetch } = this.props;
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
@@ -69,15 +64,7 @@ class SearchForm extends Component {
 }
 
 SearchForm.propTypes = {
-    toggle: PropTypes.func.isRequired,
-    search: PropTypes.func.isRequired,
-    fetch: PropTypes.object.isRequired
+    search: PropTypes.func.isRequired
 }
 
-function mapStateToProps(state) {
-    return {
-        fetch: state.fetch
-    }
-}
-
-export default connect(mapStateToProps, { search })(SearchForm);
+export default SearchForm;
