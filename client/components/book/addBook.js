@@ -7,12 +7,18 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
 import InlineError from '../messages/InlineError';
+import Notificator from '../messages//Notificator';
 import { addBook } from '../../actions/books';
 
 import './_AddBook.scss';
 
 const CLOUDINARY_UPLOAD_PRESET = 'mnywgy3d';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/myLib/upload';
+
+function isSummaryTooLong(name,value) {
+    if(name === "summary" && value.length > 2000) return value.slice(0,2000);
+    else return value;
+}
 
 class AddBook extends Component {
     constructor(props) {
@@ -22,7 +28,8 @@ class AddBook extends Component {
             data: {
                 title: '',
                 author: '',
-                cover: ''
+                cover: '',
+                summary: ''
             },
             loading: false,
             errors: {},
@@ -35,9 +42,9 @@ class AddBook extends Component {
         this.addBook = this.addBook.bind(this);
     }
 
-    onChange(e) { 
+    onChange(e) {
         this.setState({ 
-            data: { ...this.state.data, [e.target.name]: e.target.value }
+            data: { ...this.state.data, [e.target.name]: isSummaryTooLong(e.target.name,e.target.value) }
         });
     }
 
@@ -67,10 +74,19 @@ class AddBook extends Component {
                             });
 
                             this.addBook(this.state.data);
-                        } else console.log('Brak adresu to okładki');
+                        } else {
+                            this.setState({
+                                loading: false
+                            })                
+                            this.showNotification('Błąd!', 'Brak adresu do okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+                        }
                     })
                     .catch(err => {
-                        console.log('Błąd przy zapisie okładki', err);
+                        this.setState({
+                            loading: false
+                        })
+            
+                        this.showNotification('Błąd!', 'Wystąpił błąd przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
                     })
             } else {
                 this.addBook(this.state.data);
@@ -84,6 +100,10 @@ class AddBook extends Component {
           });
     }
 
+    showNotification(title, body, type, duration) {
+        this.refs.notificator.show(title, body, type, duration);
+      }
+
     addBook(data) {
         this.props.addBook(data)
             .then(book =>{
@@ -92,14 +112,19 @@ class AddBook extends Component {
                     data: {
                         title: '',
                         author: '',
-                        cover: ''
+                        cover: '',
+                        summary: ''
                     },
+                    uploadedFile: {},
                     errors: {}
                 });
-                console.log('Dodano książkę');
+                this.showNotification('Sukces!', 'Dodano książkę do systemu', 'success', 3000);
             })
             .catch(err => {
-                console.log('Wystąpił błąd przy dodawaniu pozycji do systemu');
+                this.setState({
+                    loading: false
+                });
+                this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu pozycji do systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
             })
     }
 
@@ -121,7 +146,7 @@ class AddBook extends Component {
     }
 
     render() {
-        const { errors, loading } = this.state;
+        const { errors, loading, data } = this.state;
         return (
             <div className="sass-BookForm">
                 <div className="card form">
@@ -149,6 +174,10 @@ class AddBook extends Component {
                                         <input type="name" spellCheck="false" className="form-control" id="Author" placeholder="Autor" name="author" onChange={this.onChange}/>
                                         {errors.author && <InlineError text={errors.author} />}
                                     </div>
+                                    <div className="form-group">
+                                        <label htmlFor="Summary">Strzeszczenie (pozostało {2000-data.summary.length} znaków)</label>
+                                        <textarea className="form-control" id="Summary" rows="3" name="summary" placeholder="Streszczenie" onChange={this.onChange} value={data.summary} />
+                                    </div>
                                     <button type="submit" className="btn">Dodaj</button>
                                 </div>
                                 <Dropzone
@@ -156,7 +185,7 @@ class AddBook extends Component {
                                     accept="image/*"
                                     onDrop={this.onImageDrop.bind(this)}
                                     className="dropZone text-center">
-                                        { this.state.uploadedFile.preview ? <img src={this.state.uploadedFile.preview} /> 
+                                        { this.state.uploadedFile.preview ? <img src={this.state.uploadedFile.preview} alt=""/> 
                                             : <div className="noUploadedFile">
                                                 <h4>Brak okładki</h4>
                                                 <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
@@ -166,6 +195,7 @@ class AddBook extends Component {
                         </div> }
                     </div>
                 </div>
+                <Notificator ref="notificator"/>
             </div>
         );
     }

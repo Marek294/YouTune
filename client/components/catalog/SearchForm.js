@@ -31,30 +31,34 @@ class SearchForm extends Component {
 
         this.setState({
             data: {
-                ...this.state.data,
+                select: '',
                 query: ''
             }
         })
+
     }
 
     render() {
+        const { data } = this.state;
+        const disabled = data.query && data.select ? false : true;
+
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
                     <div className="form-group row">
                         <div className="col-sm-4">
-                            <select className="form-control" name="select" onChange={this.onChange}>
+                            <select className="form-control" name="select" onChange={this.onChange} value={data.select}>
                                 <option value="" hidden selected>Wybierz opcję...</option>
                                 <option value="title">Tytuł</option>
                                 <option value="author">Autor</option>
                             </select>
                         </div>
                         <div className="col-sm-8">
-                            <input type="text" className="form-control" id="query" name="query" onChange={this.onChange} />
+                            <input type="text" className="form-control" id="Query" name="query" onChange={this.onChange} value={data.query}/>
                         </div>
                     </div>
                     <div className="buttons">
-                        <button type="submit" className="btn">Szukaj</button>
+                        <button type="submit" className="btn" disabled={disabled} >Szukaj</button>
                         {fetch.errors && <p className="error">{fetch.errors.global}</p>}
                     </div>
                 </form>

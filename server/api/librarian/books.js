@@ -11,7 +11,7 @@ router.post('/', authenticate, (req, res) => {
     if(req.currentUser.get('librarian')) {
         const { errors, isValid } = bookValidation(data);
         if(isValid) {
-            Book.forge({ title: data.title, author: data.author, cover: data.cover },{ hasTimestamps: true }).save()
+            Book.forge({ title: data.title, author: data.author, cover: data.cover, summary: data.summary },{ hasTimestamps: true }).save()
                 .then(book => {
                     res.json({
                         book
@@ -37,6 +37,7 @@ router.put('/', authenticate, (req, res) => {
                 book.set('title', data.title);
                 book.set('author', data.author);
                 book.set('cover', data.cover);
+                book.set('summary', data.summary);
                 book.save().then(() => res.json({ success: true  }));
 
             } else res.status(403).json({ errors: { global: "Pozycja nie istnieje"} });

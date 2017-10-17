@@ -1,4 +1,7 @@
 @import '../../sass/colors';
+@import '../../sass/reactModal';
+
+$coverSize: 150;
 
 .sass-Catalog {
     display: flex;
@@ -36,14 +39,20 @@
         .list-group-item {
             border: none;
             border-bottom: 4px solid $secondary-color;
-            height: 250px;
             display: flex;
             flex-direction: row;
+            justify-content: space-between;
             align-items: center;
             padding-left: 100px;
 
+            .info {
+                display: flex;
+                flex-direction: row;
+            }
+
             img {
-                max-height: 200px;
+                width: $coverSize;
+                height: $coverSize*1.6;
             }
         }
 
@@ -56,7 +65,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-around;
-            height: 100%;
             padding-left: 100px;
             color: $fourth-color;
 
@@ -69,22 +77,70 @@
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                color: $secondary-color;
+                font-weight: 700;
+            }
+
+            .authors {
+                display: flex;
+                flex-direction: row;
+            }
+    
+            .author-list {
+                display: flex;
+                flex-direction: column;
+                list-style-type: none;
+            }
+
+            .summary {
+                color: grey;
+                width: 80%;
             }
         }
 
-        .authors {
-            display: flex;
-            flex-direction: row;
+    }
+
+    .buttons {
+        margin-right: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        height: 100%;
+
+        .delete {
+            color: red;
+            font-size: 30px;
+            padding: 0;
+
+            background: transparent;
+            border: none;
         }
 
-        .author-list {
-            display: flex;
-            flex-direction: column;
-            list-style-type: none;
+        .profile {
+            color: green;
+            font-size: 30px;
+            padding: 0;
+
+            background: transparent;
+            border: none;
         }
 
-        .author-item {
-            color: grey;
+        button:hover {
+            cursor: pointer;
+        }
+
+        button:focus {
+            outline: 0;
+        }
+
+        .red {
+            border-top-color: red;
+        }
+
+        .loader {
+            width: 30px;
+            height: 30px;
+            border-width: 7px;
         }
     }
 }
