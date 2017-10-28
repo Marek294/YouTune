@@ -19,6 +19,10 @@ export default {
     },
     book: {
         search: (searchData) => axios.get(`/api/books/${searchData.select}/${searchData.query}`).then(res => res.data),
-        addBook: (data) => axios.post('/api/librarian/books', { data }).then(res => res.data.book)
+        addBook: (data) => axios.post('/api/librarian/books', { data }).then(res => res.data.book),
+        deleteBook: (id) => axios.delete(`/api/librarian/books/${id}`),
+    },
+    upload: {
+        uploadCover: (data) => axios.post('/api/librarian/books/upload', data).then(res => res.data)
     }
 }

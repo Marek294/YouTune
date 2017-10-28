@@ -1,5 +1,7 @@
 @import './colors';
 
+$coverSize: 300;
+
 .ReactModal {
     position: fixed;
     top: 50%;
@@ -25,9 +27,20 @@
         }
     }
 
+    .update {
+        outline-color: $secondary-color;
+        color: $secondary-color;
+    }
+
+    .delete {
+        outline-color: red;
+        color: red;
+    }
+
     .ModalCard {
         background-color: white;
-        outline: red solid 1px;
+        outline-style: solid;
+        outline-width: 1px;
     
         .card-header {
             border-radius: 0px;
@@ -41,12 +54,56 @@
             display: flex;
             flex-direction: column;
     
-            color: red;
             font-weight: 600;
+
+            form {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-around;
+                width: 1000px;
+        
+                .formData {
+                    width: 50%;
+                }
+        
+                    .dropZone {
+                        margin-top: 10px;
+                        margin-left: 20px;
+        
+                        .noUploadedFile {
+                            border: 2px dashed $secondary-color;
+                            background-color: rgba(0,0,0,0.1);
+                            width: $coverSize;
+                            height: $coverSize*1.6;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+        
+                            h4 {
+                                color: $secondary-color;
+                                font-weight: 600;
+                            }
+        
+                            p {
+                                color: $fourth-color;
+                            }
+                        }
+        
+                        img {
+                            width: $coverSize;
+                            height: $coverSize*1.6;
+                        }
+                    }    
+            }
         }
     
         .bg-lightdanger {
             background-color: #FE8081;
+        }
+
+        .bg-lightprimary {
+            background-color: #B5D3E7;
         }
     
         .buttons {
@@ -77,6 +134,11 @@
             .cancel {
                 color: #98DB40;
                 border: 1px solid #98DB40;
+            }
+
+            .update {
+                color: $secondary-color;
+                border: 1px solid $secondary-color;
             }
         }
     }

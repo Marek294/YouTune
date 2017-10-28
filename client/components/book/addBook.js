@@ -9,6 +9,9 @@ import request from 'superagent';
 import InlineError from '../messages/InlineError';
 import Notificator from '../messages//Notificator';
 import { addBook } from '../../actions/books';
+import { uploadCover } from '../../actions/upload';
+
+import axios from 'axios';
 
 import './_AddBook.scss';
 
@@ -29,7 +32,8 @@ class AddBook extends Component {
                 title: '',
                 author: '',
                 cover: '',
-                summary: ''
+                summary: '',
+                file: {}
             },
             loading: false,
             errors: {},
@@ -39,6 +43,7 @@ class AddBook extends Component {
         this.validate = this.validate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.handleUploadFile = this.handleUploadFile.bind(this);
         this.addBook = this.addBook.bind(this);
     }
 
@@ -61,42 +66,49 @@ class AddBook extends Component {
 
             const { uploadedFile } = this.state;
 
-            if(uploadedFile.name) {
-                this.handleImageUpload(uploadedFile)
-                    .then(res => {
-                        const imageUrl = res.body.secure_url;
-                        if(imageUrl) {
-                            this.setState({
-                                data: {
-                                    ...this.state.data,
-                                    cover: imageUrl
-                                }
-                            });
+            console.log(this.state.data);
+            // this.addBook(this.state.data);
 
-                            this.addBook(this.state.data);
-                        } else {
-                            this.setState({
-                                loading: false
-                            })                
-                            this.showNotification('Błąd!', 'Brak adresu do okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-                        }
-                    })
-                    .catch(err => {
-                        this.setState({
-                            loading: false
-                        })
+            // if(uploadedFile.name) {
+            //     this.handleImageUpload(uploadedFile)
+            //         .then(res => {
+            //             const imageUrl = res.body.secure_url;
+            //             if(imageUrl) {
+            //                 this.setState({
+            //                     data: {
+            //                         ...this.state.data,
+            //                         cover: imageUrl
+            //                     }
+            //                 });
+
+            //                 this.addBook(this.state.data);
+            //             } else {
+            //                 this.setState({
+            //                     loading: false
+            //                 })                
+            //                 this.showNotification('Błąd!', 'Brak adresu do okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+            //             }
+            //         })
+            //         .catch(err => {
+            //             this.setState({
+            //                 loading: false
+            //             })
             
-                        this.showNotification('Błąd!', 'Wystąpił błąd przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-                    })
-            } else {
-                this.addBook(this.state.data);
-            }
+            //             this.showNotification('Błąd!', 'Wystąpił błąd przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+            //         })
+            // } else {
+            //     this.addBook(this.state.data);
+            // }
         }
     }
 
     onImageDrop(files) {
+        console.log(files[0]);
         this.setState({
-            uploadedFile: files[0]
+            data: {
+                ...this.state.data,
+                file: files[0]
+            }
           });
     }
 
@@ -113,7 +125,8 @@ class AddBook extends Component {
                         title: '',
                         author: '',
                         cover: '',
-                        summary: ''
+                        summary: '',
+                        file: {}
                     },
                     uploadedFile: {},
                     errors: {}
@@ -128,14 +141,6 @@ class AddBook extends Component {
             })
     }
 
-    handleImageUpload(file) {
-        let upload = request.post(CLOUDINARY_UPLOAD_URL)
-                            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                            .field('file', file);
-
-        return upload;
-      }
-
     validate(data) {
         const errors = {};
 
@@ -143,6 +148,29 @@ class AddBook extends Component {
         if(Validator.isEmpty(data.author)) errors.author = "Wprowadź autora";
 
         return errors;
+    }
+
+    handleUploadFile(e) {
+        const data = new FormData();
+        data.append('cover', e.target.files[0]);
+
+        if(this.state.data.file.path) 
+            data.append('previousUploadedFilePath', this.state.data.file.path)
+        else
+        data.append('previousUploadedFilePath', '')
+
+        this.props.uploadCover(data)
+            .then(res =>{
+                this.setState({
+                    data: {
+                        ...this.state.data,
+                        file: res.file
+                    }
+                })
+            })
+            .catch(err => {
+                this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+            })
     }
 
     render() {
@@ -178,6 +206,7 @@ class AddBook extends Component {
                                         <label htmlFor="Summary">Strzeszczenie (pozostało {2000-data.summary.length} znaków)</label>
                                         <textarea className="form-control" id="Summary" rows="3" name="summary" placeholder="Streszczenie" onChange={this.onChange} value={data.summary} />
                                     </div>
+                                    <input type="file" onChange={this.handleUploadFile} />
                                     <button type="submit" className="btn">Dodaj</button>
                                 </div>
                                 <Dropzone
@@ -201,4 +230,4 @@ class AddBook extends Component {
     }
 }
 
-export default connect(null, { addBook })(AddBook);
+export default connect(null, { addBook, uploadCover })(AddBook);

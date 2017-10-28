@@ -21,6 +21,7 @@ import Settings from './settings/Settings';
 import AddBook from './book/addBook';
 
 require('../sass/_loader.scss');
+require('../sass/_reactModal.scss');
 
 const App = ({ location }) => {
         return (
