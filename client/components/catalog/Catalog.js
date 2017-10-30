@@ -2,32 +2,31 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Modal from 'react-modal';
 import PropTypes from 'prop-types';
-import Notificator from '../messages//Notificator';
-import InlineError from '../messages/InlineError';
 import Validator from 'validator';
 import Dropzone from 'react-dropzone';
-import request from 'superagent';
-import { search, deleteBook } from '../../actions/books';
+import Notificator from '../messages//Notificator';
+import InlineError from '../messages/InlineError';
+import { search, deleteBook, updateBook } from '../../actions/books';
 
 import SearchForm from './SearchForm';
 
 import './_Catalog.scss';
 
-const CLOUDINARY_UPLOAD_PRESET = 'mnywgy3d';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/myLib/upload';
-
 function cutSummary(sum) {
     if(sum.length > 300) return sum.slice(0,300)+"...";
-    else return sum;
+    return sum;
 }
 
 function isSummaryTooLong(name,value) {
     if(name === "summary" && value.length > 2000) return value.slice(0,2000);
-    else return value;
+    return value;
 }
 
-function extractName(url) {
-    return url.substring(url.lastIndexOf('/')+1, url.lastIndexOf('.'));
+function clearData(data) {
+    return Object.keys(data).map(objectKey => {
+        data[objectKey] = '';
+        return data[objectKey];
+    });
 }
 
 class Catalog extends Component {
@@ -43,9 +42,8 @@ class Catalog extends Component {
             modalIsOpen: false,
             bookId: -1,
             action: '',
-            uploadedFile: {},
             data: {
-                id: -1,
+                id: '',
                 title: '',
                 author: '',
                 cover: '',
@@ -59,11 +57,51 @@ class Catalog extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.deleteDiv = this.deleteDiv.bind(this);
         this.updateDiv = this.updateDiv.bind(this);
+        this.onImageDrop = this.onImageDrop.bind(this);
 
         this.validate = this.validate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
         this.updateBook = this.updateBook.bind(this);
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        const { data } = this.state;
+
+        const errors = this.validate(data);
+        this.setState({ errors });
+
+        if(Object.keys(errors).length === 0) {
+            this.setState({
+                modalLoading: true
+            })
+
+            const sendData = new FormData();
+            
+            Object.keys(data).map(objectKey => {
+                const value = data[objectKey];
+                return sendData.append(objectKey, value)
+            });
+                
+            this.updateBook(sendData);
+        }
+    }
+
+    onImageDrop(files) {
+        this.setState({
+            data: {
+                ...this.state.data,
+                cover: files[0]
+            }
+          });
+    }
+
+    onChange(e) {
+        this.setState({ 
+            data: { ...this.state.data, [e.target.name]: isSummaryTooLong(e.target.name,e.target.value) }
+        });
     }
 
     showNotification(title, body, type, duration) {
@@ -82,7 +120,7 @@ class Catalog extends Component {
     }
 
     closeModal() {
-        this.setState({modalIsOpen: false, bookId: -1, action: ''});
+        this.setState({modalIsOpen: false, bookId: -1, action: '', modalLoading: false, data: clearData(this.state.data)});
     }
 
     deleteBook() {
@@ -180,16 +218,12 @@ class Catalog extends Component {
     }
 
     updateDiv() {
-        const { modalLoading, books, bookId, errors, uploadedFile, data } = this.state;
+        const { modalLoading, books, bookId, errors, data } = this.state;
         
         const findBookIndex = _.findIndex(books, { 'id': bookId });
         const book = books[findBookIndex];
 
-        if( !uploadedFile.preview && book.cover) {
-            uploadedFile.preview = book.cover;
-        }
-
-        if( !data.title ) {
+        if( !data.id ) {
             data.id = bookId;
             data.title = book.title;
             data.author = book.author;
@@ -226,7 +260,7 @@ class Catalog extends Component {
                                     {errors.author && <InlineError text={errors.author} />}
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="Summary">Strzeszczenie (pozostało {2000-book.summary.length} znaków)</label>
+                                    <label htmlFor="Summary">Strzeszczenie (pozostało {2000-data.summary.length} znaków)</label>
                                     <textarea className="form-control" id="Summary" rows="3" name="summary" placeholder="Streszczenie" onChange={this.onChange} value={data.summary} />
                                 </div>
                                 <div className="buttons">
@@ -237,10 +271,12 @@ class Catalog extends Component {
                             <Dropzone
                                 multiple={false}
                                 accept="image/*"
-                                onDrop={this.onImageDrop.bind(this)}
+                                onDrop={this.onImageDrop}
                                 className="dropZone text-center">
-                                    { uploadedFile.preview ? <img src={uploadedFile.preview} alt=""/> 
-                                        : <div className="noUploadedFile">
+                                    { (data.cover && data.cover.preview) && <img src={data.cover.preview} alt="" /> }
+                                    { (data.cover && !data.cover.preview) && <img src={data.cover} alt="" /> }
+                                    { !data.cover &&
+                                        <div className="noUploadedFile">
                                             <h4>Brak okładki</h4>
                                             <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
                                         </div> }
@@ -253,42 +289,27 @@ class Catalog extends Component {
     }
 
     updateBook(data) {
+        const id = this.state.bookId;
+
+        const findBookIndex = _.findIndex(this.state.books, { 'id': id });
+        const booksArray = this.state.books;
+
         this.props.updateBook(data)
             .then(book =>{
+                booksArray.splice(findBookIndex, 1, book);
+
                 this.setState({
-                    loading: false,
-                    data: {
-                        title: '',
-                        author: '',
-                        cover: '',
-                        summary: ''
-                    },
-                    uploadedFile: {},
-                    errors: {}
-                });
+                    books: booksArray,
+                    modalLoading: false
+                })
+
+                this.closeModal();
                 this.showNotification('Sukces!', 'Zaktualizowano pozycję w systemie', 'success', 3000);
             })
             .catch(err => {
-                this.setState({
-                    loading: false
-                });
+                this.closeModal();
                 this.showNotification('Błąd!', 'Wystąpił błąd przy aktualizacji pozycji w systemie. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
             })
-    }
-
-    onChange(e) {
-        this.setState({ 
-            data: { ...this.state.data, [e.target.name]: isSummaryTooLong(e.target.name,e.target.value) }
-        });
-    }
-
-    handleImageUpload(file) {
-        // console.log(file);
-        let upload = request.put(CLOUDINARY_UPLOAD_URL)
-                            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-                            .field('file', file);
-
-        return upload;
     }
 
     validate(data) {
@@ -298,62 +319,6 @@ class Catalog extends Component {
         if(Validator.isEmpty(data.author)) errors.author = "Wprowadź autora";
 
         return errors;
-    }
-
-    onImageDrop(files) {
-        this.setState({
-            uploadedFile: files[0]
-          });
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-
-        this.setState({
-            modalLoading: true
-        })
-
-        const errors = this.validate(this.state.data);
-        this.setState({ errors });
-
-        if(Object.keys(errors).length === 0) {
-            this.setState({
-                modalLoading: true
-            })
-
-            const { uploadedFile } = this.state;
-
-            if(uploadedFile.name) {
-                this.handleImageUpload(uploadedFile)
-                    .then(res => {
-                        const imageUrl = res.body.secure_url;
-                        if(imageUrl) {
-                            this.setState({
-                                data: {
-                                    ...this.state.data,
-                                    cover: imageUrl
-                                }
-                            });
-
-                            // this.updateBook(this.state.data);
-                        } else {
-                            this.setState({
-                                modalLoading: false
-                            })                
-                            this.showNotification('Błąd!', 'Brak adresu do okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-                        }
-                    })
-                    .catch(err => {
-                        this.setState({
-                            modalLoading: false
-                        })
-            
-                        this.showNotification('Błąd!', 'Wystąpił błąd przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-                    })
-            } else {
-                // this.updateBook(this.state.data);
-            }
-        }
     }
 
     render() {
@@ -408,4 +373,4 @@ class Catalog extends Component {
     }
 }
 
-export default connect(null, { search, deleteBook })(Catalog);
+export default connect(null, { search, deleteBook, updateBook })(Catalog);

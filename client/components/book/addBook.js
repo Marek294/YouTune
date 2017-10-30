@@ -5,22 +5,16 @@ import Validator from 'validator';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import request from 'superagent';
 import InlineError from '../messages/InlineError';
 import Notificator from '../messages//Notificator';
 import { addBook } from '../../actions/books';
-import { uploadCover } from '../../actions/upload';
-
-import axios from 'axios';
 
 import './_AddBook.scss';
 
-const CLOUDINARY_UPLOAD_PRESET = 'mnywgy3d';
-const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/myLib/upload';
-
 function isSummaryTooLong(name,value) {
     if(name === "summary" && value.length > 2000) return value.slice(0,2000);
-    else return value;
+    
+    return value;
 }
 
 class AddBook extends Component {
@@ -31,22 +25,18 @@ class AddBook extends Component {
             data: {
                 title: '',
                 author: '',
-                cover: '',
                 summary: '',
-                file: {},
+                cover: ''
             },
             loading: false,
-            errors: {},
-            uploadedFile: {},
-            cover: '',
-            imagePreviewUrl: ''
+            errors: {}
         }
 
         this.validate = this.validate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.handleUploadFile = this.handleUploadFile.bind(this);
         this.addBook = this.addBook.bind(this);
+        this.onImageDrop = this.onImageDrop.bind(this);
     }
 
     onChange(e) {
@@ -58,7 +48,9 @@ class AddBook extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const errors = this.validate(this.state.data);
+        const { data } = this.state;
+
+        const errors = this.validate(data);
         this.setState({ errors });
 
         if(Object.keys(errors).length === 0) {
@@ -66,66 +58,23 @@ class AddBook extends Component {
                 loading: true
             })
 
-            const data = new FormData();
-            data.append('cover', this.state.cover);
+            const sendData = new FormData();
 
-            this.props.uploadCover(data)
-                .then(res =>{
-                    this.setState({
-                        data: {
-                            ...this.state.data,
-                            file: res.file
-                        }
-                    })
-
-                    this.addBook(this.state.data);
-                })
-                .catch(err => {
-                    this.setState({
-                        loading: false
-                    })
-
-                    this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-                })
-            // this.addBook(this.state.data);
-
-            // if(uploadedFile.name) {
-            //     this.handleImageUpload(uploadedFile)
-            //         .then(res => {
-            //             const imageUrl = res.body.secure_url;
-            //             if(imageUrl) {
-            //                 this.setState({
-            //                     data: {
-            //                         ...this.state.data,
-            //                         cover: imageUrl
-            //                     }
-            //                 });
-
-            //                 this.addBook(this.state.data);
-            //             } else {
-            //                 this.setState({
-            //                     loading: false
-            //                 })                
-            //                 this.showNotification('Błąd!', 'Brak adresu do okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-            //             }
-            //         })
-            //         .catch(err => {
-            //             this.setState({
-            //                 loading: false
-            //             })
-            
-            //             this.showNotification('Błąd!', 'Wystąpił błąd przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-            //         })
-            // } else {
-            //     this.addBook(this.state.data);
-            // }
+            Object.keys(data).map(objectKey => {
+                const value = data[objectKey];
+                return sendData.append(objectKey, value)
+            });
+               
+            this.addBook(sendData);
         }
     }
 
     onImageDrop(files) {
-        console.log(files[0]);
         this.setState({
-            cover: files[0]
+            data: {
+                ...this.state.data,
+                cover: files[0]
+            }
           });
     }
 
@@ -141,9 +90,8 @@ class AddBook extends Component {
                     data: {
                         title: '',
                         author: '',
-                        cover: '',
                         summary: '',
-                        file: {}
+                        cover: ''
                     },
                     uploadedFile: {},
                     errors: {}
@@ -165,41 +113,6 @@ class AddBook extends Component {
         if(Validator.isEmpty(data.author)) errors.author = "Wprowadź autora";
 
         return errors;
-    }
-
-    handleUploadFile(e) {
-        e.preventDefault();
-        const reader = new FileReader();
-        const file = e.target.files[0];
-    
-        reader.onloadend = () => {
-          this.setState({
-            cover: file,
-            imagePreviewUrl: reader.result
-          });
-        }
-    
-        reader.readAsDataURL(file);
-        // const data = new FormData();
-        // data.append('cover', e.target.files[0]);
-
-        // if(this.state.data.file.path) 
-        //     data.append('previousUploadedFilePath', this.state.data.file.path)
-        // else
-        // data.append('previousUploadedFilePath', '')
-
-        // this.props.uploadCover(data)
-        //     .then(res =>{
-        //         this.setState({
-        //             data: {
-        //                 ...this.state.data,
-        //                 file: res.file
-        //             }
-        //         })
-        //     })
-        //     .catch(err => {
-        //         this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-        //     })
     }
 
     render() {
@@ -235,15 +148,14 @@ class AddBook extends Component {
                                         <label htmlFor="Summary">Strzeszczenie (pozostało {2000-data.summary.length} znaków)</label>
                                         <textarea className="form-control" id="Summary" rows="3" name="summary" placeholder="Streszczenie" onChange={this.onChange} value={data.summary} />
                                     </div>
-                                    <input type="file" onChange={this.handleUploadFile} />
                                     <button type="submit" className="btn">Dodaj</button>
                                 </div>
                                 <Dropzone
                                     multiple={false}
                                     accept="image/*"
-                                    onDrop={this.onImageDrop.bind(this)}
+                                    onDrop={this.onImageDrop}
                                     className="dropZone text-center">
-                                        { this.state.cover.preview ? <img src={this.state.cover.preview} alt=""/> 
+                                        { data.cover.preview ? <img src={data.cover.preview} alt=""/> 
                                             : <div className="noUploadedFile">
                                                 <h4>Brak okładki</h4>
                                                 <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
@@ -259,4 +171,4 @@ class AddBook extends Component {
     }
 }
 
-export default connect(null, { addBook, uploadCover })(AddBook);
+export default connect(null, { addBook })(AddBook);

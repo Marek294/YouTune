@@ -14,4 +14,6 @@ export const search = (searchData) => () => api.book.search(searchData)
 
 export const addBook = (data) => () => api.book.addBook(data);
 
+export const updateBook = (data) => () => api.book.updateBook(data);
+
 export const deleteBook = (id) => () => api.book.deleteBook(id);
