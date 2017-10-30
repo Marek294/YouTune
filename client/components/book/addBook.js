@@ -33,11 +33,13 @@ class AddBook extends Component {
                 author: '',
                 cover: '',
                 summary: '',
-                file: {}
+                file: {},
             },
             loading: false,
             errors: {},
-            uploadedFile: {}
+            uploadedFile: {},
+            cover: '',
+            imagePreviewUrl: ''
         }
 
         this.validate = this.validate.bind(this);
@@ -64,9 +66,27 @@ class AddBook extends Component {
                 loading: true
             })
 
-            const { uploadedFile } = this.state;
+            const data = new FormData();
+            data.append('cover', this.state.cover);
 
-            console.log(this.state.data);
+            this.props.uploadCover(data)
+                .then(res =>{
+                    this.setState({
+                        data: {
+                            ...this.state.data,
+                            file: res.file
+                        }
+                    })
+
+                    this.addBook(this.state.data);
+                })
+                .catch(err => {
+                    this.setState({
+                        loading: false
+                    })
+
+                    this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+                })
             // this.addBook(this.state.data);
 
             // if(uploadedFile.name) {
@@ -105,10 +125,7 @@ class AddBook extends Component {
     onImageDrop(files) {
         console.log(files[0]);
         this.setState({
-            data: {
-                ...this.state.data,
-                file: files[0]
-            }
+            cover: files[0]
           });
     }
 
@@ -151,26 +168,38 @@ class AddBook extends Component {
     }
 
     handleUploadFile(e) {
-        const data = new FormData();
-        data.append('cover', e.target.files[0]);
+        e.preventDefault();
+        const reader = new FileReader();
+        const file = e.target.files[0];
+    
+        reader.onloadend = () => {
+          this.setState({
+            cover: file,
+            imagePreviewUrl: reader.result
+          });
+        }
+    
+        reader.readAsDataURL(file);
+        // const data = new FormData();
+        // data.append('cover', e.target.files[0]);
 
-        if(this.state.data.file.path) 
-            data.append('previousUploadedFilePath', this.state.data.file.path)
-        else
-        data.append('previousUploadedFilePath', '')
+        // if(this.state.data.file.path) 
+        //     data.append('previousUploadedFilePath', this.state.data.file.path)
+        // else
+        // data.append('previousUploadedFilePath', '')
 
-        this.props.uploadCover(data)
-            .then(res =>{
-                this.setState({
-                    data: {
-                        ...this.state.data,
-                        file: res.file
-                    }
-                })
-            })
-            .catch(err => {
-                this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-            })
+        // this.props.uploadCover(data)
+        //     .then(res =>{
+        //         this.setState({
+        //             data: {
+        //                 ...this.state.data,
+        //                 file: res.file
+        //             }
+        //         })
+        //     })
+        //     .catch(err => {
+        //         this.showNotification('Błąd!', 'Wystąpił błąd przy przy zapisie okładki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+        //     })
     }
 
     render() {
@@ -214,7 +243,7 @@ class AddBook extends Component {
                                     accept="image/*"
                                     onDrop={this.onImageDrop.bind(this)}
                                     className="dropZone text-center">
-                                        { this.state.uploadedFile.preview ? <img src={this.state.uploadedFile.preview} alt=""/> 
+                                        { this.state.cover.preview ? <img src={this.state.cover.preview} alt=""/> 
                                             : <div className="noUploadedFile">
                                                 <h4>Brak okładki</h4>
                                                 <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
