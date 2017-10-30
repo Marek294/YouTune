@@ -8,12 +8,25 @@
     height: 100%;
 
     .forms {
-        width: 90%;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .FormFlexItem-User {
+        width: 80%;
+    }
+
+    .FormFlexItem-Avatar {
+        width: 30%;
+        height: 100%;
+        display: flex;
+        align-items: center;
     }
 
     .card {
         border-color: $secondary-color;
-        margin: 50px 0px 50px 0px;
+        margin: 50px 50px 50px 50px;
     }
 
     .loader {

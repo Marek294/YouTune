@@ -54,7 +54,7 @@ class DropdownNavigation extends Component {
                     { isAuthenticated && <ul className="nav nav-pills">
                         <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')} >
                             <a className="nav-link dropdown-link" onClick={this.toggleDropdown}>
-                                <img src="noAvatar.jpg" alt="" />
+                                {personalData.avatar ? <img src={personalData.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
                                 <p>{personalData.firstname} {personalData.lastname}</p>
                                 <i className="fa fa-chevron-down" aria-hidden="true"></i>
                             </a>
@@ -110,7 +110,8 @@ function mapStateToProps(state) {
         isLibrarian: state.user.librarian,
         personalData: {
             firstname: state.user.firstname,
-            lastname: state.user.lastname
+            lastname: state.user.lastname,
+            avatar: state.user.avatar
         }
     }
 }

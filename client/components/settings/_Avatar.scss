@@ -1,0 +1,48 @@
+@import '../../sass/colors';
+
+.sass-Avatar {
+
+    form {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .btn {
+        background-color: $primary-color;
+        color: $fourth-color;
+        font-weight: 600;
+        padding: 10px 50px 10px 50px;
+        align-self: left;
+
+        transition: all 0.5s;
+    }
+
+    .btn:hover {
+        color: $primary-color;
+        background-color: $fourth-color;
+    }
+
+    .dropZone {
+        padding: 10px 10px 10px 10px;
+        border: 2px solid $secondary-color;
+        border-radius: 10px;
+
+        margin-top: 10px;
+        margin-bottom: 20px;
+
+        .noUploadedFile {
+            border: 2px dashed $secondary-color;
+            background-color: rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        img {
+            width: 100%;
+            
+        }
+    }    
+}

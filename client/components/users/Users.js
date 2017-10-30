@@ -98,9 +98,14 @@ class Users extends Component {
                     return (
                         <li key={i} className="list-group-item">
                         <div className="user-info">
-                            <h3 className="bold">{user.firstname} {user.lastname}</h3>
-                            <p className="grey">{user.email}</p>
-                            <p className="grey">{user.confirmed ? 'Zatwierdzony' : 'Niezatwierdzony'}</p>
+                            <div className="avatar">
+                                { user.avatar ? <img src={user.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
+                            </div>
+                            <div className="userData">
+                                <h3 className="bold">{user.firstname} {user.lastname}</h3>
+                                <p className="grey">{user.email}</p>
+                                <p className="grey">{user.confirmed ? 'Zatwierdzony' : 'Niezatwierdzony'}</p>
+                            </div>
                         </div>
                         <div className="buttons">
                             {currentUser.email !== user.email && <button className="delete" onClick={() => this.openModal(user.id)}><i className="fa fa-trash" aria-hidden="true"></i></button>}

@@ -5,7 +5,7 @@ import authenticate from '../../middlewares/authenticate';
 const router = express.Router();
 
 router.get('/', authenticate, (req, res) => {
-    User.fetchAll({columns: ['id', 'firstname', 'lastname', 'email', 'confirmed']}).then(users => {
+    User.fetchAll({columns: ['id', 'firstname', 'lastname', 'email', 'confirmed', 'avatar']}).then(users => {
         if(req.currentUser.get('librarian')) {
             if(users) {
                 res.json(users);

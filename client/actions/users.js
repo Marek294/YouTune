@@ -14,6 +14,7 @@ export const getUsers = () => () => api.user.getUsers()
 export const setUserData = (data) => () => api.user.setUserData(data)
 export const setUserPassword = (data) => () => api.user.setUserPassword(data)
 export const deleteUser = (id) => () => api.user.deleteUser(id)
+export const updateAvatar = (data) => () => api.user.updateAvatar(data);
 
 export const signup = (data) => dispatch => 
 api.user.signup(data).then(user => {

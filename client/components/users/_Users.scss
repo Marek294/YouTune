@@ -45,9 +45,24 @@
             flex-wrap: wrap;
         }
 
-        .user-info {
+        .avatar {
+            img {
+                width: 200px;
+                height: 200px;
+                border-radius: 50%;
+            }
+        }
+
+        .userData {
+            margin-left: 50px;
             display: flex;
             flex-direction: column;
+            justify-content: space-around;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: row;
             justify-content: space-around;
             height: 100%;
             color: $fourth-color;

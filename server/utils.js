@@ -6,7 +6,8 @@ export const generateJWT = (user) => {
         confirmed: user.get('confirmed'),
         librarian: user.get('librarian'),
         firstname: user.get('firstname'),
-        lastname: user.get('lastname')
+        lastname: user.get('lastname'),
+        avatar: user.get('avatar')
     }, process.env.JWT_SECRET );
 }
 
@@ -17,6 +18,7 @@ export const toAuthJSON = (user, token) => {
         librarian: user.get('librarian'),
         firstname: user.get('firstname'),
         lastname: user.get('lastname'),
+        avatar: user.get('avatar'),
         token
     }
 }
