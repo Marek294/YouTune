@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
+import Loader from '../loader/Loader';
 
 import './_ResetPasswordForm.scss';
 
@@ -49,27 +50,31 @@ class ResetPasswordForm extends Component {
         const { errors, loading } = this.state;
 
         return (
-            <div className="sass-ResetPasswordForm card">
-                <div className="card-header">{loading ? <h1>Przetwarzanie</h1> : <h1>Podaj nowe hasło</h1>}</div>
-                <div className="card-body">
-                    { errors.global && <div className="alert alert-danger" role="alert">
-                        { errors.global }
-                        </div>}
-                    {loading ? <div className="loader" /> : <form onSubmit={this.onSubmit} autoComplete="off">
-                        <div className="form-group">
-                            <label htmlFor="Password">Hasło</label>
-                            <input type="password" className="form-control" id="Password" placeholder="Nowe hasło" name="password" onChange={this.onChange}  />
-                            {errors.password && <InlineError text={errors.password} />}
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="ConfirmPassword">Potwierdź hasło</label>
-                            <input type="password" className="form-control" id="ConfirmPassword" placeholder="Potwierdź nowe hasło" name="confirmPassword" onChange={this.onChange}  />
-                            {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
-                        </div>
-                        <button type="submit" className="btn">Wyślij</button>
-                    </form> }
+            loading ? <Loader text="Trwa wprowadzanie zmian" /> : 
+                <div className="sass-ResetPasswordForm card">
+                    <div className="card-header">
+                        <i className="fa fa-unlock-alt" aria-hidden="true" />
+                        <h4>Podaj nowe hasło</h4>
+                    </div>
+                    <div className="card-body">
+                        { errors.global && <div className="alert alert-danger" role="alert">
+                            { errors.global }
+                            </div>}
+                        <form onSubmit={this.onSubmit} autoComplete="off">
+                            <div className="form-group">
+                                <label htmlFor="Password">Hasło</label>
+                                <input type="password" className="form-control" id="Password" placeholder="Nowe hasło" name="password" onChange={this.onChange}  />
+                                {errors.password && <InlineError text={errors.password} />}
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="ConfirmPassword">Potwierdź hasło</label>
+                                <input type="password" className="form-control" id="ConfirmPassword" placeholder="Potwierdź nowe hasło" name="confirmPassword" onChange={this.onChange}  />
+                                {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
+                            </div>
+                            <button type="submit" className="btn">Wyślij</button>
+                        </form>
+                    </div> 
                 </div>
-            </div>
         );
     }
 }

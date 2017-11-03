@@ -2,8 +2,22 @@
     width: 500px;
 
     .card-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
         h4 {
-            font-weight: 700;
+            font-weight: bold;
+            margin: 0px 0px 0px 20px;
         }
+
+        i {
+            font-size: 2em;
+        }
+    }
+
+    .btn {
+        width: 100%;
+        font-weight: bold;
     }
 }

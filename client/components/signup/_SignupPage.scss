@@ -6,12 +6,15 @@
     align-items: center;
     color: $secondary-color;
 
-    p {
-        text-align: center;
-        color: $fourth-color;
+    .line {
+        border-bottom: 1px solid #8a8a8a;
+        width: 100%;
+        height: 10px;
+        margin-bottom: 50px;
     }
 
-    h1 {
-        margin: 10px 0px 50px 0px;
+    img {
+        margin: 20px 0px 20px 0px;
+        height: 5em;
     }
 }

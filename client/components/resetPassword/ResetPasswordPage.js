@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { validateToken, resetPassword } from '../../actions/auth';
 import ResetPasswordForm from './ResetPasswordForm';
 import InvalidTokenMessage from '../messages/InvalidTokenMessage';
+import Loader from '../loader/Loader';
 
 import './_ResetPasswordPage.scss';
 
@@ -30,7 +31,7 @@ class ResetPasswordPage extends Component {
         const { token } = this.props.match.params;
         return (
             <div className="sass-ResetPasswordPage">
-                { loading && <div className="loader" /> }
+                { loading && <Loader text="Przetwarzanie" /> }
                 { !loading && success && <ResetPasswordForm submit={this.submit} token={token} /> }
                 { !loading && !success && <InvalidTokenMessage />}
             </div>

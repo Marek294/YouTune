@@ -1,0 +1,25 @@
+@import '../../../sass/colors';
+
+.sass-OpeningHours {
+    width: 30%;
+    height: 400px;
+    margin-top: 50px;
+
+    .body {
+        margin-top: 30px;
+
+        .day {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+
+            .primary {
+                color: $primary-color;
+            }
+
+            .secondary {
+                color: $secondary-color;
+            }
+        }
+    }
+}

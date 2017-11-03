@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import isEmail from 'validator/lib/isEmail';
 import InlineError from '../messages/InlineError';
+import Loader from '../loader/Loader';
 
 import './_ForgotPasswordForm.scss';
 
@@ -46,23 +47,26 @@ class ForgotPasswordForm extends Component {
         const { errors, loading } = this.state;
 
         return (
-            <div className="sass-ForgotPasswordForm card">
-                <div className="card-header">{ loading ? <h1>Przetwarzanie</h1> : <h1>Resetowanie hasła</h1> }</div>
-                <div className="card-body">
-                    { errors.global && <div className="alert alert-danger" role="alert">
-                        { errors.global }
-                        </div>}
-                    {loading ? <div className="loader" /> :
-                    <form onSubmit={this.onSubmit} autoComplete="off">
-                        <div className="form-group">
-                            <label htmlFor="Email">Adres Email</label>
-                            <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" onChange={this.onChange} autoComplete="false"/>
-                            {errors.email && <InlineError text={errors.email} />}
-                        </div>
-                        <button type="submit" className="btn">Wyślij</button>
-                    </form> }
+            loading ? <Loader text="Przetwarzanie" /> :
+                <div className="sass-ForgotPasswordForm card">
+                    <div className="card-header">
+                        <i className="fa fa-lock" aria-hidden="true"></i>
+                        <h4>Resetowanie hasła</h4>
+                    </div>
+                    <div className="card-body">
+                        { errors.global && <div className="alert alert-danger" role="alert">
+                            { errors.global }
+                            </div>}
+                        <form onSubmit={this.onSubmit} autoComplete="off">
+                            <div className="form-group">
+                                <label htmlFor="Email">Email</label>
+                                <input type="email" className="form-control" id="Email" placeholder="jankowalski@gmail.com" name="email" onChange={this.onChange} autoComplete="false"/>
+                                {errors.email && <InlineError text={errors.email} />}
+                            </div>
+                            <button type="submit" className="btn">Wyślij</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
         );
     }
 }

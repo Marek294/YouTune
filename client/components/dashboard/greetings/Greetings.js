@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { getCurrentUser } from '../../../actions/users';
 
 import './_Greetings.scss';
 
@@ -84,30 +82,28 @@ class Greetings extends Component {
                 firstname: '',
                 lastname: '',
                 created_at: ''
-            },
-            loading: true
+            }
         }
     }
 
-    componentWillMount() {
-        this.props.getCurrentUser().then(user => this.setState({ user, loading: false }));
-    }
-
     render() {
-        const { user, loading } = this.state;
+        const { user } = this.props;
         const date = new Date(user.created_at);
 
         return (
             <div className="sass-Greetings">
                 <div className="card">
                     <div className="card-body">
-                        { loading ? <div className="loader" /> : 
-                            <div>
-                                <h1 className="text-center">Witaj czytelniku</h1>
-                                <p className="grey text-center">{user.firstname} {user.lastname}</p>
-                                <p className="grey text-center">Dołączył/a: {transformDate(date)}</p>
-                            </div>
-                        }
+                        <img src={user.avatar} alt="" />
+                        <h3 className="text-center">{user.firstname} {user.lastname}</h3>
+                        <div className="text">
+                            <p>Dołączył/a:</p>
+                            <p className="text-rigth">{transformDate(date)}</p>
+                        </div>
+                        <div className="text">
+                            <p>Łączna liczba wypożyczeń:</p>
+                            <p className="text-rigth">14</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,4 +111,4 @@ class Greetings extends Component {
     }
 }
 
-export default connect(null, { getCurrentUser })(Greetings);
+export default Greetings;

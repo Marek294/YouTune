@@ -9,35 +9,21 @@ import { login } from '../../actions/auth';
 import './_LoginPage.scss';
 
 class LoginPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.notFetching = this.notFetching.bind(this);
-    }
-
     submit = data => {
-        this.props.fetching(true);
         return this.props.login(data);
-    }
-
-    notFetching() {
-        this.props.fetching(false);
     }
 
     render() {
         return (
             <div className="sass-LoginPage">
-                <h1>Logowanie</h1>
-                <LoginForm submit={this.submit} notFetching={this.notFetching} signupLink={this.props.signupLink} />
+                <LoginForm submit={this.submit} />
             </div>
         );
     }
 }
 
 LoginPage.propTypes = {
-    login: PropTypes.func.isRequired,
-    fetching: PropTypes.func.isRequired,
-    signupLink: PropTypes.func.isRequired
+    login: PropTypes.func.isRequired
 }
 
 export default connect(null, { login })(LoginPage);

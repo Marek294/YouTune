@@ -2,52 +2,45 @@
 
 .sass-LoginForm {
     width: 100%;
+    height: 100%;
     text-align: left;
     display: flex;
     flex-direction: column;
     color: $secondary-color;
     font-weight: 600;
 
-    .btnGroup {
-        padding-top: 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    form {
+        padding: 20px 20px 20px 20px;
+        .form-group {
+            font-size: 1em;
 
-        .btn {
-            background-color: $primary-color;
-            color: $fourth-color;
-            font-weight: 600;
-    
-            transition: all 0.5s;
-        }
-    
-        .btn:hover {
-            color: $primary-color;
-            background-color: $fourth-color;
-        }
-
-        .signupLink {
-            border: none;
-            background: none;
-            color: $secondary-color;
-            text-decoration: underline;
-            transition: all 0.5s;
-        }
-
-        .signupLink:hover {
-            color: $fourth-color;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .signupLink:focus {
-            outline: none;
+            input {
+                border: 1px solid $secondary-color;
+            }
         }
     }
 
-    .forgotContainer {
-        padding-top: 50px;
+    .btn {
+        background-color: $secondary-color;
+        color: white;
+        font-weight: bold;
+        font-size: 1em;
+        width: 100%;
+        margin-top: 20px;
+        transition: all 0.5s;
+    }
+
+    .btn:hover {
+        background-color: $primary-color;
+        color: $secondary-color;
+        cursor: pointer;
+    }
+
+    .forgotAndSignup {
+        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
 
         .forgotLink {
             color: $secondary-color;
@@ -61,6 +54,18 @@
 
         .forgotLink:focus {
             outline: none;
+        }
+
+        .signupLink {
+            text-align: right;
+            color: $secondary-color;
+            transition: all 0.5s;
+        }
+
+        .signupLink:hover {
+            cursor: pointer;
+            color: $fourth-color;
+            text-decoration: none;
         }
     }
 }

@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 
 import DropdownNavigation from "./navigation/DropdownNavigation";
 import HomePage from "./home/HomePage";
+import SignupPage from "./signup/SignupPage";
 import DashboardPage from "./dashboard/DashboardPage";
 import UserRoute from './routes/UserRoute';
 import GuestRoute from './routes/GuestRoute';
@@ -29,6 +30,7 @@ const App = ({ location }) => {
                 <DropdownNavigation/>
                 <GuestRoute location={location} exact path="/" component={HomePage} />
                 <GuestRoute location={location} exact path="/forgotPassword" component={ForgotPasswordPage} />
+                <GuestRoute location={location} exact path="/signup" component={SignupPage} />
                 <Route location={location} exact path="/confirmation/:token" component={ConfirmationPage} />
                 <Route location={location} exact path="/resetPassword/:token" component={ResetPasswordPage} />
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
