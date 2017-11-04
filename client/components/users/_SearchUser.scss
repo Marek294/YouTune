@@ -2,28 +2,33 @@
 
 .sass-SearchUser {
     color: $secondary-color;
-    display: flex;
-    flex-direction: column;
+    padding: 30px;
+    height: 100%;
 
     form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        height: 100%;
+        font-weight: bold;
     }
 
     .btn {
-        background-color: $primary-color;
-        color: $fourth-color;
-        font-weight: 600;
-        padding: 10px 50px 10px 50px;
-        align-self: center;
+        background: $secondary-color;
 
-        transition: all 0.5s;
+        i {
+            color: white;
+            font-size: 20px;
+        }
     }
 
     .btn:hover {
-        color: $primary-color;
-        background-color: $fourth-color;
+        i { 
+            color: $secondary-color;
+        }
+
+        background-color: $primary-color;
+        cursor: pointer;
     }
 
     .loader {

@@ -1,145 +1,172 @@
 @import '../../sass/colors';
 
-$coverSize: 150;
+$coverSize: 200;
 
 .sass-Catalog {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
     flex-direction: column;
+    flex-flow: row wrap;
     height: 100%;
 
     .card {
-        border-color: $secondary-color;
-        margin: 50px 0px 50px 0px;
-    }
-
-
-    .search-form {
+        margin: 50px 0px;
         width: 40%;
-
-        .btn {
-            color: $fourth-color;
-            background-color: $primary-color;
-        }
-
-        .btn:hover {
-            cursor: pointer;
-        }
+        height: 300px;
+        border-radius: 0;
+        box-shadow: 0px 0px 15px #8a8a8a;
     }
 
-    .extended {
-        width: 90%;
-        height: 80%;
+    .load {
+        width: 50%;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        display: flex;
+        justify-content: center;
     }
 
     .books {
-        width: 90%;
-
-        .list-group-item {
-            border: none;
-            border-bottom: 4px solid $secondary-color;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding-left: 100px;
-
-            .info {
-                display: flex;
-                flex-direction: row;
-            }
-
-            img {
-                width: $coverSize;
-                height: $coverSize*1.6;
-            }
-        }
-
-        ul {
-            display: flex;
-            flex-wrap: wrap;
-        }
-
-        .book-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            padding-left: 100px;
-            color: $fourth-color;
-
-            .bold {
-                font-weight: 600;
-                width: 100px;
-            }
-
-            .title {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                color: $secondary-color;
-                font-weight: 700;
-            }
-
-            .authors {
-                display: flex;
-                flex-direction: row;
-            }
-    
-            .author-list {
-                display: flex;
-                flex-direction: column;
-                list-style-type: none;
-            }
-
-            .summary {
-                color: grey;
-                width: 80%;
-            }
-        }
-
-    }
-
-    .buttons {
-        margin-right: 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
+        width: 100%;
         height: 100%;
 
-        .delete {
-            color: red;
-            font-size: 30px;
-            padding: 0;
+        .header {
+            display: flex;
+            flex-direction: row;
+            margin: 50px 0px;
+            color: $secondary-color;
+            
+            i {
+                margin: 0px 20px;
+                font-size: 50px;
+            }
 
-            background: transparent;
-            border: none;
+            h4 {
+                font-weight: bold;
+                font-size: 40px;
+            }
         }
 
-        .profile {
-            color: green;
-            font-size: 30px;
-            padding: 0;
+        .body {
+            display: flex;
+            flex-direction: row;
+            flex-flow: row wrap;
 
-            background: transparent;
-            border: none;
-        }
+            .noBooks {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                color: #8a8a8a;
+                
+                img {
+                    width: 200px;
+                }
 
-        button:hover {
-            cursor: pointer;
-        }
+                h2 {
+                    margin-top: 20px;
+                }
+            }
 
-        button:focus {
-            outline: 0;
-        }
+            .book {
+                width: 25%;
+                margin-top: 20px;
 
-        .red {
-            border-top-color: red;
-        }
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                color: $fourth-color;
 
-        .loader {
-            width: 30px;
-            height: 30px;
-            border-width: 7px;
+                transition: all 0.5s;
+
+                .info {
+                    position: relative;
+
+                    img {
+                        border-radius: 10px;
+                        width: $coverSize;
+                        height: $coverSize*1.6;
+                        box-shadow: 0px 0px 15px #8a8a8a;
+                    }
+
+                    .vote {
+                        position: absolute;
+                        left: $coverSize - 55px;
+                        -webkit-transform: translateY(-70%);
+                        -moz-transform:    translateY(-70%);
+                        -ms-transform:     translateY(-70%);
+                        -o-transform:      translateY(-70%);
+                        transform:         translateY(-70%);
+                        border-radius: 50%;
+                        width: 70px;
+                        height: 70px;
+
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0px 0px 15px #8a8a8a;
+
+                        p {
+                            margin: 0;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 1.5em;
+                        }
+                    }
+
+                    .green {
+                        background: #5CB85C;
+                    }
+
+                    .red {
+                        background: #D9534F;
+                    }
+
+                    .grey {
+                        background: #292B2C;
+                    }
+
+                    .book-info {
+                        padding-top: 20px;
+
+                        .title {
+                            h2 {
+                                font-size: 1.5em;
+                                width: $coverSize;
+                                font-weight: bold;
+                                margin: 0;
+                            }
+                        }
+
+                        .authors {
+                            p {
+                                font-size: 0.9em;
+                                width: $coverSize;
+                                font-weight: bold;
+                            }
+                        }
+
+                        .availability {
+                            p {
+                                font-size: 0.9em;
+                                font-weight: bold;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .book:hover {
+                cursor: pointer;
+                color: $secondary-color;
+
+                -webkit-filter: contrast(150%);
+                filter: contrast(150%);
+            }
+
+            .notAvailable {
+                opacity: 0.3;
+            }
         }
-    }
+    }    
 }

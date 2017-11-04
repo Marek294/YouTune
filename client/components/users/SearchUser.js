@@ -34,21 +34,19 @@ class SearchUser extends Component {
         return (
             <div className="sass-SearchUser">
                 <form onSubmit={this.submit}>
-                    <div className="inputs">
-                        <div className="form-group row">
-                            <label htmlFor="firstname" className="col-sm-2 col-form-label">Imię</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="firstname" placeholder="Imię" name="firstname" onChange={this.onChange} />
-                            </div>
+                    <div>
+                        <div className="form-group">
+                            <label htmlFor="firstname" className="col-form-label">Imię</label>
+                            <input type="text" className="form-control" id="firstname" name="firstname" onChange={this.onChange} />
                         </div>
-                        <div className="form-group row">
-                            <label htmlFor="lastname" className="col-sm-2 col-form-label">Nazwisko</label>
-                            <div className="col-sm-10">
-                                <input type="text" className="form-control" id="lastname" placeholder="Nazwisko" name="lastname" onChange={this.onChange} />
-                            </div>
+                        <div className="form-group">
+                            <label htmlFor="lastname" className="col-form-label">Nazwisko</label>
+                            <input type="text" className="form-control" id="lastname" name="lastname" onChange={this.onChange} />
                         </div>
                     </div>
-                    <button type="submit" className="btn">Szukaj</button>
+                    <button type="submit" className="btn" >
+                        <i className="fa fa-search" aria-hidden="true" />
+                    </button>
                 </form>
             </div>
         );

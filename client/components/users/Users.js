@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Modal from 'react-modal';
-import _ from 'lodash';
 import { getUsers, deleteUser } from '../../actions/users';
 import SearchUser from './SearchUser';
 import Notificator from '../messages/Notificator';
+import Loader from '../loader/Loader';
 
 import './_Users.scss';
 
@@ -18,7 +17,8 @@ class Users extends Component {
                 firstname: '',
                 lastname: ''
             },
-            loading: true,
+            loading: false,
+            start: true,
             deleteLoading: false,
             modalIsOpen: false,
             deleteUserId: -1,
@@ -26,161 +26,68 @@ class Users extends Component {
         }
 
         this.search = this.search.bind(this);
-        this.deleteUser = this.deleteUser.bind(this);
         this.showNotification = this.showNotification.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-    }
-
-    componentWillMount() {
-        this.props.getUsers()
-            .then(users => this.setState({ users, loading: false }))
-            .catch(() => this.setState({ loading: false, error: { global: "Nie jesteś pracownikiem"}}))
     }
 
     showNotification(title, body, type, duration) {
         this.refs.notificator.show(title, body, type, duration);
-      }
-
-    openModal(id) {
-        this.setState({modalIsOpen: true, deleteUserId: id});
-    }
-
-    closeModal() {
-        this.setState({modalIsOpen: false, deleteUserId: -1});
     }
 
     search(data) {
         this.setState({
+            loading: true,
             search: {
                 firstname: data.firstname,
                 lastname: data.lastname
             }
         });
-    }
 
-    deleteUser() {
-        const id = this.state.deleteUserId;
-
-        const findUserIndex = _.findIndex(this.state.users, { 'id': id });
-        const usersArray = this.state.users;
-
-        this.setState({
-            deleteLoading: true
-        })
-
-        this.props.deleteUser(id)
-            .then(() => {
-                usersArray.splice(findUserIndex, 1);
-
-                this.setState({
-                    users: usersArray,
-                    deleteLoading: false
-                })
-                
-                this.closeModal();
-                
-                this.showNotification('Sukces!', 'Czytelnik został pomyślnie usunięty z systemu', 'success', 3000);
-            })
-            .catch(err => {
-                this.showNotification('Błąd!', 'Coś poszło nie tak', 'danger', 3000);
-            })
+        this.props.getUsers()
+            .then(users => this.setState({ users, loading: false, start: false }))
+            .catch(() => this.setState({ loading: false, error: { global: "Nie jesteś pracownikiem"}}))
     }
 
     render() {
-        const { users, loading, search, error } = this.state;
-        const currentUser = this.props.user;
+        const { users, loading, start, error } = this.state;
         
         let displayUsers;
         if(users.length > 0) {
             displayUsers = users.map((user, i) => {
-                if(user.firstname.toLowerCase().includes(search.firstname.toLowerCase()) && user.lastname.toLowerCase().includes(search.lastname.toLowerCase())) {
-                    return (
-                        <li key={i} className="list-group-item">
-                        <div className="user-info">
-                            <div className="avatar">
-                                { user.avatar ? <img src={user.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
-                            </div>
-                            <div className="userData">
-                                <h3 className="bold">{user.firstname} {user.lastname}</h3>
-                                <p className="grey">{user.email}</p>
-                                <p className="grey">{user.confirmed ? 'Zatwierdzony' : 'Niezatwierdzony'}</p>
-                            </div>
+                return (
+                    <div key={i} className="user">
+                        { user.avatar ? <img src={user.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
+                        <div className="userData text-center">
+                            <h4>{user.firstname}</h4>
+                            <h4>{user.lastname}</h4>
                         </div>
-                        <div className="buttons">
-                            {currentUser.email !== user.email && <button className="delete" onClick={() => this.openModal(user.id)}><i className="fa fa-trash" aria-hidden="true"></i></button>}
-                            <button className="profile"><i className="fa fa-address-book-o" aria-hidden="true"></i></button>
-                        </div>
-                    </li>
-                    )
-                }
+                    </div>
+                )
             })
         }
 
         return (
-            <div className="sass-Users container-fluid">
-                <div className="card search-form">
-                    <div className="card-header">
-                        <h4>Wyszukiwanie</h4>
-                    </div>
-                    <div className="card-body">
-                        <SearchUser search={this.search} />
-                    </div>
+            <div className="sass-Users container">
+                <div className="card">
+                    <SearchUser search={this.search} />
+                </div>
+                <div className="card load">
+                    { loading && <Loader text='Wyszukiwanie' /> }
                 </div>
                 { error.global  && <div className="alert alert-danger" role="alert"> { error.global } </div> }
-                { loading ? 
-                        <div className="loading">
-                            <div className="loader" />
-                            <h2>Trwa wczytywanie czytelników...</h2>
-                        </div> :
-                        users.length > 0 && <div className="card users">
-                        <div className="card-header">
-                            <h4>Czytelnicy</h4>
-                        </div>
-                        <div className="card-body">
-                            <ul className="list-group">
-                                {displayUsers}
-                            </ul>
-                        </div>
+                { (!loading && !start) && <div className="users">
+                    <div className="header">
+                        <i className="fa fa-users" aria-hidden="true" />
+                        <h4>Czytelnicy</h4>
                     </div>
-                    }
+                    <div className="body">
+                        {displayUsers}
+                    </div>
+                </div>
+                }
                 <Notificator ref="notificator"/>
-                
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    className="ReactModal"
-                    overlayClassName="Overlay"
-                >
-
-                { this.state.deleteLoading ? 
-                    <div className="waitingDiv">
-                            <div className="loader red"></div>
-                            <p>Czekaj trwa wprowadzanie zmian...</p>
-                    </div> :
-                    <div className="ModalCard">
-                        <div className="card-header bg-lightdanger">
-                            <p>Potwierdzenie usunięcia</p>
-                        </div>
-                        <div className="card-body">
-                            <p>Czy jesteś pewien, że chcesz usunąć tego użytkownika z systemu?</p>
-                            <div className="buttons">
-                                <button className="cancel" onClick={this.closeModal}>Anuluj</button>
-                                <button className="delete" onClick={this.deleteUser}>Tak</button>
-                            </div>
-                        </div>
-                    </div> }
-                </Modal> 
-
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        user: state.user
-    }
-}
-
-export default connect(mapStateToProps, { getUsers, deleteUser })(Users);
+export default connect(null, { getUsers, deleteUser })(Users);

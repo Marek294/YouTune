@@ -43,8 +43,9 @@
       }
 
       img {
-        width: 50px;
+        width: 60px;
         border-radius: 50%;
+        border: 2px solid $secondary-color;
         margin-right: 10px;
       }
     }

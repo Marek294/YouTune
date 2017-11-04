@@ -9,7 +9,7 @@ class SearchForm extends Component {
 
         this.state = {
             data: {
-                select: '',
+                select: 'title',
                 query: ''
             }
         };
@@ -31,7 +31,7 @@ class SearchForm extends Component {
 
         this.setState({
             data: {
-                select: '',
+                select: 'title',
                 query: ''
             }
         })
@@ -45,22 +45,17 @@ class SearchForm extends Component {
         return (
             <div className="sass-SearchForm">
                 <form onSubmit={this.submit}>
-                    <div className="form-group row">
-                        <div className="col-sm-4">
-                            <select className="form-control" name="select" onChange={this.onChange} value={data.select}>
-                                <option value="" hidden selected>Wybierz opcję...</option>
-                                <option value="title">Tytuł</option>
-                                <option value="author">Autor</option>
-                            </select>
-                        </div>
-                        <div className="col-sm-8">
-                            <input type="text" className="form-control" id="Query" name="query" onChange={this.onChange} value={data.query}/>
-                        </div>
+                    <div>
+                        <select className="form-control" name="select" onChange={this.onChange} value={data.select}>
+                            <option value="title" selected>Tytuł</option>
+                            <option value="author">Autor</option>
+                        </select>
+                        <input type="text" className="form-control" id="Query" name="query" onChange={this.onChange} value={data.query} />
                     </div>
-                    <div className="buttons">
-                        <button type="submit" className="btn" disabled={disabled} >Szukaj</button>
-                        {fetch.errors && <p className="error">{fetch.errors.global}</p>}
-                    </div>
+                    <button type="submit" className="btn" disabled={disabled} >
+                        <i className="fa fa-search" aria-hidden="true" />
+                    </button>
+                    {fetch.errors && <p className="error">{fetch.errors.global}</p>}
                 </form>
             </div>
         );
