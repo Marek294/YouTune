@@ -3,72 +3,109 @@
 $coverSize: 300;
 
 .sass-BookForm {
+    margin: 50px auto;
     color: $secondary-color;
     display: flex;
     align-items: center;
-    flex-direction: column;
-    height: 100%;
+    justify-content: space-between;
+    flex-direction: row;
+
+    .dropZone {
+        border-radius: 20px;
+        box-shadow: 0px 0px 15px #8a8a8a;
+
+        .noUploadedFile {
+            border-radius: 20px;
+            background-color: white;
+            width: $coverSize;
+            height: $coverSize*1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            color: $secondary-color;
+
+            img {
+                width: 100px;
+                height: 100px;
+            }
+
+            h4 {
+                font-size: 2.5em;
+                font-weight: bold;
+            }
+
+            p {
+                font-size: 1em;
+                padding: 0px 50px;
+                font-weight: bold;
+            }
+        }
+
+        img {
+            border-radius: 20px;
+            width: $coverSize;
+            height: $coverSize*1.6;
+        }
+    }    
 
     .card {
-        border-color: $secondary-color;
-        margin: 50px 0px 50px 0px;
-        width: 90%;
-    }
+        box-shadow: 0px 0px 15px #8a8a8a;
+        padding: 10px;
+        width: 60%;
 
-    .loader {
-        border-top-color: $secondary-color;
-        width: 100px;
-        height: 100px;
-    }
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border: none;
+            background: transparent;
 
-    .loading {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+            img {
+                width: 40px;
+                height: 40px;
+            }
+
+            h4 {
+                font-weight: bold;
+                font-size: 1.75em;
+                margin: 0px 10px;
+            }
+        }
     }
 
     form {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
 
         .formData {
-            width: 50%;
+            width: 70%;
         }
 
-            .dropZone {
-                margin-top: 10px;
+        label {
+            font-weight: bold;
+        }
 
-                .noUploadedFile {
-                    border: 2px dashed $secondary-color;
-                    background-color: rgba(0,0,0,0.1);
-                    width: $coverSize;
-                    height: $coverSize*1.6;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
+        input {
+            color: $secondary-color;
+        }
 
-                    h4 {
-                        color: $secondary-color;
-                        font-weight: 600;
-                    }
+        textarea {
+            color: $secondary-color;
+        }
 
-                    p {
-                        color: $fourth-color;
-                    }
-                }
+        input:focus {
+            color: $secondary-color;
+        }
 
-                img {
-                    width: $coverSize;
-                    height: $coverSize*1.6;
-                }
-            }    
+        textarea:focus {
+            color: $secondary-color;
+        }
     }
 
     .btn {
-        background-color: $primary-color;
-        color: $fourth-color;
+        background-color: $secondary-color;
+        color: white;
         font-weight: 600;
         padding: 10px 50px 10px 50px;
         align-self: left;
@@ -78,7 +115,8 @@ $coverSize: 300;
     }
 
     .btn:hover {
-        color: $primary-color;
-        background-color: $fourth-color;
+        cursor: pointer;
+        color: $secondary-color;
+        background-color: $primary-color;
     }
 }

@@ -9,137 +9,79 @@ $coverSize: 300;
     background-color: transparent;
     transform: translate(-50%, -50%);
 
-    .waitingDiv {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        background-color: white;
-        padding: 50px 50px 50px 50px;
-        
-        .loader {
-            border-top-color: $secondary-color;
-        }
-        
-        p {
-            color: $secondary-color;
-            font-weight: 600;
-            font-size: 20px;
-        }
-    }
-
-    .update {
-        outline-color: $secondary-color;
+    .add {
         color: $secondary-color;
     }
 
-    .delete {
-        outline-color: red;
-        color: red;
-    }
-
     .ModalCard {
-        background-color: white;
-        outline-style: solid;
-        outline-width: 1px;
+        background: white;
     
         .card-header {
-            border-radius: 0px;
-            color: white;
-            font-weight: 600;
-            font-size: 20px;
-            padding-bottom: 0px;
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border: none;
+
+            h4 {
+                font-weight: bold;
+                font-size: 25px;
+            }
+
+            i {
+                font-size: 40px;
+                margin: 0px 10px;
+            }
         }
     
         .card-body {
             display: flex;
             flex-direction: column;
-    
-            font-weight: 600;
+            padding-top: 5px;
 
-            form {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-around;
-                width: 1000px;
-        
-                .formData {
-                    width: 50%;
-                }
-        
-                    .dropZone {
-                        margin-top: 10px;
-                        margin-left: 20px;
-        
-                        .noUploadedFile {
-                            border: 2px dashed $secondary-color;
-                            background-color: rgba(0,0,0,0.1);
-                            width: $coverSize;
-                            height: $coverSize*1.6;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            justify-content: center;
-        
-                            h4 {
-                                color: $secondary-color;
-                                font-weight: 600;
-                            }
-        
-                            p {
-                                color: $fourth-color;
-                            }
-                        }
-        
-                        img {
-                            width: $coverSize;
-                            height: $coverSize*1.6;
-                        }
-                    }    
+            p {
+                font-weight: bold;
             }
-        }
-    
-        .bg-lightdanger {
-            background-color: #FE8081;
-        }
-
-        .bg-lightprimary {
-            background-color: #B5D3E7;
         }
     
         .buttons {
             align-self: flex-end;
     
             button {
-                background-color: transparent;
                 border: none;
-                margin: 0px 10px 0px 10px;
-                border-radius: 20px;
-                padding: 5px 20px 5px 20px;
-                font-weight: 600;
+                margin: 10px;
+                padding: 5px 20px;
+                font-weight: bold;
+                transition: all 0.5s;
             }
     
             button:hover {
                 cursor: pointer;
+                color: $secondary-color;
+                background: $primary-color;
             }
     
             button:focus {
                 outline: none;
             }
-    
-            .delete {
-                color: #FE8081;
-                border: 1px solid #FE8081;
+
+            .add {
+                color: white;
+                background-color: $secondary-color;
             }
     
             .cancel {
-                color: #98DB40;
-                border: 1px solid #98DB40;
+                color: white;
+                background-color: #5CB85C;
             }
 
             .update {
                 color: $secondary-color;
                 border: 1px solid $secondary-color;
             }
+        }
+
+        .loadPadding {
+            padding: 50px
         }
     }
 }
