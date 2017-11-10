@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import classnames from 'classnames';
 import { getCurrentUser, setUserData, setUserPassword } from '../../actions/users';
 import ModifyUserDataForm from './ModifyUserDataForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Avatar from './Avatar';
+import Loader from '../loader/Loader';
 import Notificator from '../messages//Notificator';
 
 import './_Settings.scss';
@@ -18,20 +20,39 @@ class Settings extends Component {
                 lastname: '',
                 avatar: ''
             },
-            loading: true
+            menu: {
+                userData: true,
+                password: false,
+                avatar: false
+            },
+            loading: true,
+            start: true
         }
 
         this.submitUserDataForm = this.submitUserDataForm.bind(this);
         this.submitUserPasswordForm = this.submitUserPasswordForm.bind(this);
+        this.menuClick = this.menuClick.bind(this);
     }
 
     componentWillMount() {
-        this.props.getCurrentUser().then(user => this.setState({ data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar }, loading: false }))
+        this.props.getCurrentUser().then(user => this.setState({ data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar }, loading: false, start: false }))
     }
 
     showNotification(title, body, type, duration) {
         this.refs.notificator.show(title, body, type, duration);
       }
+
+    menuClick(e) {
+        const { menu } = this.state;
+
+        Object.keys(menu).map(key => {
+            menu[key] = false
+        });
+
+        menu[e.target.name] = true;
+
+        this.setState({ menu })
+    }
 
     submitUserDataForm(data) {
         this.props.setUserData(data)
@@ -58,46 +79,25 @@ class Settings extends Component {
     }
 
     render() {
-        const { loading } = this.state;
+        const { loading, start, menu } = this.state;
+
         return (
-            <div className="sass-Settings container-fluid">
-                { loading ? 
-                    <div className="loading">
-                        <div className="loader" />
-                        <h2>Trwa ładowanie ustawień...</h2>
-                    </div> :
-                    <div className="forms">
-                        <div className="FormFlexItem-User">
-                            <div className="card form">
-                                <div className="card-header">
-                                    <h4>Dane osobowe</h4>
-                                </div>
-                                <div className="card-body">
-                                    <ModifyUserDataForm userData={this.state.data} submitUserDataForm={this.submitUserDataForm} />
-                                </div>
-                            </div>
-
-                            <div className="card form">
-                                <div className="card-header">
-                                    <h4>Zmiana hasła</h4>
-                                </div>
-                                <div className="card-body">
-                                    <ChangePasswordForm submitUserPasswordForm={this.submitUserPasswordForm} />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="FormFlexItem-Avatar">
-                            <div className="card form">
-                                <div className="card-header">
-                                    <h4>Zmiana zdjęcia</h4>
-                                </div>
-                                <div className="card-body">
-                                    <Avatar avatar={this.state.data.avatar} />
-                                </div>
-                            </div>
-                        </div>
-                    </div> }
+            <div className="sass-Settings container">
+                { loading ? <div className="load"><Loader text={start ? "Wczytywanie" : "Zapisywanie"} /></div> :
+                <div className="cards">
+                    <div className="Menu">
+                        <ul className="list-group">
+                            <button name="userData" onClick={this.menuClick} className={classnames('list-group-item', menu.userData && 'active')} >Dane osobowe</button>
+                            <button name="password" onClick={this.menuClick} className={classnames('list-group-item', menu.password && 'active')}  >Hasło</button>
+                            <button name="avatar" onClick={this.menuClick} className={classnames('list-group-item', menu.avatar && 'active')}  >Zdjęcie profilowe</button>
+                        </ul>
+                    </div>
+                    <div className="Form">
+                        { menu.userData && <ModifyUserDataForm userData={this.state.data} submitUserDataForm={this.submitUserDataForm} /> }
+                        { menu.password && <ChangePasswordForm submitUserPasswordForm={this.submitUserPasswordForm} /> }
+                        { menu.avatar && <Avatar avatar={this.state.data.avatar} /> }
+                    </div>
+                </div> }
                 <Notificator ref="notificator"/>
             </div>
         );
