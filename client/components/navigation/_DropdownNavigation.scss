@@ -13,6 +13,43 @@
   .nav {
     margin-right: 50px;
 
+    .icon {
+      margin: 0px 20px;
+      position: relative;
+      color: $primary-color;
+      font-size: 25px;
+      align-self: center;
+      transition: all 0.5s;
+
+      .badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        -webkit-transform: translate(40%, -40%);
+        -moz-transform:    translate(40%, -40%);
+        -ms-transform:     translate(40%, -40%);
+        -o-transform:      translate(40%, -40%);
+        transform:         translate(40%, -40%);
+        padding: 0px;
+        border-radius: 50%;
+        background: #D9534F;
+        width: 20px;
+        height: 20px;
+
+        p {
+          font-size: 0.7em;
+          margin: 0;
+        }
+      }
+    }
+
+    .icon:hover {
+      color: $secondary-color;
+      cursor: pointer;
+    }
+
+
     .nav-item {
       display: flex;
       align-items: center;

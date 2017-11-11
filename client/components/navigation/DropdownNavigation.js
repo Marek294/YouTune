@@ -52,6 +52,13 @@ class DropdownNavigation extends Component {
                             <img src="/brand.png" height="70" alt="" />
                         </Link>
                         <ul className="nav nav-pills">
+                            <li className="nav-item icon">
+                                <i className="fa fa-envelope-o" aria-hidden="true" />
+                            </li>
+                            <li className="nav-item icon">
+                                <i className="fa fa-bell-o" aria-hidden="true" />
+                                <div className="badge"><p>3</p></div>
+                            </li>
                             <li className={classNames("nav-item", "dropdown", toggleDropdown && 'show')} >
                                 <a className="nav-link dropdown-link" onClick={this.toggleDropdown}>
                                     {personalData.avatar ? <img src={personalData.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
