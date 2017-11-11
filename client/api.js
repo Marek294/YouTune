@@ -13,10 +13,10 @@ export default {
         resetPassword: (data) => axios.post('/api/auth/resetPassword', { data }),
         search: (data) => axios.post('/api/librarian/users/search', { data }).then(res => res.data),
         getCurrentUser: () => axios.get('/api/users/currentUser').then(res => res.data.user),
-        setUserData: (data) => axios.put('/api/users/updateData', data).then(res => res.data),
+        setUserData: (data) => axios.put('/api/users/updateData', data).then(res => res.data.user),
         setUserPassword: (data) => axios.put('/api/users/updatePassword', data).then(res => res.data),
         deleteUser: (id) => axios.delete(`/api/librarian/users/${id}`),
-        updateAvatar: (data) => axios.put('/api/users/avatar', data).then(res => res.data)
+        updateAvatar: (data) => axios.put('/api/users/avatar', data).then(res => res.data.user)
     },
     book: {
         search: (searchData) => axios.get(`/api/books/${searchData.select}/${searchData.query}`).then(res => res.data),

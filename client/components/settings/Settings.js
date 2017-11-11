@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { getCurrentUser, setUserData, setUserPassword, updateAvatar, modifyUser } from '../../actions/users';
+import { getCurrentUser, setUserData, setUserPassword, updateAvatar } from '../../actions/users';
 import ModifyUserDataForm from './ModifyUserDataForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Avatar from './Avatar';
@@ -63,7 +63,6 @@ class Settings extends Component {
 
         this.props.setUserData(data)
             .then(user => { 
-                    this.props.modifyUser(data.data);
                     this.showNotification('Sukces!', 'Dane zostały zmienione', 'success', 3000);
                     this.setState({
                         data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar },
@@ -165,4 +164,4 @@ Settings.propTypes = {
     updateAvatar: PropTypes.func.isRequired
 }
 
-export default connect(null, { getCurrentUser, setUserData, setUserPassword, updateAvatar, modifyUser })(Settings);
+export default connect(null, { getCurrentUser, setUserData, setUserPassword, updateAvatar })(Settings);

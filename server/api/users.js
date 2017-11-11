@@ -70,7 +70,12 @@ router.put('/avatar', upload.single('avatar'), authenticate, (req, res) => {
                     if(user.get('avatar')) cloudinary.v2.uploader.destroy(extractName(user.get('avatar')));
 
                     user.set('avatar', result.secure_url);
-                    user.save().then(()=> res.json( user ));
+
+                    const token = generateJWT(user);
+                    
+                    user.save().then(() => res.json({
+                        user: toAuthJSON(user,token)
+                    }));
     
                 } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
             })
@@ -100,7 +105,12 @@ router.put('/updateData', authenticate, (req, res) => {
             if(user) {
                 user.set('firstname', data.firstname);
                 user.set('lastname', data.lastname);
-                user.save().then(() => res.json( user ));
+            
+                const token = generateJWT(user);
+
+                user.save().then(() => res.json({
+                    user: toAuthJSON(user,token)
+                }));
 
             } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
         })
