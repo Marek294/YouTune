@@ -1,13 +1,14 @@
-import { SET_USERS } from './types';
-// import { startFetch, stopFetch, setErrors } from './fetch';
+import { MODIFY_LOGGED_USER } from './types';
 import { userLoggedIn } from './auth';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import api from '../api';
 
-export const saveUsers = (users) => ({
-    type: SET_USERS,
-    users
+export const modifyLoggedUser = (data) => ({
+    type: MODIFY_LOGGED_USER,
+    data
 })
+
+export const modifyUser = (data) => dispatch => dispatch(modifyLoggedUser(data));
 
 export const getCurrentUser = () => () => api.user.getCurrentUser()
 export const search = (data) => () => api.user.search(data)
@@ -22,20 +23,3 @@ api.user.signup(data).then(user => {
     setAuthorizationToken(user.token);
     return dispatch(userLoggedIn(user));
 });
-
-// export const getUsers = () => dispatch => {
-//     dispatch(startFetch());
-//     api.user.getUsers()
-//         .then(users => {
-//             console.log(users);
-//             dispatch(stopFetch());
-//             return dispatch(saveUsers(users));
-//         })
-//         .catch(() => {
-//             const errors = {
-//                 global: 'Błąd wyszukiwania'
-//             }
-//             dispatch(setErrors(errors));
-//             dispatch(stopFetch());
-//         })
-// }
