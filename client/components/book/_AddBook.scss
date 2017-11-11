@@ -11,11 +11,9 @@ $coverSize: 300;
     flex-direction: row;
 
     .dropZone {
-        border-radius: 20px;
         box-shadow: 0px 0px 15px #8a8a8a;
 
         .noUploadedFile {
-            border-radius: 20px;
             background-color: white;
             width: $coverSize;
             height: $coverSize*1.6;
@@ -43,7 +41,6 @@ $coverSize: 300;
         }
 
         img {
-            border-radius: 20px;
             width: $coverSize;
             height: $coverSize*1.6;
         }
@@ -53,6 +50,7 @@ $coverSize: 300;
         box-shadow: 0px 0px 15px #8a8a8a;
         padding: 10px;
         width: 60%;
+        border-radius: 0px;
 
         .card-header {
             display: flex;

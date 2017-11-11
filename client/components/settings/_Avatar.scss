@@ -2,33 +2,47 @@
 
 .sass-Avatar {
 
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+
+        i {
+            font-size: 30px;
+            margin: 0px 20px;
+        }
+
+        h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0px;
+        }
+    }
+
     form {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
+        align-items: center;
     }
 
     .btn {
-        background-color: $primary-color;
-        color: $fourth-color;
-        font-weight: 600;
+        background-color: $secondary-color;
+        color: white;
+        font-weight: bold;
         padding: 10px 50px 10px 50px;
-        align-self: left;
+        margin: 20px 0px;
 
         transition: all 0.5s;
     }
 
     .btn:hover {
-        color: $primary-color;
-        background-color: $fourth-color;
+        cursor: pointer;
+        color: $secondary-color;
+        background-color: $primary-color;
     }
 
     .dropZone {
-        padding: 10px 10px 10px 10px;
-        border: 2px solid $secondary-color;
-        border-radius: 10px;
-
-        margin-top: 10px;
         margin-bottom: 20px;
 
         .noUploadedFile {
@@ -41,8 +55,13 @@
         }
 
         img {
-            width: 100%;
-            
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+        }
+
+        img:hover {
+            cursor: pointer;
         }
     }    
 }

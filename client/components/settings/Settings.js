@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { getCurrentUser, setUserData, setUserPassword } from '../../actions/users';
+import PropTypes from 'prop-types';
+import { getCurrentUser, setUserData, setUserPassword, updateAvatar } from '../../actions/users';
 import ModifyUserDataForm from './ModifyUserDataForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Avatar from './Avatar';
@@ -32,6 +33,7 @@ class Settings extends Component {
         this.submitUserDataForm = this.submitUserDataForm.bind(this);
         this.submitUserPasswordForm = this.submitUserPasswordForm.bind(this);
         this.menuClick = this.menuClick.bind(this);
+        this.submitUserAvatar = this.submitUserAvatar.bind(this);
     }
 
     componentWillMount() {
@@ -55,26 +57,77 @@ class Settings extends Component {
     }
 
     submitUserDataForm(data) {
+        this.setState({
+            loading: true
+        });
+
         this.props.setUserData(data)
-            .then(() => { 
+            .then(user => { 
                     this.showNotification('Sukces!', 'Dane zostały zmienione', 'success', 3000);
+                    this.setState({
+                        data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar },
+                        loading: false
+                    });
                 })
             .catch(err => {
                     const errors = err.response.data.errors;
                     if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
                     else this.showNotification('Błąd!', 'Nie można zmienić danych użytkownika', 'danger', 3000);
+
+                    this.setState({
+                        loading: false
+                    });
                 })
     }
 
     submitUserPasswordForm(data) {
+        this.setState({
+            loading: true
+        });
+
         this.props.setUserPassword(data)
             .then(() => { 
                     this.showNotification('Sukces!', 'Hasło zostało zmienione', 'success', 3000);
+
+                    this.setState({
+                        loading: false
+                    });
                 })
             .catch(err => {
                     const errors = err.response.data.errors;
                     if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
                     else this.showNotification('Błąd!', 'Nie można zmienić hasła', 'danger', 3000);
+
+                    this.setState({
+                        loading: false
+                    });
+                })
+    }
+
+    submitUserAvatar(data) {
+        this.setState({
+            loading: true
+        });
+
+        this.props.updateAvatar(data)
+            .then(user => { 
+                    this.showNotification('Sukces!', 'Zdjęcie profilowe zostało zmienione', 'success', 3000);
+
+                    this.setState({
+                        data: { 
+                            ...this.state.data,
+                            avatar: user.avatar },
+                        loading: false
+                    });
+                })
+            .catch(err => {
+                    const errors = err.response.data.errors;
+                    if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
+                    else this.showNotification('Błąd!', 'Nie można zmienić zdjęcia profilowego', 'danger', 3000);
+
+                    this.setState({
+                        loading: false
+                    });
                 })
     }
 
@@ -95,7 +148,7 @@ class Settings extends Component {
                     <div className="Form">
                         { menu.userData && <ModifyUserDataForm userData={this.state.data} submitUserDataForm={this.submitUserDataForm} /> }
                         { menu.password && <ChangePasswordForm submitUserPasswordForm={this.submitUserPasswordForm} /> }
-                        { menu.avatar && <Avatar avatar={this.state.data.avatar} /> }
+                        { menu.avatar && <Avatar avatar={this.state.data.avatar} submitUserAvatar={this.submitUserAvatar} /> }
                     </div>
                 </div> }
                 <Notificator ref="notificator"/>
@@ -104,4 +157,11 @@ class Settings extends Component {
     }
 }
 
-export default connect(null, { getCurrentUser, setUserData, setUserPassword })(Settings);
+Settings.propTypes = {
+    getCurrentUser: PropTypes.func.isRequired,
+    setUserData: PropTypes.func.isRequired,
+    setUserPassword: PropTypes.func.isRequired,
+    updateAvatar: PropTypes.func.isRequired
+}
+
+export default connect(null, { getCurrentUser, setUserData, setUserPassword, updateAvatar })(Settings);

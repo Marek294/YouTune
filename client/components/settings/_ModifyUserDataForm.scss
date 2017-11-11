@@ -2,30 +2,58 @@
 
 .sass-ModifyUserDataForm {
 
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+
+        i {
+            font-size: 30px;
+            margin: 0px 20px;
+        }
+
+        h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0px;
+        }
+    }
+
     form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        margin: 0px 20px;
+
+        label {
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        input {
+            color: $secondary-color;
+        }
+
+        input:focus {
+            color: $secondary-color;
+        }
     }
 
     .btn {
-        background-color: $primary-color;
-        color: $fourth-color;
-        font-weight: 600;
+        background-color: $secondary-color;
+        color: white;
+        font-weight: bold;
         padding: 10px 50px 10px 50px;
         align-self: left;
+        margin: 20px 0px;
 
         transition: all 0.5s;
     }
 
     .btn:hover {
-        color: $primary-color;
-        background-color: $fourth-color;
-    }
-
-    .loader {
-        height: 50px;
-        width: 50px;
+        cursor: pointer;
+        color: $secondary-color;
+        background-color: $primary-color;
     }
 
     .error {

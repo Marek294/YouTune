@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
 import './_ChangePasswordForm.scss';
@@ -51,26 +52,30 @@ class ChangePasswordForm extends Component {
 
         return (
             <div className="sass-ChangePasswordForm">
+                <div className="header">
+                    <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                    <h4>Hasło</h4>
+                </div>
                 <form onSubmit={this.submit}>
-                    <div className="form-group row">
-                        <label htmlFor="password" className="col-sm-2 col-form-label">Nowe hasło</label>
-                        <div className="col-sm-10">
-                            <input type="password" className="form-control" id="password" placeholder="Hasło" name="password" onChange={this.onChange} />
-                            {errors.password && <InlineError text={errors.password} />}
-                        </div>
+                    <div className="form-group">
+                        <label htmlFor="password" className="col-form-label">Nowe hasło</label>
+                        <input type="password" className="form-control" id="password" placeholder="Hasło" name="password" onChange={this.onChange} autoComplete="off" />
+                        {errors.password && <InlineError text={errors.password} />}
                     </div>
-                    <div className="form-group row">
-                        <label htmlFor="confirmPassword" className="col-sm-2 col-form-label">Potwierdź nowe hasło</label>
-                        <div className="col-sm-10">
-                            <input type="password" className="form-control" id="confirmPassword" placeholder="Potwierdź hasło" name="confirmPassword" onChange={this.onChange} />
-                            {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
-                        </div>
+                    <div className="form-group">
+                        <label htmlFor="confirmPassword" className="col-form-label">Potwierdź nowe hasło</label>
+                        <input type="password" className="form-control" id="confirmPassword" placeholder="Potwierdź hasło" name="confirmPassword" onChange={this.onChange} />
+                        {errors.confirmPassword && <InlineError text={errors.confirmPassword} />}
                     </div>
                     <button type="submit" className="btn">Zapisz</button>
                 </form>
             </div>
         );
     }
+}
+
+ChangePasswordForm.propTypes = {
+    submitUserPasswordForm: PropTypes.func.isRequired
 }
 
 export default ChangePasswordForm;

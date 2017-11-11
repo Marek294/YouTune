@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Dropzone from 'react-dropzone';
-import { updateAvatar } from '../../actions/users';
 
 import './_Avatar.scss';
 
@@ -30,9 +29,7 @@ class Avatar extends Component {
         
         sendData.append('avatar', this.state.avatar);
             
-        this.props.updateAvatar(sendData).then(user => {
-
-        })
+        this.props.submitUserAvatar(sendData);
     }
 
     onImageDrop(files) {
@@ -45,6 +42,10 @@ class Avatar extends Component {
         const { avatar } = this.state;
         return (
             <div className="sass-Avatar">
+                <div className="header">
+                    <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                    <h4>Zdjęcie profilowe</h4>
+                </div>
                 <form onSubmit={this.onSubmit}>
                     <Dropzone
                         multiple={false}
@@ -63,4 +64,9 @@ class Avatar extends Component {
     }
 }
 
-export default connect(null, { updateAvatar })(Avatar);
+Avatar.propTypes = {
+    submitUserAvatar: PropTypes.func.isRequired,
+    avatar: PropTypes.string.isRequired
+}
+
+export default Avatar;

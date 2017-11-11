@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import InlineError from '../messages/InlineError';
 
 import './_ModifyUserDataForm.scss';
@@ -61,26 +62,34 @@ class ModifyUserDataForm extends Component {
 
         return (
             <div className="sass-ModifyUserDataForm">
+                <div className="header">
+                    <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                    <h4>Dane osobowe</h4>
+                </div>
                 <form onSubmit={this.submit}>
-                    <div className="form-group row">
-                        <label htmlFor="firstname" className="col-sm-2 col-form-label">Imię</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="firstname" placeholder="Imię" name="firstname" onChange={this.onChange} value={firstname} />
-                            {errors.firstname && <InlineError text={errors.firstname} />}
-                        </div>
+                    <div className="form-group">
+                        <label htmlFor="firstname" className="col-form-label">Imię</label>
+                        <input type="text" className="form-control" id="firstname" placeholder="Imię" name="firstname" onChange={this.onChange} value={firstname} />
+                        {errors.firstname && <InlineError text={errors.firstname} />}
                     </div>
-                    <div className="form-group row">
-                        <label htmlFor="lastname" className="col-sm-2 col-form-label">Nazwisko</label>
-                        <div className="col-sm-10">
-                            <input type="text" className="form-control" id="lastname" placeholder="Nazwisko" name="lastname" onChange={this.onChange} value={lastname} />
-                            {errors.lastname && <InlineError text={errors.lastname} />}
-                        </div>
+                    <div className="form-group">
+                        <label htmlFor="lastname" className="col-form-label">Nazwisko</label>
+                        <input type="text" className="form-control" id="lastname" placeholder="Nazwisko" name="lastname" onChange={this.onChange} value={lastname} />
+                        {errors.lastname && <InlineError text={errors.lastname} />}
                     </div>
                     <button type="submit" className="btn">Zapisz</button>
                 </form>
             </div>
         );
     }
+}
+
+ModifyUserDataForm.propTypes = {
+    userData: PropTypes.shape({
+        firstname: PropTypes.string.isRequired,
+        lastname: PropTypes.string.isRequired
+    }).isRequired,
+    submitUserDataForm: PropTypes.func.isRequired
 }
 
 export default ModifyUserDataForm;
