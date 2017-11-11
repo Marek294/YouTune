@@ -11,7 +11,7 @@ export default {
         resetPasswordRequest: (email) => axios.post('/api/auth/resetPasswordRequest', { email }),
         validateToken: (token) => axios.post('/api/auth/validateToken', { token }),
         resetPassword: (data) => axios.post('/api/auth/resetPassword', { data }),
-        getUsers: () => axios.get('/api/librarian/users').then(res => res.data),
+        search: (data) => axios.post('/api/librarian/users/search', { data }).then(res => res.data),
         getCurrentUser: () => axios.get('/api/users/currentUser').then(res => res.data.user),
         setUserData: (data) => axios.put('/api/users/updateData', data).then(res => res.data),
         setUserPassword: (data) => axios.put('/api/users/updatePassword', data).then(res => res.data),

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUsers, deleteUser } from '../../actions/users';
+import PropTypes from 'prop-types';
+import { search } from '../../actions/users';
 import SearchUser from './SearchUser';
-import Notificator from '../messages/Notificator';
 import Loader from '../loader/Loader';
 
 import './_Users.scss';
@@ -13,42 +13,28 @@ class Users extends Component {
 
         this.state = {
             users: [],
-            search: {
-                firstname: '',
-                lastname: ''
-            },
             loading: false,
             start: true,
-            deleteLoading: false,
-            modalIsOpen: false,
-            deleteUserId: -1,
-            error: {}
+            errors: {}
         }
 
         this.search = this.search.bind(this);
-        this.showNotification = this.showNotification.bind(this);
-    }
-
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
     }
 
     search(data) {
         this.setState({
-            loading: true,
-            search: {
-                firstname: data.firstname,
-                lastname: data.lastname
-            }
+            loading: true
         });
 
-        this.props.getUsers()
-            .then(users => this.setState({ users, loading: false, start: false }))
-            .catch(() => this.setState({ loading: false, error: { global: "Nie jesteś pracownikiem"}}))
+        this.props.search(data)
+            .then(users => this.setState({ users, loading: false, start: false, errors: {} }))
+            .catch(err => {
+                if(err.response.data.errors) this.setState({ loading: false, errors: { global: err.response.data.errors.global}})
+            })
     }
 
     render() {
-        const { users, loading, start, error } = this.state;
+        const { users, loading, start, errors } = this.state;
         
         let displayUsers;
         if(users.length > 0) {
@@ -63,17 +49,22 @@ class Users extends Component {
                     </div>
                 )
             })
+        } else {
+            displayUsers = (
+                <div className="noUsers text-center">
+                    <img src="unhappy.png" alt="" />
+                    <h2>Nie znaleziono czytelników</h2>
+                </div> )
         }
 
         return (
             <div className="sass-Users container">
                 <div className="card">
-                    <SearchUser search={this.search} />
+                    <SearchUser search={this.search} errors={errors} />
                 </div>
                 <div className="card load">
                     { loading && <Loader text='Wyszukiwanie' /> }
                 </div>
-                { error.global  && <div className="alert alert-danger" role="alert"> { error.global } </div> }
                 { (!loading && !start) && <div className="users">
                     <div className="header">
                         <i className="fa fa-users" aria-hidden="true" />
@@ -82,12 +73,14 @@ class Users extends Component {
                     <div className="body">
                         {displayUsers}
                     </div>
-                </div>
-                }
-                <Notificator ref="notificator"/>
+                </div> }
             </div>
         );
     }
 }
 
-export default connect(null, { getUsers, deleteUser })(Users);
+Users.propTypes = {
+    search: PropTypes.func.isRequired
+}
+
+export default connect(null, { search })(Users);

@@ -14,6 +14,24 @@ router.get('/', authenticate, (req, res) => {
     })
 });
 
+router.post('/search', authenticate, (req, res) => {
+    const { firstname, lastname } = req.body.data;
+
+    if(req.currentUser.get('librarian')) {
+        if(firstname || lastname) {
+            User.query(function(qb) {
+                if(firstname) qb.whereRaw(`LOWER(firstname) LIKE LOWER(?)`, [`%${firstname}%`])
+                if(lastname) qb.whereRaw(`LOWER(lastname) LIKE LOWER(?)`, [`%${lastname}%`])
+            }).fetchAll()
+                    .then(users => {
+                        if(users) {
+                            res.json(users);
+                        } else res.status(403).json({ errors: { global: 'Brak czytelników' } });
+                    });
+        } else res.status(403).json({ errors: { global: 'Podaj imię, nazwisko poszukiwanego czytelnika' }});
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
 router.delete('/:id', authenticate, (req, res) => {
     const deleteUserId = req.params.id;
 

@@ -3,18 +3,17 @@
 .sass-SearchUser {
     color: $secondary-color;
     padding: 30px;
-    height: 100%;
 
     form {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 100%;
         font-weight: bold;
     }
 
     .btn {
         background: $secondary-color;
+        margin-top: 20px;
 
         i {
             color: white;
@@ -31,12 +30,9 @@
         cursor: pointer;
     }
 
-    .loader {
-        height: 50px;
-        width: 50px;
-    }
-
     .error {
         color: red;
+        font-weight: bold;
+        text-align: center;
     }
 }

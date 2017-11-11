@@ -10,7 +10,7 @@ export const saveUsers = (users) => ({
 })
 
 export const getCurrentUser = () => () => api.user.getCurrentUser()
-export const getUsers = () => () => api.user.getUsers()
+export const search = (data) => () => api.user.search(data)
 export const setUserData = (data) => () => api.user.setUserData(data)
 export const setUserPassword = (data) => () => api.user.setUserPassword(data)
 export const deleteUser = (id) => () => api.user.deleteUser(id)
