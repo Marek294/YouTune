@@ -23,3 +23,7 @@ export const getBook = (id) => () => api.book.getBook(id);
 export const vote = (data) => () => api.book.vote(data);
 
 export const getVote = (bookId) => () => api.book.getVote(bookId);
+
+export const comment = (data) => () => api.book.comment(data);
+
+export const getComments = (bookId) => () => api.book.getComments(bookId);

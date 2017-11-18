@@ -6,6 +6,52 @@ $coverSize: 280;
     margin-top: 50px;
     color: $secondary-color;
 
+    .header {
+        display: flex;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            align-items: center;
+        }
+
+        .buttons {
+            button {
+                background: transparent;
+                transition: all 0.5s;
+                border: none;
+            }
+
+            button:hover {
+                cursor: pointer;
+                color: $secondary-color;
+            }
+
+            button:focus {
+                outline: none;
+            }
+
+            .green {
+                color: #5CB85C;
+            }
+
+            .red {
+                color: #D9534F;
+            }
+        }
+
+        i {
+            margin: 0px 20px;
+            font-size: 30px;
+        }
+
+        h4 {
+            margin: 0px;
+            font-size: 25px;
+            font-weight: bold;
+        }
+    }
+
     .book {
         display: flex;
         flex-direction: column;
@@ -30,52 +76,6 @@ $coverSize: 280;
                 box-shadow: 0px 0px 15px #8a8a8a;
                 padding: 20px;
                 width: 70%;
-
-                .header {
-                    display: flex;
-                    justify-content: space-between;
-
-                    div {
-                        display: flex;
-                        align-items: center;
-                    }
-
-                    .buttons {
-                        button {
-                            background: transparent;
-                            transition: all 0.5s;
-                            border: none;
-                        }
-
-                        button:hover {
-                            cursor: pointer;
-                            color: $secondary-color;
-                        }
-
-                        button:focus {
-                            outline: none;
-                        }
-
-                        .green {
-                            color: #5CB85C;
-                        }
-    
-                        .red {
-                            color: #D9534F;
-                        }
-                    }
-
-                    i {
-                        margin: 0px 20px;
-                        font-size: 30px;
-                    }
-
-                    h4 {
-                        margin: 0px;
-                        font-size: 25px;
-                        font-weight: bold;
-                    }
-                }
 
                 .body {
                     margin-top: 40px;
@@ -205,6 +205,73 @@ $coverSize: 280;
                         .disliked:hover i {
                             color: $secondary-color;
                         }
+                    }
+                }
+            }
+        }
+
+        .comments {
+            margin-top: 50px;
+            background: white;
+            box-shadow: 0px 0px 15px #8a8a8a;
+            padding: 20px;
+            width: 100%;
+
+            .noComments {
+                color: #8a8a8a;
+                
+                h2 {
+                    font-size: 1.5em;
+                }
+            }
+
+            .commentHeader {
+                display: flex;
+
+                img {
+                    border-radius: 50%;
+                    width: 70px;
+                }
+
+                .userInfo {
+                    margin: 0px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+
+                    h5 {
+                        font-weight: bold;
+                        font-size: 1.2em;
+                        margin: 0px;
+                    }
+
+                    p {
+                        margin: 0px;
+                    }
+                }
+            }
+
+            .list-group {
+                margin-top: 30px;
+                border-radius: 0px;
+
+                .list-group-item {
+                    margin: 5px;
+                    border: none;
+                    border-radius: 0px;
+                    border-bottom: 1px solid $secondary-color;
+
+                    .text {
+                        margin: 20px 0px;
+                        width: 80%;
+                        white-space: pre-wrap;       /* Since CSS 2.1 */
+                        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+                        white-space: -pre-wrap;      /* Opera 4-6 */
+                        white-space: -o-pre-wrap;    /* Opera 7 */
+                        word-wrap: break-word;
+                        font-family: 'Lato';
+                        color: $secondary-color;
+                        font-size: 1em;                        
                     }
                 }
             }

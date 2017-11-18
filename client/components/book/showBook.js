@@ -5,10 +5,11 @@ import {
   } from 'react-router-dom'
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import moment from 'moment';
 import Modal from 'react-modal';
 import Loader from '../loader/Loader';
 import Notificator from '../messages//Notificator';
-import { getBook, deleteBook, getVote, vote } from '../../actions/books';
+import { getBook, deleteBook, getVote, vote, comment, getComments } from '../../actions/books';
 
 import './_ShowBook.scss';
 
@@ -17,26 +18,43 @@ function cutSummary(sum) {
     return sum;
 }
 
+function isCommentTooLong(name,value) {
+    if(name === "text" && value.length > 255) return value.slice(0,255);
+    
+    return value;
+}
+
 class showBook extends Component {
     constructor(props) {
         super(props);
         
         this.state = {
             loading: true,
+            data: {
+                bookId: '',
+                text: ''
+            },
             book: {},
             vote: {},
+            comments: {},
             error: {},
+            modalOption: '',
             showSummary: false,
             deleteLoading: false,
+            commentLoading: false,
             deleted: false
         }
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.deleteDiv = this.deleteDiv.bind(this);
+        this.addCommentDiv = this.addCommentDiv.bind(this);
         this.toggleSummary = this.toggleSummary.bind(this);
         this.deleteBook = this.deleteBook.bind(this);
         this.voteClick = this.voteClick.bind(this);
+        this.displayComment = this.displayComment.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -46,7 +64,9 @@ class showBook extends Component {
 
         const p2 = this.props.getVote(id)
 
-        Promise.all([p1, p2]).then(values => this.setState({ book: values[0], vote: values[1], loading: false}));
+        const p3 = this.props.getComments(id);
+
+        Promise.all([p1, p2, p3]).then(values => this.setState({ book: values[0], vote: values[1], comments: values[2], loading: false}));
 
     }
 
@@ -54,12 +74,12 @@ class showBook extends Component {
         this.refs.notificator.show(title, body, type, duration);
       }
 
-    openModal() {
-        this.setState({modalIsOpen: true});
+    openModal(option) {
+        this.setState({modalIsOpen: true, modalOption: option});
     }
 
     closeModal() {
-        this.setState({modalIsOpen: false});
+        this.setState({modalIsOpen: false, modalOption: ''});
     }
 
     toggleSummary() {
@@ -81,7 +101,8 @@ class showBook extends Component {
                 this.setState({
                     loading: false,
                     deleteLoading: false,
-                    modalIsOpen: false
+                    modalIsOpen: false,
+                    modalOption: ''
                 });
                 this.showNotification('Błąd!', 'Wystąpił błąd przy usuwaniu pozycji z systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
             })
@@ -111,6 +132,67 @@ class showBook extends Component {
         )
     }
 
+    addCommentDiv() {
+        const { commentLoading, data } = this.state;
+        return (
+            <div className="ModalCard card add">
+                { commentLoading ? <div className="loadPadding"><Loader text="Dodawanie" /></div> :
+                <div>
+                    <div className="card-header">
+                        <i className="fa fa-check-square-o" aria-hidden="true" />
+                        <h4>Komentarz</h4>
+                    </div>
+                    <div className="card-body">
+                        <form onSubmit={this.onSubmit}>
+                            <div className="form-group">
+                                <label htmlFor="Text">Pozostało {255-data.text.length} znaków</label>
+                                <textarea className="form-control" id="Text" rows="3" name="text" onChange={this.onChange} value={data.text} />
+                            </div>
+                            <button type="submit" className="btn addComment">Dodaj</button>
+                        </form>
+                    </div>
+                </div> }
+            </div>
+        )
+    }
+
+    onChange(e) {
+        this.setState({ 
+            data: { ...this.state.data, [e.target.name]: isCommentTooLong(e.target.name,e.target.value) }
+        });
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        this.setState({
+            commentLoading: true
+        })
+
+        const { data } = this.state;
+        data.bookId = this.props.location.state.id;
+
+        this.props.comment(data)
+            .then(comment => {
+                const { comments } = this.state;
+                let newComment = comment;
+                newComment.user = this.props.user;
+                comments.push(newComment);
+
+                this.setState({ comments, commentLoading: false, modalIsOpen: false, modalOption: '' })
+                this.showNotification('Sukces!', 'Dodano komentarz', 'success', 3000);                
+            })
+            .catch(err => {
+                this.setState({
+                    loading: false,
+                    deleteLoading: false,
+                    modalIsOpen: false,
+                    modalOption: ''
+                });
+                this.showNotification('Błąd!', 'Wystąpił błąd przy usuwaniu pozycji z systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+            })
+    }
+
     voteClick(isPositive) {
         const data = {
             bookId: this.state.book.id,
@@ -138,9 +220,25 @@ class showBook extends Component {
             });
     }
 
+    displayComment(item, i) {
+        return (
+            <li key={i} className="list-group-item">
+                <div className="commentHeader">
+                    <img src={item.user.avatar} alt="" />
+                    <div className="userInfo">
+                        <h5>{item.user.firstname} {item.user.lastname}</h5>
+                        <p>{moment(item.created_at).format('LLL')}</p>
+                    </div>
+                </div>
+                <pre className="text">{item.text}</pre>
+            </li>
+        )
+    }
+
     render() {
-        const { book, loading, error, showSummary, vote } = this.state;
+        const { book, loading, error, showSummary, vote, comments, modalOption } = this.state;
         const { isLibrarian } = this.props;
+        moment.locale('pl');
 
         let color = '';
         if(book.votes > 0) color = 'green';
@@ -153,6 +251,17 @@ class showBook extends Component {
             else voteButton = "dislike"
         }
         else voteButton = "none";
+
+        let displayComments;
+        if(comments.length > 0) {
+            displayComments = comments.map((item, i) => this.displayComment(item,i));
+        } else {
+            displayComments = (
+                <div className="noComments text-center">
+                    <h2>Brak komentarzy</h2>
+                    <h2>Bądź pierwszy i dodaj komentarz :)</h2>
+                </div> )
+        }
 
         return (
         <div className="sass-Book container">
@@ -170,7 +279,7 @@ class showBook extends Component {
                             </div>
                             { isLibrarian && <div className="buttons">
                                 <Link to={{ pathname: "/updateBook", state: { id: book.id } }} className="green"><i className="fa fa-pencil-square-o" aria-hidden="true" /></Link>
-                                <button onClick={this.openModal} className="red"><i className="fa fa-trash" aria-hidden="true" /></button>
+                                <button onClick={() => this.openModal('destroying')} className="red"><i className="fa fa-trash" aria-hidden="true" /></button>
                             </div> }
                         </div>
                         <div className="body">
@@ -204,7 +313,18 @@ class showBook extends Component {
                     </div>
                 </div>
                 <div className="comments">
-
+                    <div className="header">
+                        <div>
+                            <i className="fa fa-comments" aria-hidden="true" />
+                            <h4>Komentarze</h4>
+                        </div>
+                        <div className="buttons">
+                            <button onClick={() => this.openModal('commenting')} className="green"><i className="fa fa-plus-circle" aria-hidden="true" /></button>
+                        </div>
+                    </div>
+                    <ul className="list-group">
+                        {displayComments}
+                    </ul>
                 </div>
             </div> }
             <Modal
@@ -213,7 +333,8 @@ class showBook extends Component {
                 className="ReactModal"
                 overlayClassName="Overlay"
             >
-                {this.deleteDiv()}
+                {modalOption === 'destroying' && this.deleteDiv()}
+                {modalOption === 'commenting' && this.addCommentDiv()}
             </Modal> 
             <Notificator ref="notificator"/>
         </div>
@@ -224,7 +345,8 @@ class showBook extends Component {
 function mapStateToProps(state) {
     return {
         isLibrarian: state.user.librarian,
+        user: state.user
     }
 }
 
-export default connect(mapStateToProps, { getBook, deleteBook, getVote, vote })(showBook);
+export default connect(mapStateToProps, { getBook, deleteBook, getVote, vote, comment, getComments  })(showBook);

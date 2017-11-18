@@ -4,6 +4,7 @@
 
 import bookshelf from '../bookshelf';
 import Vote from './vote';
+import Comment from './comment';
 
 export default bookshelf.Model.extend({
     tableName: 'books',
