@@ -17,3 +17,9 @@ export const addBook = (data) => () => api.book.addBook(data);
 export const updateBook = (data) => () => api.book.updateBook(data);
 
 export const deleteBook = (id) => () => api.book.deleteBook(id);
+
+export const getBook = (id) => () => api.book.getBook(id);
+
+export const vote = (data) => () => api.book.vote(data);
+
+export const getVote = (bookId) => () => api.book.getVote(bookId);

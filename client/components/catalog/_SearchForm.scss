@@ -27,12 +27,13 @@
         box-shadow: 0;
     }
 
-
     select:focus {
-        outline: 0;
         background: transparent;
         background: url(http://localhost:3000/arrow.png) 96% / 20% no-repeat white;
         color: $secondary-color;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
     }
 
     input {

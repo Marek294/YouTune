@@ -1,17 +1,19 @@
 /* eslint linebreak-style: ["error", "windows"] */
 
 import React, { Component } from 'react';
+import {
+    Redirect,
+  } from 'react-router-dom'
 import Validator from 'validator';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
-import Modal from 'react-modal';
 import Loader from '../loader/Loader';
 import InlineError from '../messages/InlineError';
 import Notificator from '../messages//Notificator';
-import { addBook } from '../../actions/books';
+import { getBook, updateBook } from '../../actions/books';
 
-import './_AddBook.scss';
+import './_UpdateBook.scss';
 
 function isSummaryTooLong(name,value) {
     if(name === "summary" && value.length > 2000) return value.slice(0,2000);
@@ -19,31 +21,41 @@ function isSummaryTooLong(name,value) {
     return value;
 }
 
-class AddBook extends Component {
+class UpdateBook extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: {
-                title: '',
-                author: '',
-                summary: '',
-                cover: ''
-            },
-            loading: false,
+            data: {},
+            loading: true,
             errors: {},
-            modalIsOpen: false
+            updated: false,
+            updating: false
         }
 
         this.validate = this.validate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
-        this.addBook = this.addBook.bind(this);
+        this.updateBook = this.updateBook.bind(this);
         this.onImageDrop = this.onImageDrop.bind(this);
-        this.openModal = this.openModal.bind(this);
-        this.closeModal = this.closeModal.bind(this);
-        this.modalDiv = this.modalDiv.bind(this);
-        this.modalAccept = this.modalAccept.bind(this);
+    }
+
+    componentWillMount() {
+        const { id } = this.props.location.state;
+
+        this.props.getBook(id)
+            .then(book => {
+                if(!book.cover) {
+                    book.cover = {}
+                } else {
+                    const tmp = book.cover;
+                    book.cover = {}
+                    book.cover.preview = tmp;
+                }
+
+                this.setState({ data: book, loading: false }) 
+            })
+
     }
 
     onChange(e) {
@@ -62,8 +74,18 @@ class AddBook extends Component {
 
         if(Object.keys(errors).length === 0) {
             this.setState({
-                modalIsOpen: true
+                loading: true,
+                updating: true
             });
+    
+            const sendData = new FormData();
+            
+            Object.keys(data).map(objectKey => {
+                const value = data[objectKey];
+                return sendData.append(objectKey, value)
+            });
+    
+            this.updateBook(sendData);
         }
     }
 
@@ -80,53 +102,20 @@ class AddBook extends Component {
         this.refs.notificator.show(title, body, type, duration);
       }
 
-    openModal() {
-        this.setState({modalIsOpen: true});
-    }
-
-    closeModal() {
-        this.setState({modalIsOpen: false});
-    }
-
-    modalAccept() {
-        this.setState({
-            loading: true
-        });
-
-        const { data } = this.state;
-        const sendData = new FormData();
-        
-        Object.keys(data).map(objectKey => {
-            const value = data[objectKey];
-            return sendData.append(objectKey, value)
-        });
-
-        this.addBook(sendData);
-    }
-
-    addBook(data) {
-        this.props.addBook(data)
-            .then(book =>{
-                this.setState({
-                    loading: false,
-                    data: {
-                        title: '',
-                        author: '',
-                        summary: '',
-                        cover: ''
-                    },
-                    uploadedFile: {},
-                    errors: {},
-                    modalIsOpen: false
-                });
-                this.showNotification('Sukces!', 'Dodano książkę do systemu', 'success', 3000);
-            })
+    updateBook(data) {
+        this.props.updateBook(data)
+            .then(book =>this.setState({
+                updated: true,
+                loading: false,
+                updating: false
+            }))
             .catch(err => {
                 this.setState({
                     loading: false,
-                    modalIsOpen: false
+                    modalIsOpen: false,
+                    updating: false
                 });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu pozycji do systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+                this.showNotification('Błąd!', 'Wystąpił błąd przy wprowadzaniu zmian pozycji w systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
             })
     }
 
@@ -139,32 +128,13 @@ class AddBook extends Component {
         return errors;
     }
 
-    modalDiv() {
-        const { loading } = this.state;
-        return (
-            <div className="ModalCard card add">
-                { loading ? <div className="loadPadding"><Loader text="Zapisywanie" /></div> :
-                <div>
-                    <div className="card-header">
-                        <i className="fa fa-check-square-o" aria-hidden="true" />
-                        <h4>Potwierdzenie</h4>
-                    </div>
-                    <div className="card-body">
-                        <p>Czy jesteś pewien, że chcesz dodać tą pozycję do systemu?</p>
-                        <div className="buttons">
-                            <button onClick={this.modalAccept} className="add">Dodaj</button>
-                            <button onClick={this.closeModal} className="cancel">Anuluj</button>
-                        </div>
-                    </div>
-                </div> }
-            </div>
-        )
-    }
-
     render() {
-        const { errors, data } = this.state;
+        const { errors, loading, data, updated, updating } = this.state;
+
         return (
-            <div className="sass-BookForm container">
+            loading ? <div style={{marginTop: '50px'}}> <Loader text={ updating ? "Trwa wprowadzanie zmian" : "Wczytywanie"} /> </div> :
+            <div className="sass-UpdateBookForm container">
+                { updated && <Redirect to={{ pathname: "/book", state: { id: data.id } }} /> }
                 <Dropzone
                     multiple={false}
                     accept="image/*"
@@ -179,8 +149,8 @@ class AddBook extends Component {
                 </Dropzone>
                 <div className="card form">
                     <div className="card-header">
-                        <img src="addBook.jpg" alt="" />
-                        <h4>Dodawanie pozycji</h4>
+                        <i className="fa fa-pencil-square-o" aria-hidden="true" />
+                        <h4>Edytowanie pozycji</h4>
                     </div>
                     <div className="card-body">
                         { errors.global && <div className="alert alert-danger" role="alert">
@@ -202,19 +172,11 @@ class AddBook extends Component {
                                         <label htmlFor="Summary">Strzeszczenie (pozostało {2000-data.summary.length} znaków)</label>
                                         <textarea className="form-control" id="Summary" rows="3" name="summary" onChange={this.onChange} value={data.summary} />
                                     </div>
-                                    <button type="submit" className="btn">Dodaj</button>
+                                    <button type="submit" className="btn">Edytuj</button>
                                 </div>
                             </form>
                     </div>
                 </div>
-                <Modal
-                    isOpen={this.state.modalIsOpen}
-                    onRequestClose={this.closeModal}
-                    className="ReactModal"
-                    overlayClassName="Overlay"
-                >
-                    {this.modalDiv()}
-                </Modal> 
 
                 <Notificator ref="notificator"/>
             </div>
@@ -222,8 +184,8 @@ class AddBook extends Component {
     }
 }
 
-AddBook.propTypes = {
-    addBook: PropTypes.func.isRequired
+UpdateBook.propTypes = {
+    updateBook: PropTypes.func.isRequired
 }
 
-export default connect(null, { addBook })(AddBook);
+export default connect(null, { getBook, updateBook })(UpdateBook);

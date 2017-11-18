@@ -23,5 +23,8 @@ export default {
         addBook: (data) => axios.post('/api/librarian/books', data).then(res => res.data.book),
         updateBook: (data) => axios.put('/api/librarian/books', data).then(res => res.data.book),
         deleteBook: (id) => axios.delete(`/api/librarian/books/${id}`),
+        getBook: (id) => axios.get(`api/books/${id}`).then(res => res.data),
+        vote: (data) => axios.post('api/votes', { data }).then(res => res.data.vote),
+        getVote: (bookId) => axios.get(`api/votes/${bookId}`).then(res => res.data.vote)
     }
 }

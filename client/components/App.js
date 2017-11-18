@@ -20,6 +20,8 @@ import ResetPasswordPage from './resetPassword/ResetPasswordPage';
 import Users from './users/Users';
 import Settings from './settings/Settings';
 import AddBook from './book/addBook';
+import ShowBook from './book/showBook';
+import UpdateBook from './book/updateBook';
 
 require('../sass/_loader.scss');
 require('../sass/_reactModal.scss');
@@ -36,8 +38,10 @@ const App = ({ location }) => {
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
                 <UserRoute location={location} exact path="/catalog" component={Catalog} />
                 <UserRoute location={location} exact path="/settings" component={Settings} />
+                <UserRoute location={location} exact path="/book" component={ShowBook} />
                 <LibrarianRoute location={location} exact path="/users" component={Users} />
                 <LibrarianRoute location={location} exact path="/addBook" component={AddBook} />
+                <LibrarianRoute location={location} exact path="/updateBook" component={UpdateBook} />
             </div>
         )
 }

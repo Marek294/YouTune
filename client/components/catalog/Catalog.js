@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
@@ -34,16 +35,13 @@ class Catalog extends Component {
         item.isAvailable = true;
         if(i === 2) item.isAvailable = false;
 
-        item.votes = Math.floor((Math.random() * 100) - 50);
-        if(i === 3) item.votes = 0;
-
         let color = '';
         if(item.votes > 0) color = 'green';
         if(item.votes < 0) color = 'red';
         if(item.votes === 0) color = 'grey';
 
         return (
-            <div key={i} className={classnames("book", !item.isAvailable && 'notAvailable')}>
+            <Link to={{ pathname: "/book", state: { id: item.id } }} key={i} className={classnames("book", !item.isAvailable && 'notAvailable')}>
                 <div className="info">
                     <img src={item.cover ? item.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
                     <div className={classnames("vote", color)}>
@@ -61,7 +59,7 @@ class Catalog extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Link>
         )
     }
 

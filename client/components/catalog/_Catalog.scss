@@ -159,6 +159,7 @@ $coverSize: 200;
             .book:hover {
                 cursor: pointer;
                 color: $secondary-color;
+                text-decoration: none;
 
                 -webkit-filter: contrast(150%);
                 filter: contrast(150%);
