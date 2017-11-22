@@ -5,13 +5,28 @@ import authenticate from '../middlewares/authenticate';
 
 const router = express.Router();
 
-router.get('/:bookId', authenticate, (req, res) => {
-    const { bookId } = req.params;
+router.get('/:bookId/:page', authenticate, (req, res) => {
+    const { bookId, page } = req.params;
 
+    // Comment.query({
+    //     where: { bookId }
+    // }).fetchAll({withRelated: ['user']}).then(comments => {
+    //     res.json( comments );
+    // })
+    
     Comment.query({
         where: { bookId }
-    }).fetchAll({withRelated: ['user']}).then(comments => {
-        res.json( comments );
+    }).orderBy('created_at', 'DESC')
+      .fetchPage({page, pageSize: 5, withRelated: ['user']}).then(comments => {
+        let hasMore = true;
+        if(comments.pagination.pageCount <= page) hasMore = false;
+
+        const response = {
+            comments,
+            hasMore
+        }
+
+        res.json( response );
     })
 })
 

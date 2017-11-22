@@ -6,8 +6,10 @@ import {
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import moment from 'moment';
+import InfiniteScroll from 'react-infinite-scroller';
 import Modal from 'react-modal';
 import Loader from '../loader/Loader';
+import LineLoader from '../loader/LineLoader';
 import Notificator from '../messages//Notificator';
 import { getBook, deleteBook, getVote, vote, comment, getComments } from '../../actions/books';
 
@@ -39,6 +41,8 @@ class showBook extends Component {
             comments: {},
             error: {},
             modalOption: '',
+            page: 1,
+            hasMore: false,
             showSummary: false,
             deleteLoading: false,
             commentLoading: false,
@@ -55,18 +59,23 @@ class showBook extends Component {
         this.displayComment = this.displayComment.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.loadMoreComments = this.loadMoreComments.bind(this);
     }
 
     componentWillMount() {
         const { id } = this.props.location.state;
+        const { page } = this.state;
 
         const p1 = this.props.getBook(id)
 
         const p2 = this.props.getVote(id)
 
-        const p3 = this.props.getComments(id);
+        const p3 = this.props.getComments(id,page);
 
-        Promise.all([p1, p2, p3]).then(values => this.setState({ book: values[0], vote: values[1], comments: values[2], loading: false}));
+        Promise.all([p1, p2, p3]).then(values => {
+            const { comments , hasMore } = values[2];
+            this.setState({ book: values[0], vote: values[1], comments, hasMore, loading: false})
+        });
 
     }
 
@@ -86,6 +95,30 @@ class showBook extends Component {
         this.setState({
             showSummary: !this.state.showSummary
         });
+    }
+
+    loadMoreComments() {
+        const { id } = this.props.location.state;
+        let { hasMore, page } = this.state;
+        let stateComments = this.state.comments;
+
+        if(hasMore) page++;
+
+        this.props.getComments(id,page).then(data => {
+            const { comments, hasMore } = data;
+
+            comments.map(item => {
+                stateComments.push(item);
+            })
+
+            console.log(hasMore);
+
+            this.setState({
+                comments: stateComments,
+                hasMore,
+                page
+            });
+        })
     }
 
     deleteBook() {
@@ -236,7 +269,7 @@ class showBook extends Component {
     }
 
     render() {
-        const { book, loading, error, showSummary, vote, comments, modalOption } = this.state;
+        const { book, loading, error, showSummary, vote, comments, modalOption, hasMore } = this.state;
         const { isLibrarian } = this.props;
         moment.locale('pl');
 
@@ -323,7 +356,15 @@ class showBook extends Component {
                         </div>
                     </div>
                     <ul className="list-group">
-                        {displayComments}
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={this.loadMoreComments}
+                        hasMore={hasMore}
+                        loader={<LineLoader />}
+                    >
+                    {displayComments}
+                    </InfiniteScroll>
+                        
                     </ul>
                 </div>
             </div> }

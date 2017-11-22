@@ -6,6 +6,7 @@ import Book from './book';
 import User from './user';
 
 bookshelf.plugin(require('bookshelf-uuid'))
+bookshelf.plugin('pagination')
 
 export default bookshelf.Model.extend({
     tableName: 'comments',
