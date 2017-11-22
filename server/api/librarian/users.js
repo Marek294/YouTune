@@ -14,6 +14,20 @@ router.get('/', authenticate, (req, res) => {
     })
 });
 
+router.get('/:id', authenticate, (req, res) => {
+    const { id } = req.params;
+
+    User.query({
+        where: { id }
+    }).fetch({withRelated: ['lending']}).then(user => {
+        if(req.currentUser.get('librarian')) {
+            if(user) {
+                res.json(user);
+            } else res.status(403).json({ errors: { global: 'Brak użytkownika' } });
+        } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+    })
+});
+
 router.post('/search', authenticate, (req, res) => {
     const { firstname, lastname } = req.body.data;
 

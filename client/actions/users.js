@@ -28,3 +28,5 @@ api.user.signup(data).then(user => {
     setAuthorizationToken(user.token);
     return dispatch(userLoggedIn(user));
 });
+
+export const getUser = (id) => () => api.user.getUser(id);

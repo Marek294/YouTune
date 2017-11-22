@@ -22,6 +22,7 @@ import Settings from './settings/Settings';
 import AddBook from './book/addBook';
 import ShowBook from './book/showBook';
 import UpdateBook from './book/updateBook';
+import ShowUser from './user/showUser';
 
 require('../sass/_loader.scss');
 require('../sass/_reactModal.scss');
@@ -42,6 +43,7 @@ const App = ({ location }) => {
                 <LibrarianRoute location={location} exact path="/users" component={Users} />
                 <LibrarianRoute location={location} exact path="/addBook" component={AddBook} />
                 <LibrarianRoute location={location} exact path="/updateBook" component={UpdateBook} />
+                <LibrarianRoute location={location} exact path="/user" component={ShowUser} />
             </div>
         )
 }

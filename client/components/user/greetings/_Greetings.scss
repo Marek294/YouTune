@@ -1,0 +1,37 @@
+@import '../../../sass/colors';
+
+.sass-Greetings {
+    width: 40%;
+
+    .card {
+        background-color: $secondary-color;
+        box-shadow: 0px 0px 30px #8a8a8a;
+        color: $primary-color;
+        font-weight: bold;
+        border-radius: 0px;
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+
+            h3 {
+                margin: 20px 0px 20px 0px;
+                font-weight: bold;
+            }
+
+            img {
+                border-radius: 50%;
+                width: 150px;
+            }
+
+            .text {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+    }
+}

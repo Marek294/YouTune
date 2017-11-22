@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { search } from '../../actions/users';
@@ -40,13 +41,13 @@ class Users extends Component {
         if(users.length > 0) {
             displayUsers = users.map((user, i) => {
                 return (
-                    <div key={i} className="user">
+                    <Link to={{ pathname: "/user", state: { id: user.id } }} key={i} className="user">
                         { user.avatar ? <img src={user.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
                         <div className="userData text-center">
                             <h4>{user.firstname}</h4>
                             <h4>{user.lastname}</h4>
                         </div>
-                    </div>
+                    </Link>
                 )
             })
         } else {

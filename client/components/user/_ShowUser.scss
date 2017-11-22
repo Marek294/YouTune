@@ -1,0 +1,14 @@
+.sass-ShowUser {
+    margin-top: 50px;
+    
+    .container {
+        display: flex;
+        justify-content: space-between;
+        flex-flow: row wrap;
+    }
+
+    .load {
+        width: 100%;
+        height: 100%;
+    }
+}

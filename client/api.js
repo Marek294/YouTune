@@ -16,7 +16,8 @@ export default {
         setUserData: (data) => axios.put('/api/users/updateData', data).then(res => res.data.user),
         setUserPassword: (data) => axios.put('/api/users/updatePassword', data).then(res => res.data),
         deleteUser: (id) => axios.delete(`/api/librarian/users/${id}`),
-        updateAvatar: (data) => axios.put('/api/users/avatar', data).then(res => res.data.user)
+        updateAvatar: (data) => axios.put('/api/users/avatar', data).then(res => res.data.user),
+        getUser: (id) => axios.get(`/api/librarian/users/${id}`).then(res => res.data)
     },
     book: {
         search: (searchData) => axios.get(`/api/books/${searchData.select}/${searchData.query}`).then(res => res.data),
