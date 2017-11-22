@@ -105,10 +105,10 @@ router.delete('/:id', authenticate, (req, res) => {
     
     Book.query({
         where: { id: deleteBookId }
-    }).fetch().then(book => {
+    }).fetch({withRelated: ['votes', 'lendingHistory']}).then(book => {
         if(req.currentUser.get('librarian')) {
             if(book) {  
-                if(book.get('cover')) cloudinary.v2.uploader.destroy(extractName(book.get('cover')));    
+                if(book.get('cover')) cloudinary.v2.uploader.destroy(extractName(book.get('cover')));
                 book.destroy().then(() => { res.json({ success: true }) });
             } else res.status(403).json({ errors: { global: 'Nie ma takiej pozycji' } });
         } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });

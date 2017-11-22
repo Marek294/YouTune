@@ -7,12 +7,6 @@ const router = express.Router();
 
 router.get('/:bookId/:page', authenticate, (req, res) => {
     const { bookId, page } = req.params;
-
-    // Comment.query({
-    //     where: { bookId }
-    // }).fetchAll({withRelated: ['user']}).then(comments => {
-    //     res.json( comments );
-    // })
     
     Comment.query({
         where: { bookId }

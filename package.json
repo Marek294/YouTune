@@ -16,6 +16,7 @@
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "bookshelf": "^0.10.4",
+    "bookshelf-cascade-delete": "^2.0.1",
     "bookshelf-uuid": "^1.0.0",
     "classnames": "^2.2.5",
     "cloudinary": "^1.9.1",

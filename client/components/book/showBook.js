@@ -210,9 +210,9 @@ class showBook extends Component {
                 const { comments } = this.state;
                 let newComment = comment;
                 newComment.user = this.props.user;
-                comments.push(newComment);
+                comments.unshift(newComment);
 
-                this.setState({ comments, commentLoading: false, modalIsOpen: false, modalOption: '' })
+                this.setState({ comments, commentLoading: false, modalIsOpen: false, modalOption: '', data: { ...this.state.data, text: ''} })
                 this.showNotification('Sukces!', 'Dodano komentarz', 'success', 3000);                
             })
             .catch(err => {
@@ -325,7 +325,7 @@ class showBook extends Component {
                                     <div className={classnames("vote", color)}>
                                         <p>{book.votes > 0 ? '+'.concat(book.votes) : book.votes}</p>
                                     </div>
-                                    <p>Dostępna</p>
+                                    <p>{ book.availability ? 'Dostępna' : 'Wypożyczona' }</p>
                                 </div>
                             </div>
                                 

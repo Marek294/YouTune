@@ -32,16 +32,13 @@ class Catalog extends Component {
     }
 
     displayBook(item, i) {
-        item.isAvailable = true;
-        if(i === 2) item.isAvailable = false;
-
         let color = '';
         if(item.votes > 0) color = 'green';
         if(item.votes < 0) color = 'red';
         if(item.votes === 0) color = 'grey';
 
         return (
-            <Link to={{ pathname: "/book", state: { id: item.id } }} key={i} className={classnames("book", !item.isAvailable && 'notAvailable')}>
+            <Link to={{ pathname: "/book", state: { id: item.id } }} key={i} className={classnames("book", !item.availability && 'notAvailable')}>
                 <div className="info">
                     <img src={item.cover ? item.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
                     <div className={classnames("vote", color)}>
@@ -55,7 +52,7 @@ class Catalog extends Component {
                             <p>{item.author}</p>
                         </div>
                         <div className="availability">
-                            <p>{item.isAvailable ? 'Dostępna' : 'Niedostępna'}</p>
+                            <p>{item.availability ? 'Dostępna' : 'Wypożyczona'}</p>
                         </div>
                     </div>
                 </div>
