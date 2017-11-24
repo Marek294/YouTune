@@ -8,9 +8,9 @@ const router = express.Router();
 router.get('/', authenticate, (req, res) => {
     Lending.query({
         where: { userId: req.currentUser.get('id') }
-    }).fetchAll()
+    }).fetchAll({withRelated: ['book']})
         .then(lending => {
-            res.json({ lending });
+            res.json(lending);
         })
 })
 

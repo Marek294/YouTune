@@ -3,7 +3,10 @@ import { connect } from 'react-redux'
 import { getUser } from '../../actions/users';
 import Greetings from './greetings/Greetings';
 import BorrowedBooks from './borrowedBooks/BorrowedBooks';
+import LendingHistory from './lendingHistory/LendingHistory';
 import Loader from '../loader/Loader';
+
+import './_ShowUser.scss';
 
 class showUser extends Component {
     constructor(props) {
@@ -37,6 +40,7 @@ class showUser extends Component {
                     <div className="container">
                         <Greetings user={user} />
                         <BorrowedBooks lending={user.lending} />
+                        <LendingHistory id={user.id} />
                 </div> }
             </div>
         )

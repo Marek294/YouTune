@@ -20,7 +20,7 @@ class DashboardPage extends Component {
         super(props);
 
         this.state = {
-            user: '',
+            user: {},
             loading: true,
             componentsLoading: {
                 greetings: true

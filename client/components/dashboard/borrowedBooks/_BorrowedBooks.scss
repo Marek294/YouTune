@@ -2,4 +2,52 @@
 
 .sass-BorrowedBooks {
     width: 50%;
+
+    .list-group {
+        overflow-y: auto;
+        height: 100%;
+
+        .list-group-item {
+            display: flex;
+            flex-direction: row;
+            padding: 0px;
+            border: none;
+            border-radius: 0px;
+            margin: 10px 0px;
+
+            div {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                width: 100%;
+
+                margin: 0px 20px;
+
+                p {
+                    margin: 0px;
+                }
+
+                .title {
+                    color: $secondary-color;
+                    font-weight: bold;
+                    font-size: 1.3em;
+                }
+
+                .date {
+                    margin: 0px;
+                    align-self: flex-end;
+                    width: 50%;
+
+                    p {
+                        color: $secondary-color;
+                    }
+                }
+            }
+        }
+
+        img {
+            width: 60px;
+            border-radius: none;
+        }
+    }
 }

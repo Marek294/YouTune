@@ -88,7 +88,7 @@ router.put('/avatar', upload.single('avatar'), authenticate, (req, res) => {
 router.get('/currentUser', authenticate, (req, res) => {
     User.query({
         where: { id: req.currentUser.id }
-    }).fetch({ columns: ['firstname', 'lastname', 'created_at', 'avatar']}).then(user => {
+    }).fetch({columns: ['firstname', 'lastname', 'created_at', 'avatar']}).then(user => {
         if(user) {
             res.json({ user });
         } else res.status(403).json({ errors: { global: "Użytkownik nie istnieje"} });
