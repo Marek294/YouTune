@@ -27,7 +27,7 @@ class BorrowedBooks extends Component {
         
         const displayLending = lending.map((item,i) => {
             return (
-                <li className='list-group-item'>
+                <li key={i} className='list-group-item'>
                     <img src={item.book.cover ? item.book.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
                     <div>
                         <p className="title">{item.book.title}</p>

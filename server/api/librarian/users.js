@@ -19,7 +19,7 @@ router.get('/:id', authenticate, (req, res) => {
 
     User.query({
         where: { id }
-    }).fetch({withRelated: ['lending']}).then(user => {
+    }).fetch().then(user => {
         if(req.currentUser.get('librarian')) {
             if(user) {
                 res.json(user);

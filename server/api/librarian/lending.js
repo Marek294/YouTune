@@ -8,6 +8,32 @@ import authenticate from '../../middlewares/authenticate';
 
 const router = express.Router();
 
+router.get('/:id', authenticate, (req, res) => {
+    const { id } = req.params;
+
+    if(req.currentUser.get('librarian')) {
+        Lending.query({
+            where: { userId: id }
+        }).fetchAll({withRelated: ['book']})
+            .then(lending => {
+                res.json(lending);
+            })
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
+router.get('/history/:id', authenticate, (req, res) => {
+    const { id } = req.params;
+
+    if(req.currentUser.get('librarian')) {
+        LendingHistory.query({
+            where: { userId: id }
+        }).orderBy('created_at', 'DESC').fetchAll({withRelated: ['book']})
+            .then(lendingHistory => {
+                res.json(lendingHistory);
+            })
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
 router.post('/', authenticate, (req, res) => {
     const { data } = req.body;
     const { errors, isValid } = lendingValidation(data);
@@ -27,7 +53,7 @@ router.post('/', authenticate, (req, res) => {
                             .then(lend => {
                                 values[0].set('availability', false);
                                 values[0].save();
-                                res.json({ lend });
+                                res.json(lend);
                             })
                             .catch(err => res.status(400).json({ errors: err }))
                         } else res.status(403).json({ errors: { global: 'Pozycja została już wypożyczona' } });
@@ -60,7 +86,9 @@ router.put('/return', authenticate, (req, res) => {
 
                         lend.destroy();
 
-                        res.json({ lendHistory });
+                        lendHistory.set('book', book);
+
+                        res.json(lendHistory);
                     })
                     .catch(err => res.status(400).json({ errors: err }))
                 }

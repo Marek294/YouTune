@@ -31,6 +31,9 @@ export default {
         getComments: (bookId, page) => axios.get(`api/comments/${bookId}/${page}`).then(res => res.data)
     },
     lending: {
-        getLending: () => axios.get('/api/lending').then(res => res.data)
+        getLending: () => axios.get('/api/lending').then(res => res.data),
+        getUserLending: (id) => axios.get(`/api/librarian/lending/${id}`).then(res => res.data),
+        getUserLendingHistory: (id) => axios.get(`api/librarian/lending/history/${id}`).then(res => res.data),
+        returnBook: (id) => axios.put('/api/librarian/lending/return', { id }).then(res => res.data)
     }
 }

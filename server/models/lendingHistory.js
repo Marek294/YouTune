@@ -8,6 +8,6 @@ export default bookshelf.Model.extend({
     uuid: true,
     hasTimestamps: true,
     book: function () { 
-        return this.belongsTo(Book) 
+        return this.belongsTo(Book, 'bookId') 
     }
 })
