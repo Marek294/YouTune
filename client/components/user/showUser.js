@@ -54,7 +54,7 @@ class showUser extends Component {
                 { loading ? <div className="load"><Loader text="Wczytywanie" /></div> :
                     <div className="container">
                         <Greetings user={user} />
-                        <BorrowedBooks lending={userLending} addLendHistory={this.addLendHistory} />
+                        <BorrowedBooks lending={userLending} addLendHistory={this.addLendHistory} user={user} />
                         <LendingHistory lendingHistory={userLendingHistory} />
                 </div> }
             </div>

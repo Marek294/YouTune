@@ -1,0 +1,70 @@
+@import '../../../sass/colors';
+
+.sass-LendForm {
+    color: $secondary-color;
+
+    form {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    select {
+        font-size: 15px;
+        padding-left: 0px;
+        width: 70px;
+        border: none;
+        color: $secondary-color;
+        font-weight: bold;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background: transparent;
+        background: url(http://localhost:3000/arrow.png) 96% / 20% no-repeat white;
+        box-shadow: 0;
+    }
+
+    select:focus {
+        background: transparent;
+        background: url(http://localhost:3000/arrow.png) 96% / 20% no-repeat white;
+        color: $secondary-color;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    input {
+        color: $secondary-color;
+        font-size: 17px;
+        font-weight: bold;
+        width: 70%;
+    }
+
+    input:focus {
+        border: 1px solid $secondary-color;
+        color: $secondary-color;
+        font-weight: bold;
+    }
+
+    .btn {
+        background: $secondary-color;
+
+        i {
+            color: white;
+            font-size: 20px;
+        }
+    }
+
+    .btn:hover {
+        i { 
+            color: $secondary-color;
+        }
+
+        background-color: $primary-color;
+        cursor: pointer;
+    }
+
+    .error {
+        color: red;
+    }
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
@@ -97,6 +98,7 @@ class BorrowedBooks extends Component {
                 <div className="header">
                     <i className="fa fa-book" aria-hidden="true" />
                     <h4>Wypożyczenia</h4>
+                    <Link to={{ pathname: "/lend", state: { user: this.props.user } }}>Dodaj</Link>
                 </div>
                 <div className="body">
                     <ul className="list-group">

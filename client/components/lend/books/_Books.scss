@@ -1,0 +1,33 @@
+@import '../../../sass/colors';
+
+$coverSize: 70;
+
+.sass-Books {
+    
+    .load {
+        margin-top: 50px;
+    }
+
+    .body {
+        height: 450px;
+    }
+
+    .list-group {
+        border: 1px solid $secondary-color;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    .list-group-item {
+        display: flex;
+
+        img {
+            width: $coverSize;
+            height: $coverSize * 1.6;
+        }
+
+        .book-info {
+            margin: 20px 20px;
+        }
+    }
+}
