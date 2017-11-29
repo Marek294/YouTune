@@ -41,22 +41,33 @@ router.post('/', authenticate, (req, res) => {
     if(isValid) {
         if(req.currentUser.get('librarian')) {
 
-            const p1 = Book.query({ where: { id: data.bookId } }).fetch();
+            const p1 = Book.where('id', 'IN', data.bookIds).fetchAll();
 
             const p2 = User.query({ where: { id: data.userId } }).fetch();
 
             Promise.all([p1, p2]).then(values => {
                 if(values[0]) {
                     if(values[1]) {
-                        if(values[0].get('availability')) {
-                            Lending.forge({ userId: data.userId, bookId: data.bookId, status: 'lent' },{ hasTimestamps: true }).save()
-                            .then(lend => {
-                                values[0].set('availability', false);
-                                values[0].save();
-                                res.json(lend);
-                            })
-                            .catch(err => res.status(400).json({ errors: err }))
-                        } else res.status(403).json({ errors: { global: 'Pozycja została już wypożyczona' } });
+                        const pAll = values[0].map(item => {
+                            if(item.get('availability')) {
+                                item.set('availability', false);
+                                item.save();
+                                return Lending.forge({ userId: data.userId, bookId: item.id, status: 'lent' },{ hasTimestamps: true }).save()
+                            }
+                        })
+
+                        Promise.all(pAll).then(lendings => {
+                            res.json(lendings);
+                        })
+                        // if(values[0].get('availability')) {
+                        //     Lending.forge({ userId: data.userId, bookId: data.bookId, status: 'lent' },{ hasTimestamps: true }).save()
+                        //     .then(lend => {
+                        //         values[0].set('availability', false);
+                        //         values[0].save();
+                        //         res.json(lend);
+                        //     })
+                        //     .catch(err => res.status(400).json({ errors: err }))
+                        // } else res.status(403).json({ errors: { global: 'Pozycja została już wypożyczona' } });
                     } else res.status(403).json({ errors: { global: 'Brak użytkownika' } });
                 } else res.status(403).json({ errors: { global: 'Brak pozycji' } });
             })

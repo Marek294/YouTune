@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import Loader from '../../loader/Loader';
-import { search } from '../../../actions/books';
 
 import LendForm from './LendForm';
 
@@ -23,30 +20,32 @@ class Books extends Component {
     }
 
     search(searchData) {
-        this.setState({ loading: true, start: false });
-        this.props.search(searchData)
-            .then(books => this.setState({ books, loading: false }))
+        this.setState({ loading: true, start: false});
+
+        this.props.searchBooks(searchData)
+            .then(() => this.setState({ loading: false }))
             .catch(() => this.setState({ errors: { globals: 'Błąd wyszukiwania' }, loading: false }));
     }
 
     displayBook(item, i) {
         return (
-            <li className="list-group-item" key={i} >
+            <button onClick={() => this.props.addToSelectedBooks(item)} className="list-group-item" key={i} >
                 <img src={item.cover ? item.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
                 <div className="book-info">
-                    <div className="title">
+                    <div className="title text-left">
                         <h2>{item.title}</h2>
                     </div>
-                    <div className="authors">
+                    <div className="authors text-left">
                         <p>{item.author}</p>
                     </div>
                 </div>
-            </li>
+            </button>
         )
     }
 
     render() {
-        const { books, loading, start } = this.state
+        const { loading, start } = this.state
+        const { books } = this.props;
 
         let displayBooks;
         if(books.length > 0) {
@@ -60,27 +59,27 @@ class Books extends Component {
         }
 
         return (
-            <div className="sass-Books container">
-                <LendForm search={this.search}/>
+            <div className="sass-Books">
+                <div className="header">
+                    <i className="fa fa-book" aria-hidden="true" />
+                    <h4>Dodaj książki</h4>
+                </div>
+                <div className="card-body">
+                    <LendForm search={this.search}/>
 
-                <div className="load">
-                    { loading && <Loader text='Wyszukiwanie' /> }
-                </div>
-                { (!loading && !start) && <div className="books">
-                    <div className="body">
-                        <ul className="list-group">
-                            {displayBooks}
-                        </ul>
+                    <div className="load">
+                        { loading && <Loader text='Wyszukiwanie' /> }
                     </div>
+                    { (!loading && !start) && <div className="books">
+                            <ul className="list-group">
+                                {displayBooks}
+                            </ul>
+                        </div>
+                    }
                 </div>
-                }
             </div>
         );
     }
 }
 
-Books.propTypes = {
-    search: PropTypes.func.isRequired
-}
-
-export default connect(null, { search })(Books);
+export default Books;

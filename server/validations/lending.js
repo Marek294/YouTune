@@ -4,7 +4,7 @@ import isEmpty from 'lodash/isEmpty';
 export default function validate(data) {
     let errors = {};
 
-    if(!data.bookId) errors.bookId = "Podaj identyfikator książki";
+    if(!Array.isArray(data.bookIds)) errors.bookIds = "Podaj identyfikator książki";
     if(!data.userId) errors.userId = "Podaj identyfikator użytkownika";
 
     return {

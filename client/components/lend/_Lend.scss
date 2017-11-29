@@ -1,5 +1,7 @@
 @import '../../sass/colors';
 
+$coverSize: 50;
+
 .sass-lend {
     display: flex;
     justify-content: space-between;
@@ -28,30 +30,11 @@
             }
         }
 
-        .books {
-            margin-top: 20px;
-        }
-
     }
 
     .right {
         width: 30%;
 
-        .lending {
-            height: 500px;
-        }
-
-        .btn {
-            margin-top: 50px;
-            width: 100%;
-            background: $accept;
-            color: white;
-            font-weight: bold;
-        }
-
-        .btn:hover {
-            cursor: pointer;
-        }
     }
     
 

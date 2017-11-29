@@ -1,0 +1,48 @@
+@import '../../../sass/colors';
+
+.scss-SelectedLend {
+    height: 500px;
+
+    .card-body {
+        padding: 20px 0px;
+        height: 400px;
+    }
+
+    .list-group {
+        margin: 0px;
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    .list-group-item {
+        padding: 10px 0px;
+        display: flex;
+
+        .book-info {
+            margin: 0px 20px;
+        }
+
+        .title {
+            
+            h2 {
+                font-size: 20px;
+            }
+        }
+    }
+
+    .list-group-item:hover {
+        cursor: pointer;
+        background: rgba(0,0,0,0.1);
+    }
+
+    .btn {
+        width: 100%;
+        background: $accept;
+        color: white;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        cursor: pointer;
+    }
+}
