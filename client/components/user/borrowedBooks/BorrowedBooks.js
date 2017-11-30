@@ -96,9 +96,11 @@ class BorrowedBooks extends Component {
         return (
             <div className="sass-UserBorrowedBooks DashboardCard">
                 <div className="header">
-                    <i className="fa fa-book" aria-hidden="true" />
-                    <h4>Wypożyczenia</h4>
-                    <Link to={{ pathname: "/lend", state: { user: this.props.user } }}>Dodaj</Link>
+                    <div>
+                        <i className="fa fa-book" aria-hidden="true" />
+                        <h4>Wypożyczenia</h4>
+                    </div>
+                    <Link to={{ pathname: "/lend", state: { user: this.props.user } }}><i className="fa fa-plus-circle" aria-hidden="true" /></Link>
                 </div>
                 <div className="body">
                     <ul className="list-group">

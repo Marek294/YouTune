@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import _ from 'lodash';
 import Books from './books/Books';
 import SelectedLend from './selectedLend/SelectedLend';
@@ -17,7 +18,8 @@ class Lend extends Component {
         this.state = {
             user: {},
             selectedBooks: [],
-            books: []
+            books: [],
+            start: true
         }
 
         this.addToSelectedBooks = this.addToSelectedBooks.bind(this);
@@ -53,6 +55,8 @@ class Lend extends Component {
     }
 
     searchBooks(searchData) {
+        this.setState({ start: false });
+
         return this.props.search(searchData)
             .then(books => this.setState({ books }))
     }
@@ -69,25 +73,27 @@ class Lend extends Component {
             bookIds
         }
 
-        this.props.addLend(data)
+        return this.props.addLend(data)
             .then(() => {
                 this.setState({
                     selectedBooks: [],
-                    books: []
+                    books: [],
+                    start: true
                 })
                 this.showNotification('Sukces!', 'Dodano wypożyczenia', 'success', 3000);
             })
             .catch(err => {
                 this.setState({
                     selectedBooks: [],
-                    books: []
+                    books: [],
+                    start: true
                 })
                 this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu wypożyczeń. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
             })
     }
 
     render() {
-        const { books, user, selectedBooks } = this.state;
+        const { books, user, selectedBooks, start } = this.state;
 
         let dispBooks = books.slice();
 
@@ -100,10 +106,12 @@ class Lend extends Component {
             <div className="left">
                 <div className="user">
                     <img src={user.avatar} alt="" />
-                    <h3 className="text-center">{user.firstname} {user.lastname}</h3>
+                    <Link to={{ pathname: "/user", state: { id: user.id } }} className="userLink text-center">
+                        {user.firstname} {user.lastname}
+                    </Link>
                 </div>
                 <div className="DashboardCard">
-                    <Books addToSelectedBooks={this.addToSelectedBooks} searchBooks={this.searchBooks} books={dispBooks} />
+                    <Books addToSelectedBooks={this.addToSelectedBooks} searchBooks={this.searchBooks} books={dispBooks} start={start} />
                 </div>
             </div>
 

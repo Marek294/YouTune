@@ -18,7 +18,6 @@ $coverSize: 70;
     }
 
     .list-group {
-        border: 1px solid $secondary-color;
         overflow-y: auto;
         height: 100%;
     }
@@ -40,5 +39,15 @@ $coverSize: 70;
     .list-group-item:hover {
         cursor: pointer;
         background: rgba(0,0,0,0.1);
+    }
+
+    .noBooks {
+        img {
+            width: 100px;
+        }
+
+        h2 {
+            color: #8a8a8a;
+        }
     }
 }

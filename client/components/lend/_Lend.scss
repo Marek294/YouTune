@@ -18,15 +18,23 @@ $coverSize: 50;
             justify-content: center;
             padding: 20px 20px;
     
-            h3 {
-                margin: auto 20px;
-                font-weight: bold;
-                color: $secondary-color;
-            }
-    
             img {
                 border-radius: 50%;
                 width: 100px;
+            }
+
+            .userLink {
+                margin: auto 20px;
+                font-weight: bold;
+                color: $secondary-color;
+                font-size: 30px;
+
+                transition: all 0.5s;
+            }
+
+            .userLink:hover {
+                color: $primary-color;
+                text-decoration: none;
             }
         }
 

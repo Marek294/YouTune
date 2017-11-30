@@ -12,6 +12,7 @@ import Notifications from './notifications/Notifications';
 import OpeningHours from './openingHours/OpeningHours';
 
 import { getCurrentUser } from '../../actions/users';
+import { getLending } from '../../actions/lending';
 
 import './_DashboardPage.scss';
 
@@ -21,56 +22,35 @@ class DashboardPage extends Component {
 
         this.state = {
             user: {},
-            loading: true,
-            componentsLoading: {
-                greetings: true
-            }
+            lending: [],
+            loading: true
         }
-
-        this.setLoading = this.setLoading.bind(this);
-        this.checkloading = this.checkloading.bind(this);
     }
 
     componentWillMount() {
-        this.props.getCurrentUser().then(user => {
-            this.setState({ user });
-            this.setLoading('greetings');
-        });
-    }
+        const p1 = this.props.getCurrentUser();
 
-    setLoading(name) {
-        this.setState({
-            componentsLoading: {
-                ...this.state.componentsLoading,
-                [name]: false
-            }
-        });
+        const p2 = this.props.getLending();
 
-        this.checkloading();
-    }
-
-    checkloading() {
-        const { componentsLoading } = this.state;
-
-        Object.keys(componentsLoading).map(object => {
-            const value = componentsLoading[object];
-            if(value === true) return '';
-        })
-
-        this.setState({
-            loading: false
+        Promise.all([p1, p2]).then(values => {
+            this.setState({
+                user: values[0],
+                lending: values[1],
+                loading: false
+            })
         })
     }
 
     render() {
-        const { loading, user } = this.state;
+        const { loading, lending, user } = this.state;
         const { isConfirmed } = this.props;
+        
         return (
             <div className="sass-DashboardPage">
                 { loading ? <div className="load"><Loader text="Wczytywanie" /></div> :
                     <div className="container">
                         <Greetings user={user} />
-                        <BorrowedBooks />
+                        <BorrowedBooks lending={lending} />
                         <Messages />
                         <Notifications />
                         <OpeningHours />
@@ -92,4 +72,4 @@ function mapStateToProps(state) {
     }
 };
 
-export default connect(mapStateToProps, { getCurrentUser })(DashboardPage);
+export default connect(mapStateToProps, { getCurrentUser, getLending })(DashboardPage);

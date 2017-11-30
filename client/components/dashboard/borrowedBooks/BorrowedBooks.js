@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import moment from 'moment';
-import { getLending } from '../../../actions/lending';
 
 import './_BorrowedBooks.scss';
 import '../_DashboardCard.scss';
@@ -15,14 +13,8 @@ class BorrowedBooks extends Component {
         }
     }
 
-    componentWillMount() {
-        this.props.getLending()
-            .then(lending => this.setState({ lending }))
-            .catch(err => this.setState({ errors: { global: 'Wystąpił błąd podczas wczytywania wypożyczeń'}}))
-    }
-
     render() {
-        const { lending } = this.state;
+        const { lending } = this.props;
         moment.locale('pl'); 
         
         const displayLending = lending.map((item,i) => {
@@ -56,4 +48,4 @@ class BorrowedBooks extends Component {
     }
 }
 
-export default connect(null, { getLending })(BorrowedBooks);
+export default BorrowedBooks;

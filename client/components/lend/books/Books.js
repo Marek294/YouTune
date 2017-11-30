@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Loader from '../../loader/Loader';
+import _ from 'lodash';
 
 import LendForm from './LendForm';
 
@@ -12,15 +13,14 @@ class Books extends Component {
         this.state = {
             books: [],
             errors: {},
-            loading: false,
-            start: true
+            loading: false
         };
 
         this.search = this.search.bind(this);
     }
 
     search(searchData) {
-        this.setState({ loading: true, start: false});
+        this.setState({ loading: true });
 
         this.props.searchBooks(searchData)
             .then(() => this.setState({ loading: false }))
@@ -44,9 +44,9 @@ class Books extends Component {
     }
 
     render() {
-        const { loading, start } = this.state
-        const { books } = this.props;
-
+        const { loading } = this.state
+        const { books, start } = this.props;
+        
         let displayBooks;
         if(books.length > 0) {
             displayBooks = books.map((item, i) => item.availability && this.displayBook(item,i));
@@ -55,6 +55,14 @@ class Books extends Component {
                 <div className="noBooks text-center">
                     <img src="unhappy.png" alt="" />
                     <h2>Nie znaleziono książek</h2>
+                </div> )
+        }
+        
+        if(displayBooks.length > 0 && _.compact(displayBooks).length === 0) {
+            displayBooks = (
+                <div className="noBooks text-center">
+                    <img src="unhappy.png" alt="" />
+                    <h2>Brak dostępnych książek</h2>
                 </div> )
         }
 
