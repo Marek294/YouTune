@@ -1,0 +1,163 @@
+@import '../../sass/colors';
+
+$coverSize: 280;
+
+.scss-bookInfo {
+    display: flex;
+    justify-content: space-between;
+
+    .cover {
+        width: 25%;
+
+        img {
+            box-shadow: 0px 0px 15px #8a8a8a;
+            width: $coverSize;
+            height: $coverSize*1.6;
+            border-radius: 20px;
+        }
+    }
+
+    .info {
+        background: white;
+        box-shadow: 0px 0px 15px #8a8a8a;
+        padding: 20px;
+        width: 70%;
+
+        .body {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 75%;
+
+            .title {
+                display: flex;
+                justify-content: space-between;
+
+                h2 {
+                    font-weight: bold;
+                }
+
+                p { 
+                    font-weight: bold;
+                }
+
+                .votes {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    .vote {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 50%;
+                        width: 70px;
+                        height: 70px;
+
+                        p {
+                            margin: 0;
+                            color: white;
+                            font-weight: bold;
+                            font-size: 1.5em;
+                        }
+                    }
+                }
+
+                .green {
+                    background: #5CB85C;
+                }
+
+                .red {
+                    background: #D9534F;
+                }
+
+                .grey {
+                    background: #292B2C;
+                }
+            }
+
+            .summary {
+                margin-top: 20px;
+
+                .show {
+                    background: transparent;
+                    padding: 0px;
+                    border: none;
+
+                    div {
+                        display: flex;
+                        color: $secondary-color;
+                        font-weight: bold;
+
+                        p {
+                            margin: 0px;
+                        }
+
+                        i {
+                            margin: 0px 10px;
+                            font-size: 20px;
+                        }
+                    }
+                }
+
+                .show:hover {
+                    cursor: pointer;
+                }
+
+                .show:focus {
+                    outline: none;
+                }
+            }
+
+            .likes {
+                display: flex;
+                justify-content: space-around;
+
+                button {
+                    background: transparent;
+                    border: none;
+
+                    i {
+                        color: $secondary-color;
+                        font-size: 50px;
+                        transition: all 0.5s;
+                    }
+                }
+
+                button:hover {
+                    cursor: pointer;
+                }
+
+
+                button:focus {
+                    outline: none;
+                }
+
+                .like:hover i {
+                    color: #5CB85C;
+                }
+
+                .dislike:hover i {
+                    color: #D9534F;
+                }
+
+                .liked i {
+                    color: #5CB85C;
+                }
+
+                .disliked i {
+                    color: #D9534F;
+                }
+
+                .liked:hover i {
+                    color: $secondary-color;
+                }
+
+                .disliked:hover i {
+                    color: $secondary-color;
+                }
+            }
+        }
+    }
+}

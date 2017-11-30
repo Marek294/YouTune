@@ -11,14 +11,11 @@ import Modal from 'react-modal';
 import Loader from '../loader/Loader';
 import LineLoader from '../loader/LineLoader';
 import Notificator from '../messages//Notificator';
-import { getBook, deleteBook, getVote, vote, comment, getComments } from '../../actions/books';
+import BookInfo from './bookInfo';
+
+import { getBook, getVote, vote, comment, getComments } from '../../actions/books';
 
 import './_ShowBook.scss';
-
-function cutSummary(sum) {
-    if(sum.length > 300) return sum.slice(0,300)+"...";
-    return sum;
-}
 
 function isCommentTooLong(name,value) {
     if(name === "text" && value.length > 255) return value.slice(0,255);
@@ -51,11 +48,7 @@ class showBook extends Component {
 
         this.openModal = this.openModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.deleteDiv = this.deleteDiv.bind(this);
         this.addCommentDiv = this.addCommentDiv.bind(this);
-        this.toggleSummary = this.toggleSummary.bind(this);
-        this.deleteBook = this.deleteBook.bind(this);
-        this.voteClick = this.voteClick.bind(this);
         this.displayComment = this.displayComment.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -91,12 +84,6 @@ class showBook extends Component {
         this.setState({modalIsOpen: false, modalOption: ''});
     }
 
-    toggleSummary() {
-        this.setState({
-            showSummary: !this.state.showSummary
-        });
-    }
-
     loadMoreComments() {
         const { id } = this.props.location.state;
         let { hasMore, page } = this.state;
@@ -111,8 +98,6 @@ class showBook extends Component {
                 stateComments.push(item);
             })
 
-            console.log(hasMore);
-
             this.setState({
                 comments: stateComments,
                 hasMore,
@@ -121,49 +106,7 @@ class showBook extends Component {
         })
     }
 
-    deleteBook() {
-        const { id } = this.props.location.state;
-
-        this.setState({
-            deleteLoading: true
-        });
-        
-        this.props.deleteBook(id)
-            .then(() => this.setState({ deleted: true }))
-            .catch(err => {
-                this.setState({
-                    loading: false,
-                    deleteLoading: false,
-                    modalIsOpen: false,
-                    modalOption: ''
-                });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy usuwaniu pozycji z systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
-            })
-        
-    }
-
-    deleteDiv() {
-        const { deleteLoading, deleted } = this.state;
-        return (
-            !deleted ? <div className="ModalCard card add">
-                { deleteLoading ? <div className="loadPadding"><Loader text="Usuwanie" /></div> :
-                <div>
-                    <div className="card-header">
-                        <i className="fa fa-check-square-o" aria-hidden="true" />
-                        <h4>Potwierdzenie</h4>
-                    </div>
-                    <div className="card-body">
-                        <p>Czy jesteś pewien, że chcesz usunąć tą pozycję z systemu?</p>
-                        <div className="buttons">
-                            <button onClick={this.deleteBook} className="delete">Usuń</button>
-                            <button onClick={this.closeModal} className="cancel">Anuluj</button>
-                        </div>
-                    </div>
-                </div> }
-            </div> 
-            : <Redirect to="/dashboard" />
-        )
-    }
+    
 
     addCommentDiv() {
         const { commentLoading, data } = this.state;
@@ -226,32 +169,6 @@ class showBook extends Component {
             })
     }
 
-    voteClick(isPositive) {
-        const data = {
-            bookId: this.state.book.id,
-            isPositive
-        }
-
-        this.props.vote(data)
-            .then(newVote => {
-                let total = this.state.book.votes;
-                const oldVote = this.state.vote;
-
-                if(newVote) {
-                    if(oldVote && newVote.isPositive) total += 2;
-                    if(oldVote && !newVote.isPositive) total -= 2;
-                    if(!oldVote && newVote.isPositive) total += 1;
-                    if(!oldVote && !newVote.isPositive) total -= 1;
-                } else oldVote.isPositive ? total -= 1 : total += 1;
-                
-                this.setState({ 
-                    vote: newVote, 
-                    book: {
-                        ...this.state.book,
-                        votes: total
-                    } });
-            });
-    }
 
     displayComment(item, i) {
         return (
@@ -271,19 +188,8 @@ class showBook extends Component {
     render() {
         const { book, loading, error, showSummary, vote, comments, modalOption, hasMore } = this.state;
         const { isLibrarian } = this.props;
+
         moment.locale('pl');
-
-        let color = '';
-        if(book.votes > 0) color = 'green';
-        if(book.votes < 0) color = 'red';
-        if(book.votes === 0) color = 'grey';
-
-        let voteButton;
-        if(vote) {
-            if(vote.isPositive) voteButton = "like"
-            else voteButton = "dislike"
-        }
-        else voteButton = "none";
 
         let displayComments;
         if(comments.length > 0) {
@@ -300,51 +206,8 @@ class showBook extends Component {
         <div className="sass-Book container">
             { loading ? <Loader text="Wczytywanie" /> : 
             <div className="book">
-                <div className="bookInfo" >
-                    <div className="cover">
-                        <img src={book.cover ? book.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
-                    </div>
-                    <div className="info" >
-                        <div className="header">
-                            <div>
-                                <i className="fa fa-info-circle" aria-hidden="true" />
-                                <h4>Informacje</h4>
-                            </div>
-                            { isLibrarian && <div className="buttons">
-                                <Link to={{ pathname: "/updateBook", state: { id: book.id } }} className="green"><i className="fa fa-pencil-square-o" aria-hidden="true" /></Link>
-                                <button onClick={() => this.openModal('destroying')} className="red"><i className="fa fa-trash" aria-hidden="true" /></button>
-                            </div> }
-                        </div>
-                        <div className="body">
-                            <div className="title">
-                                <div>
-                                    <h2>{book.title}</h2>
-                                    <h3>{book.author}</h3>
-                                </div>
-                                <div>
-                                    <div className={classnames("vote", color)}>
-                                        <p>{book.votes > 0 ? '+'.concat(book.votes) : book.votes}</p>
-                                    </div>
-                                    <p>{ book.availability ? 'Dostępna' : 'Wypożyczona' }</p>
-                                </div>
-                            </div>
-                                
-                            <div className="summary">
-                                { showSummary ? <p>{book.summary}</p> :<p>{cutSummary(book.summary)}</p> }
-                                { book.summary && 
-                                <button onClick={this.toggleSummary} className="show">
-                                        { showSummary ? <div><p>Pokaż mniej</p><i className="fa fa-caret-up" aria-hidden="true" /></div>
-                                          : <div><p>Pokaż więcej</p><i className="fa fa-caret-down" aria-hidden="true" /></div> }
-                                </button> }
-                            </div>
+                <BookInfo book={book} isLibrarian={isLibrarian} vote={vote} />
 
-                            <div className="likes">
-                                <button onClick={() => this.voteClick(1)} className={classnames(voteButton === 'like' ? 'liked' : "like")}><i className="fa fa-thumbs-o-up" aria-hidden="true" /></button>
-                                <button onClick={() => this.voteClick(0)} className={classnames(voteButton === 'dislike' ? 'disliked' : "dislike")}><i className="fa fa-thumbs-o-down" aria-hidden="true" /></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="comments">
                     <div className="header">
                         <div>
@@ -390,4 +253,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { getBook, deleteBook, getVote, vote, comment, getComments  })(showBook);
+export default connect(mapStateToProps, { getBook, getVote, vote, comment, getComments  })(showBook);

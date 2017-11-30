@@ -20,7 +20,7 @@ export const deleteBook = (id) => () => api.book.deleteBook(id);
 
 export const getBook = (id) => () => api.book.getBook(id);
 
-export const vote = (data) => () => api.book.vote(data);
+export const setVote = (data) => () => api.book.setVote(data);
 
 export const getVote = (bookId) => () => api.book.getVote(bookId);
 
