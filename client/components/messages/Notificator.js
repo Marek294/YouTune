@@ -66,9 +66,10 @@ class Notificator extends Component {
     render() {
         const { notifications } = this.state;
         return (
+            document.getElementById('notifications').innerHTML = (
             <div className="notify-container">
                 {notifications}
-            </div>
+            </div> )
         );
     }
 }

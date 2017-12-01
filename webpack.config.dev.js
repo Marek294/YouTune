@@ -24,7 +24,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 include: path.join(__dirname, 'client'),
-                loaders: ['react-hot-loader', 'babel-loader']
+                loaders: ['react-hot-loader/webpack', 'babel-loader']
             },
             {
                 test: /\.scss$/,

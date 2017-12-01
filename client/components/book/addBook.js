@@ -55,6 +55,8 @@ class AddBook extends Component {
     onSubmit(e) {
         e.preventDefault();
 
+        this.showNotification('Sukces!', 'Dodano książkę do systemu', 'success', 3000);
+
         const { data } = this.state;
 
         const errors = this.validate(data);
