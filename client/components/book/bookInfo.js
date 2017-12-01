@@ -32,6 +32,8 @@ class BookInfo extends Component {
         this.toggleSummary = this.toggleSummary.bind(this);
         this.deleteDiv = this.deleteDiv.bind(this);
         this.deleteBook = this.deleteBook.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.openModal = this.openModal.bind(this);
     }
 
     componentWillMount() {
@@ -89,11 +91,11 @@ class BookInfo extends Component {
     }
 
     deleteDiv() {
-        const { deleteLoading, deleted } = this.state;
+        const { loading, deleted } = this.state;
 
         return (
             !deleted ? <div className="ModalCard card add">
-                { deleteLoading ? <div className="loadPadding"><Loader text="Usuwanie" /></div> :
+                { loading ? <div className="loadPadding"><Loader text="Usuwanie" /></div> :
                 <div>
                     <div className="card-header">
                         <i className="fa fa-check-square-o" aria-hidden="true" />
@@ -116,7 +118,7 @@ class BookInfo extends Component {
         const { id } = this.props.book;
 
         this.setState({
-            deleteLoading: true
+            loading: true
         });
         
         this.props.deleteBook(id)
@@ -179,7 +181,7 @@ class BookInfo extends Component {
                             
                         <div className="summary">
                             { showSummary ? <p>{book.summary}</p> :<p>{cutSummary(book.summary)}</p> }
-                            { book.summary && 
+                            { book.summary.length > 300 && 
                             <button onClick={this.toggleSummary} className="show">
                                     { showSummary ? <div><p>Pokaż mniej</p><i className="fa fa-caret-up" aria-hidden="true" /></div>
                                         : <div><p>Pokaż więcej</p><i className="fa fa-caret-down" aria-hidden="true" /></div> }
