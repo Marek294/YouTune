@@ -20,8 +20,8 @@ class SelectedLend extends Component {
         })
 
         this.props.lendBooks()
-            .then(() => this.state({ loading: false }))
-            .catch(() => this.state({ loading: false }))
+            .then()
+            .catch(() => this.setState({ loading: false }))
     }
 
     render() {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import _ from 'lodash';
 import Books from './books/Books';
@@ -7,6 +8,7 @@ import SelectedLend from './selectedLend/SelectedLend';
 
 import { search } from '../../actions/books';
 import { addLend } from '../../actions/lending';
+import { addNotification } from '../../actions/notifications';
 
 import './_Lend.scss';
 import './_DashboardCard.scss';
@@ -19,7 +21,8 @@ class Lend extends Component {
             user: {},
             selectedBooks: [],
             books: [],
-            start: true
+            start: true,
+            borrowed: false
         }
 
         this.addToSelectedBooks = this.addToSelectedBooks.bind(this);
@@ -74,7 +77,8 @@ class Lend extends Component {
                 this.setState({
                     selectedBooks: [],
                     books: [],
-                    start: true
+                    start: true,
+                    borrowed: true
                 })
 
                 const message = {
@@ -105,7 +109,7 @@ class Lend extends Component {
     }
 
     render() {
-        const { books, user, selectedBooks, start } = this.state;
+        const { books, user, selectedBooks, start, borrowed } = this.state;
 
         let dispBooks = books.slice();
 
@@ -115,6 +119,7 @@ class Lend extends Component {
 
         return (
         <div className='sass-lend container'>
+            { borrowed && <Redirect to={{ pathname: "/user", state: { id: user.id } }} /> }
             <div className="left">
                 <div className="user">
                     <img src={user.avatar} alt="" />
@@ -138,4 +143,4 @@ class Lend extends Component {
 }
 
 
-export default connect(null, { search, addLend })(Lend);
+export default connect(null, { search, addLend, addNotification })(Lend);
