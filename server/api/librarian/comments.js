@@ -10,7 +10,6 @@ router.delete('/:id', authenticate, (req, res) => {
     Comment.query({
         where: { id }
     }).fetch().then(comment => {
-
         if(comment && req.currentUser.get('librarian')) {
             comment.destroy()
                 .then(() => res.json({ success: true }))

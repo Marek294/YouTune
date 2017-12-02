@@ -49,7 +49,7 @@ class showBook extends Component {
             { loading ? <Loader text="Wczytywanie" /> : 
             <div className="book">
                 <BookInfo book={book} history={history} isLibrarian={isLibrarian} vote={vote} />
-                <Comments book={book} comments={comments} hasMore={hasMore} user={user} />
+                <Comments book={book} comments={comments} isLibrarian={isLibrarian} hasMore={hasMore} user={user} />
             </div> }
         </div>
         )

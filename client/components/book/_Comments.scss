@@ -46,11 +46,18 @@
         border-radius: 0px;
 
         .list-group-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             margin: 5px;
             border: none;
             border-radius: 0px;
             border-bottom: 1px solid $secondary-color;
 
+            .comment {
+                width: 90%;
+            }
+            
             .text {
                 margin: 20px 0px;
                 width: 80%;
@@ -62,6 +69,17 @@
                 font-family: 'Lato';
                 color: $secondary-color;
                 font-size: 1em;                        
+            }
+            
+            .delete {
+                background: transparent;
+                padding: 0px;
+                color: $delete;
+                font-size: 30px;
+            }
+
+            .delete:hover {
+                cursor: pointer;
             }
         }
     }

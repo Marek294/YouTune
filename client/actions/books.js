@@ -27,3 +27,7 @@ export const getVote = (bookId) => () => api.book.getVote(bookId);
 export const comment = (data) => () => api.book.comment(data);
 
 export const getComments = (bookId, page) => () => api.book.getComments(bookId, page);
+
+export const deleteComment = (id) => () => api.book.deleteComment(id);
+
+export const librarianDeleteComment = (id) => () => api.book.librarianDeleteComment(id);

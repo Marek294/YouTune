@@ -28,7 +28,9 @@ export default {
         setVote: (data) => axios.post('api/votes', { data }).then(res => res.data.vote),
         getVote: (bookId) => axios.get(`api/votes/${bookId}`).then(res => res.data.vote),
         comment: (data) => axios.post('api/comments', { data }).then(res => res.data.comment),
-        getComments: (bookId, page) => axios.get(`api/comments/${bookId}/${page}`).then(res => res.data)
+        getComments: (bookId, page) => axios.get(`api/comments/${bookId}/${page}`).then(res => res.data),
+        deleteComment: (id) => axios.delete(`api/comments/${id}`).then(res => res.data),
+        librarianDeleteComment: (id) => axios.delete(`api/librarian/comments/${id}`).then(res => res.data),
     },
     lending: {
         getLending: () => axios.get('/api/lending').then(res => res.data),

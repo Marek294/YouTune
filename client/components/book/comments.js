@@ -3,11 +3,12 @@ import { connect } from 'react-redux'
 import InfiniteScroll from 'react-infinite-scroller'
 import moment from 'moment'
 import Modal from 'react-modal'
+import _ from 'lodash'
 
 import LineLoader from '../loader/LineLoader'
 import Loader from '../loader/Loader'
 
-import { comment, getComments } from '../../actions/books';
+import { comment, getComments, deleteComment, librarianDeleteComment } from '../../actions/books';
 import { addNotification } from '../../actions/notifications';
 
 import './_Comments.scss'
@@ -31,6 +32,8 @@ class Comments extends Component {
             page: 1,
             hasMore: false,
             modalIsOpen: false,
+            modalOption: '',
+            deleteItem: {},
             loading: false
         }
 
@@ -41,14 +44,17 @@ class Comments extends Component {
         this.addCommentDiv = this.addCommentDiv.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.onChange = this.onChange.bind(this);
+        this.deleteComment = this.deleteComment.bind(this);
     }
 
     componentWillMount() {
         const { comments, hasMore } = this.props;
 
+        Modal.setAppElement('body');
+
         this.setState({
             comments,
-            hasMore,
+            hasMore
         })
     }
 
@@ -94,12 +100,12 @@ class Comments extends Component {
             })
     }
 
-    openModal(option) {
-        this.setState({modalIsOpen: true, modalOption: option});
+    openModal(option, deleteItem) {
+        this.setState({modalIsOpen: true, modalOption: option, deleteItem});
     }
 
     closeModal() {
-        this.setState({modalIsOpen: false, modalOption: ''});
+        this.setState({modalIsOpen: false, modalOption: '', deleteItem: ''});
     }
 
     addCommentDiv() {
@@ -126,6 +132,29 @@ class Comments extends Component {
         )
     }
 
+    deleteCommentDiv() {
+        const { loading } = this.state;
+
+        return (
+            <div className="ModalCard card add">
+                { loading ? <div className="loadPadding"><Loader text="Usuwanie" /></div> :
+                <div>
+                    <div className="card-header">
+                        <i className="fa fa-check-square-o" aria-hidden="true" />
+                        <h4>Potwierdzenie</h4>
+                    </div>
+                    <div className="card-body">
+                        <p>Czy jesteś pewien, że chcesz usunąć ten komentarz?</p>
+                        <div className="buttons">
+                            <button onClick={this.deleteComment} className="delete">Usuń</button>
+                            <button onClick={this.closeModal} className="cancel">Anuluj</button>
+                        </div>
+                    </div>
+                </div> }
+            </div> 
+        )
+    }
+
     loadMoreComments() {
         const { id } = this.props.book;
         let { hasMore, page } = this.state;
@@ -148,23 +177,98 @@ class Comments extends Component {
         })
     }
 
+    deleteComment() {
+        const { isLibrarian } = this.props;
+        const { comments, deleteItem } = this.state;
+
+        const index = _.findIndex(comments, function(o) { return o.id === deleteItem.id; })
+
+        this.setState({
+            loading: true
+        })
+
+        if(isLibrarian) {
+            this.props.librarianDeleteComment(deleteItem.id)
+                .then(() => {
+                    comments.splice(index,1);
+                    
+                    this.setState({
+                        comments,
+                        loading: false,
+                        modalIsOpen: false,
+                        deleteItem: {}
+                    })
+                })
+                .catch(() => {
+                    this.setState({
+                        loading: false,
+                        modalIsOpen: false,
+                        deleteItem: {}
+                    })
+
+                    const message = {
+                        title: 'Błąd!',
+                        body: 'Wystąpił błąd przy usunięciu komentarza. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                        type: 'danger',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)
+                })
+        } else {
+            this.props.deleteComment(deleteItem.id)
+            .then(() => {
+                comments.splice(index,1);
+                
+                this.setState({
+                    comments,
+                    loading: false,
+                    modalIsOpen: false,
+                    deleteItem: {}
+                })
+            })
+            .catch(() => {
+                this.setState({
+                    loading: false,
+                    modalIsOpen: false,
+                    deleteItem: {}
+                })
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy usunięciu komentarza. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
+            })
+        }
+    }
+
     displayComment(item, i) {
+        const { isLibrarian, user } = this.props;
+        const isOwner = user.email === item.user.email;
+
         return (
             <li key={i} className="list-group-item">
-                <div className="commentHeader">
-                    <img src={item.user.avatar} alt="" />
-                    <div className="userInfo">
-                        <h5>{item.user.firstname} {item.user.lastname}</h5>
-                        <p>{moment(item.created_at).format('LLL')}</p>
+                <div className="comment">
+                    <div className="commentHeader">
+                        <img src={item.user.avatar} alt="" />
+                        <div className="userInfo">
+                            <h5>{item.user.firstname} {item.user.lastname}</h5>
+                            <p>{moment(item.created_at).format('LLL')}</p>
+                        </div>
                     </div>
+                    <pre className="text">{item.text}</pre>
                 </div>
-                <pre className="text">{item.text}</pre>
+                { ( isLibrarian || isOwner ) && <button onClick={() => this.openModal('delete', item)} className="btn delete"><i className="fa fa-minus-circle" aria-hidden="true" /></button> }
             </li>
         )
     }
 
     render() {
-        const { comments, hasMore } = this.state;
+        const { comments, hasMore, modalOption } = this.state;
 
         moment.locale('pl');
 
@@ -187,7 +291,7 @@ class Comments extends Component {
                         <h4>Komentarze</h4>
                     </div>
                     <div className="buttons">
-                        <button onClick={() => this.openModal('commenting')} className="green"><i className="fa fa-plus-circle" aria-hidden="true" /></button>
+                        <button onClick={() => this.openModal('add')} className="green"><i className="fa fa-plus-circle" aria-hidden="true" /></button>
                     </div>
                 </div>
                 <ul className="list-group">
@@ -207,11 +311,12 @@ class Comments extends Component {
                     className="ReactModal"
                     overlayClassName="Overlay"
                 >
-                    {this.addCommentDiv()}
+                    { modalOption === 'add' && this.addCommentDiv() }
+                    { modalOption === 'delete' && this.deleteCommentDiv() }
                 </Modal>
             </div>
         );
     }
 }
 
-export default connect(null, { comment, getComments, addNotification })(Comments);
+export default connect(null, { comment, getComments, addNotification, deleteComment, librarianDeleteComment })(Comments);
