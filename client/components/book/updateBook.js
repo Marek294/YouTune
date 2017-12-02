@@ -10,8 +10,9 @@ import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import Loader from '../loader/Loader';
 import InlineError from '../messages/InlineError';
-import Notificator from '../messages//Notificator';
+
 import { getBook, updateBook } from '../../actions/books';
+import { addNotification } from '../../actions/notifications';
 
 import './_UpdateBook.scss';
 
@@ -98,24 +99,39 @@ class UpdateBook extends Component {
           });
     }
 
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-      }
-
     updateBook(data) {
         this.props.updateBook(data)
-            .then(book =>this.setState({
-                updated: true,
-                loading: false,
-                updating: false
-            }))
+            .then(book => {
+                    this.setState({
+                        updated: true,
+                        loading: false,
+                        updating: false
+                    })
+
+                    const message = {
+                        title: 'Sukces!',
+                        body: 'Dane pozycji zostały poprawnie zmienione',
+                        type: 'success',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)
+            })
             .catch(err => {
                 this.setState({
                     loading: false,
                     modalIsOpen: false,
                     updating: false
                 });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy wprowadzaniu zmian pozycji w systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy wprowadzaniu zmian pozycji w systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
             })
     }
 
@@ -177,8 +193,6 @@ class UpdateBook extends Component {
                             </form>
                     </div>
                 </div>
-
-                <Notificator ref="notificator"/>
             </div>
         );
     }
@@ -188,4 +202,4 @@ UpdateBook.propTypes = {
     updateBook: PropTypes.func.isRequired
 }
 
-export default connect(null, { getBook, updateBook })(UpdateBook);
+export default connect(null, { getBook, updateBook, addNotification })(UpdateBook);

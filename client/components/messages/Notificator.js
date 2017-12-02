@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import shortid from 'shortid';
-import classNames from 'classnames';
-import _ from 'lodash';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import ReactDOM from 'react-dom'
+import classNames from 'classnames'
+import _ from 'lodash'
+import PropTypes from 'prop-types'
+
+import { destroyNotification } from '../../actions/notifications'
 
 import './_Notificator.scss';
 
@@ -10,17 +14,45 @@ class Notificator extends Component {
         super(props);
 
         this.state = {
-            notifications: []
+            notifications: [],
+            displayNotifications: []
         }
+    }
 
-        this.show = this.show.bind(this);
+    componentWillReceiveProps(nextProps) {
+        const reduxNotifications = nextProps.notifications;
+        let { notifications } = this.state;
+        const { displayNotifications } = this.state;
+
+        _.difference(reduxNotifications,notifications).map( item => {
+
+            const message = (
+                <div key={item.id} className = {classNames("notify-item", "animated", "bounceInRight",item.type)} >
+                    <div className="notify-title">{item.title}</div>
+                    <div className="notify-body"><p>{item.body}</p></div>
+                </div>
+            )
+
+            displayNotifications.push(message);
+
+            setTimeout(() => {
+                this.hide(item.id, item.title, item.body, item.type);
+            }, item.duration);
+        })
+
+        notifications = reduxNotifications;
+
+        this.setState({
+            notifications,
+            displayNotifications
+        })
     }
 
     hide(id, title, body, type) {
-        const { notifications } = this.state;
+        const { displayNotifications, notifications } = this.state;
 
-        if(_.findIndex(notifications, function(o) { return o.key == id; }) > -1) {
-            notifications.splice(_.findIndex(notifications, function(o) { return o.key == id; }),1, (
+        if(_.findIndex(displayNotifications, function(o) { return o.key == id; }) > -1) {
+            displayNotifications.splice(_.findIndex(displayNotifications, function(o) { return o.key == id; }),1, (
                 <div key={id} className={classNames("notify-item", "animated", "fadeOut",type)}>
                 <div className="notify-title">{title}</div>
                 <div className="notify-body"><p>{body}</p></div>
@@ -28,50 +60,45 @@ class Notificator extends Component {
             ));
 
             this.setState({
-                notifications
+                displayNotifications
             });
     
             setTimeout(() => {
-                notifications.splice(_.findIndex(notifications, function(o) { return o.key == id; }),1);
+                displayNotifications.splice(_.findIndex(displayNotifications, function(o) { return o.key == id; }),1);
+
+                this.props.destroyNotification(notifications[_.findIndex(notifications, function(o) { return o.id == id; })])
+
                 this.setState({
-                    notifications
+                    displayNotifications
                 })
             }, 500);
         }
 
     }
-
-    show(title, body, type, duration) {
-        const { notifications } = this.state;
-        const id = shortid.generate();
-
-        const message = (
-            <div key={id} className = {classNames("notify-item", "animated", "bounceInRight",type)} >
-                <div className="notify-title">{title}</div>
-                <div className="notify-body"><p>{body}</p></div>
-            </div>
-        )
-
-        notifications.push(message);
-
-        this.setState({
-            notifications
-        });
-
-        setTimeout(() => {
-            this.hide(id, title, body, type);
-        }, duration);
-    }
     
     render() {
-        const { notifications } = this.state;
+        const { displayNotifications } = this.state;
+
         return (
-            document.getElementById('notifications').innerHTML = (
-            <div className="notify-container">
-                {notifications}
-            </div> )
+            ReactDOM.createPortal(
+                <div className="notify-container">
+                    {displayNotifications}
+                </div>,
+                 document.getElementById('notifications')
+            )  
         );
     }
 }
 
-export default Notificator;
+Notificator.propTypes = {
+    destroyNotification: PropTypes.func.isRequired,
+    notifications: PropTypes.arrayOf(PropTypes.shape({})).isRequired
+}
+
+function mapStateToProps(state) {
+    return {
+        notifications: state.notifications
+    }
+};
+
+export default connect(mapStateToProps, { destroyNotification })(Notificator);

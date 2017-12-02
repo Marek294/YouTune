@@ -27,12 +27,6 @@ class LoginForm extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
-    componentDidUpdate(nextProps) {
-        if(!this.state.loading) {
-            nextProps.notFetching();
-        }
-    }
-
     onChange(e) { 
         this.setState({ 
             data: { ...this.state.data, [e.target.name]: e.target.value }
@@ -98,7 +92,6 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
     submit: PropTypes.func.isRequired,
-    notFetching: PropTypes.func.isRequired
 };
 
 export default LoginForm;

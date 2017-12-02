@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import _ from 'lodash';
 import Books from './books/Books';
 import SelectedLend from './selectedLend/SelectedLend';
-import Notificator from '../messages//Notificator';
+
 import { search } from '../../actions/books';
 import { addLend } from '../../actions/lending';
 
@@ -33,10 +33,6 @@ class Lend extends Component {
 
         this.setState({ user });
     }
-
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-      }
 
     addToSelectedBooks(book) {
         const { selectedBooks } = this.state;
@@ -80,7 +76,15 @@ class Lend extends Component {
                     books: [],
                     start: true
                 })
-                this.showNotification('Sukces!', 'Dodano wypożyczenia', 'success', 3000);
+
+                const message = {
+                    title: 'Sukces!',
+                    body: 'Dodano wypożyczenia',
+                    type: 'success',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
             })
             .catch(err => {
                 this.setState({
@@ -88,7 +92,15 @@ class Lend extends Component {
                     books: [],
                     start: true
                 })
-                this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu wypożyczeń. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy dodawaniu wypożyczeń. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)   
             })
     }
 
@@ -120,7 +132,6 @@ class Lend extends Component {
                     <SelectedLend removeFromSelectedBooks={this.removeFromSelectedBooks} lendBooks={this.lendBooks} selectedBooks={selectedBooks} />
                 </div>
             </div>
-            <Notificator ref="notificator"/>
         </div>
         )
     }

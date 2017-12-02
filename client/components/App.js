@@ -24,14 +24,16 @@ import ShowBook from './book/showBook';
 import UpdateBook from './book/updateBook';
 import ShowUser from './user/showUser';
 import Lend from './lend/Lend';
+import Notificator from './messages//Notificator';
 
 require('../sass/_loader.scss');
 require('../sass/_reactModal.scss');
 
-const App = ({ location }) => {
+const App = ({ location, history }) => {
         return (
             <div>
                 <DropdownNavigation/>
+                <Notificator />
                 <GuestRoute location={location} exact path="/" component={HomePage} />
                 <GuestRoute location={location} exact path="/forgotPassword" component={ForgotPasswordPage} />
                 <GuestRoute location={location} exact path="/signup" component={SignupPage} />
@@ -40,10 +42,10 @@ const App = ({ location }) => {
                 <UserRoute location={location} exact path="/dashboard" component={DashboardPage} />
                 <UserRoute location={location} exact path="/catalog" component={Catalog} />
                 <UserRoute location={location} exact path="/settings" component={Settings} />
-                <UserRoute location={location} exact path="/book" component={ShowBook} />
+                <UserRoute location={location} history={history} exact path="/book" component={ShowBook} />
                 <LibrarianRoute location={location} exact path="/users" component={Users} />
-                <LibrarianRoute location={location} exact path="/addBook" component={AddBook} />
-                <LibrarianRoute location={location} exact path="/updateBook" component={UpdateBook} />
+                <LibrarianRoute location={location} history={history} exact path="/addBook" component={AddBook} />
+                <LibrarianRoute location={location} history={history} exact path="/updateBook" component={UpdateBook} />
                 <LibrarianRoute location={location} exact path="/user" component={ShowUser} />
                 <LibrarianRoute location={location} exact path="/lend" component={Lend} />
             </div>

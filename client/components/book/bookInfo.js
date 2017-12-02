@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import { Redirect, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import Modal from 'react-modal'
 import Loader from '../loader/Loader'
-import Notificator from '../messages//Notificator';
 
 import { setVote, deleteBook } from '../../actions/books'
+import { addNotification } from '../../actions/notifications';
 
 import './_BookInfo.scss';
 
@@ -24,8 +25,7 @@ class BookInfo extends Component {
             book: {},
             showSummary: false,
             modalIsOpen: false,
-            loading: false,
-            deleted: false
+            loading: false
         }
 
         this.voteClick = this.voteClick.bind(this);
@@ -38,6 +38,8 @@ class BookInfo extends Component {
 
     componentWillMount() {
         const { book, vote } = this.props;
+        
+        Modal.setAppElement('body');
 
         this.setState({
             book,
@@ -78,10 +80,6 @@ class BookInfo extends Component {
             });
     }
 
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-    }
-
     openModal() {
         this.setState({modalIsOpen: true });
     }
@@ -91,10 +89,10 @@ class BookInfo extends Component {
     }
 
     deleteDiv() {
-        const { loading, deleted } = this.state;
+        const { loading } = this.state;
 
         return (
-            !deleted ? <div className="ModalCard card add">
+            <div className="ModalCard card add">
                 { loading ? <div className="loadPadding"><Loader text="Usuwanie" /></div> :
                 <div>
                     <div className="card-header">
@@ -110,7 +108,6 @@ class BookInfo extends Component {
                     </div>
                 </div> }
             </div> 
-            : <Redirect to="/dashboard" />
         )
     }
 
@@ -122,13 +119,32 @@ class BookInfo extends Component {
         });
         
         this.props.deleteBook(id)
-            .then(() => this.setState({ deleted: true }))
+            .then(() => {
+                const message = {
+                    title: 'Sukces!',
+                    body: 'Pomyślnie usunięto pozycję z systemu',
+                    type: 'success',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
+
+                this.props.history.push('/Dashboard')
+            })
             .catch(err => {
                 this.setState({
                     loading: false,
                     modalIsOpen: false
                 });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy usuwaniu pozycji z systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy usuwaniu pozycji z systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)            
             })
         
     }
@@ -202,10 +218,21 @@ class BookInfo extends Component {
                 >
                     {this.deleteDiv()}
                 </Modal>
-                <Notificator ref="notificator"/>
             </div>
         )
     }
 }
 
-export default connect(null, { setVote, deleteBook })(BookInfo);
+BookInfo.propTypes = {
+    book: PropTypes.shape({
+        id: PropTypes.number.isRequired
+    }).isRequired,
+    isLibrarian: PropTypes.bool.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired
+    }).isRequired,
+    addNotification: PropTypes.func.isRequired,
+    deleteBook: PropTypes.func.isRequired
+}
+
+export default connect(null, { setVote, deleteBook, addNotification })(BookInfo);

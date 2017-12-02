@@ -5,8 +5,9 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
 import Spinner from '../../loader/Spinner';
-import Notificator from '../../messages//Notificator';
+
 import { returnBook } from '../../../actions/lending';
+import { addNotification } from '../../../actions/notifications';
 
 import './_BorrowedBooks.scss';
 import '../_DashboardCard.scss';
@@ -32,10 +33,6 @@ class BorrowedBooks extends Component {
         })
     }
 
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-    }
-
     acceptLend(id) {
         const { lendLoading } = this.state;
         let { lending } = this.state;
@@ -56,15 +53,31 @@ class BorrowedBooks extends Component {
                 });
 
                 this.props.addLendHistory(lendHistory);
-                this.showNotification('Sukces!', 'Oddano pozycję do biblioteki', 'success', 3000);
+
+                const message = {
+                    title: 'Sukces!',
+                    body: 'Oddano pozycję do biblioteki',
+                    type: 'success',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
             })
             .catch(err => {
-                this.showNotification('Błąd!', 'Wystąpił błąd przy oddawaniu pozycji do biblioteki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
                 lendLoading[id] = false;
                 
                 this.setState({
                     lendLoading
                 })
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy oddawaniu pozycji do biblioteki. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)  
             })
     }
 
@@ -107,15 +120,14 @@ class BorrowedBooks extends Component {
                         {displayLending}
                     </ul>
                 </div>
-                <Notificator ref="notificator"/>
             </div>
         );
     }
 }
 
 BorrowedBooks.propTypes = {
-    lending: PropTypes.array.isRequired,
+    lending: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
     addLendHistory: PropTypes.func.isRequired
 }
 
-export default connect(null, { returnBook })(BorrowedBooks);
+export default connect(null, { returnBook, addNotification })(BorrowedBooks);

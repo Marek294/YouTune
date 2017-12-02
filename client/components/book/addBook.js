@@ -8,8 +8,9 @@ import Dropzone from 'react-dropzone';
 import Modal from 'react-modal';
 import Loader from '../loader/Loader';
 import InlineError from '../messages/InlineError';
-import Notificator from '../messages//Notificator';
+
 import { addBook } from '../../actions/books';
+import { addNotification } from '../../actions/notifications';
 
 import './_AddBook.scss';
 
@@ -46,6 +47,10 @@ class AddBook extends Component {
         this.modalAccept = this.modalAccept.bind(this);
     }
 
+    componentWillMount() {
+        Modal.setAppElement('body');
+    }
+
     onChange(e) {
         this.setState({ 
             data: { ...this.state.data, [e.target.name]: isSummaryTooLong(e.target.name,e.target.value) }
@@ -54,8 +59,6 @@ class AddBook extends Component {
 
     onSubmit(e) {
         e.preventDefault();
-
-        this.showNotification('Sukces!', 'Dodano książkę do systemu', 'success', 3000);
 
         const { data } = this.state;
 
@@ -77,10 +80,6 @@ class AddBook extends Component {
             }
           });
     }
-
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-      }
 
     openModal() {
         this.setState({modalIsOpen: true});
@@ -121,14 +120,32 @@ class AddBook extends Component {
                     errors: {},
                     modalIsOpen: false
                 });
-                this.showNotification('Sukces!', 'Dodano książkę do systemu', 'success', 3000);
+
+                const message = {
+                    title: 'Sukces!',
+                    body: 'Dodano książkę do systemu',
+                    type: 'success',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
+
+                this.props.history.push('/Dashboard')        
             })
             .catch(err => {
                 this.setState({
                     loading: false,
                     modalIsOpen: false
                 });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu pozycji do systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy dodawaniu pozycji do systemu. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
             })
     }
 
@@ -217,8 +234,6 @@ class AddBook extends Component {
                 >
                     {this.modalDiv()}
                 </Modal> 
-
-                <Notificator ref="notificator"/>
             </div>
         );
     }
@@ -228,4 +243,4 @@ AddBook.propTypes = {
     addBook: PropTypes.func.isRequired
 }
 
-export default connect(null, { addBook })(AddBook);
+export default connect(null, { addBook, addNotification })(AddBook);

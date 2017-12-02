@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { getCurrentUser, setUserData, setUserPassword, updateAvatar } from '../../actions/users';
+
 import ModifyUserDataForm from './ModifyUserDataForm';
 import ChangePasswordForm from './ChangePasswordForm';
 import Avatar from './Avatar';
 import Loader from '../loader/Loader';
-import Notificator from '../messages//Notificator';
+
+import { getCurrentUser, setUserData, setUserPassword, updateAvatar } from '../../actions/users';
+import { addNotification } from '../../actions/notifications';
 
 import './_Settings.scss';
 
@@ -40,10 +42,6 @@ class Settings extends Component {
         this.props.getCurrentUser().then(user => this.setState({ data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar }, loading: false, start: false }))
     }
 
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-      }
-
     menuClick(e) {
         const { menu } = this.state;
 
@@ -63,20 +61,35 @@ class Settings extends Component {
 
         this.props.setUserData(data)
             .then(user => { 
-                    this.showNotification('Sukces!', 'Dane zostały zmienione', 'success', 3000);
                     this.setState({
                         data: { firstname: user.firstname, lastname: user.lastname, avatar: user.avatar },
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Sukces!',
+                        body: 'Dane zostały zmienione',
+                        type: 'success',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)
                 })
             .catch(err => {
                     const errors = err.response.data.errors;
-                    if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
-                    else this.showNotification('Błąd!', 'Nie można zmienić danych użytkownika', 'danger', 3000);
 
                     this.setState({
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Błąd!',
+                        body: errors.global ? errors.global : 'Nie można zmienić danych użytkownika',
+                        type: 'danger',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)  
                 })
     }
 
@@ -87,20 +100,35 @@ class Settings extends Component {
 
         this.props.setUserPassword(data)
             .then(() => { 
-                    this.showNotification('Sukces!', 'Hasło zostało zmienione', 'success', 3000);
 
                     this.setState({
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Sukces!',
+                        body: 'Hasło zostało zmienione',
+                        type: 'success',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)
                 })
             .catch(err => {
                     const errors = err.response.data.errors;
-                    if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
-                    else this.showNotification('Błąd!', 'Nie można zmienić hasła', 'danger', 3000);
 
                     this.setState({
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Błąd!',
+                        body: errors.global ? errors.global : 'Nie można zmienić hasła',
+                        type: 'danger',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)  
                 })
     }
 
@@ -111,7 +139,6 @@ class Settings extends Component {
 
         this.props.updateAvatar(data)
             .then(user => { 
-                    this.showNotification('Sukces!', 'Zdjęcie profilowe zostało zmienione', 'success', 3000);
 
                     this.setState({
                         data: { 
@@ -119,15 +146,31 @@ class Settings extends Component {
                             avatar: user.avatar },
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Sukces!',
+                        body: 'Zdjęcie profilowe zostało zmienione',
+                        type: 'success',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)
                 })
             .catch(err => {
                     const errors = err.response.data.errors;
-                    if(errors.global) this.showNotification('Błąd!', errors.global, 'danger', 3000);
-                    else this.showNotification('Błąd!', 'Nie można zmienić zdjęcia profilowego', 'danger', 3000);
 
                     this.setState({
                         loading: false
                     });
+
+                    const message = {
+                        title: 'Błąd!',
+                        body: errors.global ? errors.global : 'Nie można zmienić zdjęcia profilowego',
+                        type: 'danger',
+                        duration: 3000
+                    }
+            
+                    this.props.addNotification(message)  
                 })
     }
 
@@ -151,7 +194,6 @@ class Settings extends Component {
                         { menu.avatar && <Avatar avatar={this.state.data.avatar} submitUserAvatar={this.submitUserAvatar} /> }
                     </div>
                 </div> }
-                <Notificator ref="notificator"/>
             </div>
         );
     }
@@ -164,4 +206,4 @@ Settings.propTypes = {
     updateAvatar: PropTypes.func.isRequired
 }
 
-export default connect(null, { getCurrentUser, setUserData, setUserPassword, updateAvatar })(Settings);
+export default connect(null, { getCurrentUser, setUserData, setUserPassword, updateAvatar, addNotification })(Settings);

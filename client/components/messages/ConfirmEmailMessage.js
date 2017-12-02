@@ -3,8 +3,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { sendConfirmationEmail } from '../../actions/auth';
-import Notificator from './Notificator';
+import { addNotification } from '../../actions/notifications';
 
 import './_Message.scss';
 
@@ -13,20 +14,30 @@ class ConfirmEmailMessage extends Component {
         super(props);
 
         this.send = this.send.bind(this);
-        this.showNotification = this.showNotification.bind(this);
     }
-
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
-      }
 
     send() {
         this.props.sendConfirmationEmail(this.props.user).then(() => {
-           this.showNotification('Sukces!', 'Wiadomość email została wysłana. Sprawdź swoją skrzynkę pocztową', 'success', 3000);
+            const message = {
+                title: 'Sukces!',
+                body: 'Wiadomość email została wysłana. Sprawdź swoją skrzynkę pocztową',
+                type: 'success',
+                duration: 3000
+            }
+    
+            this.props.addNotification(message)  
         })
         .catch(err => {
             const errors = err.response.data.errors;
-            this.showNotification('Błąd!', errors.global, 'danger', 3000);
+
+            const message = {
+                title: 'Błąd!',
+                body: errors.global,
+                type: 'danger',
+                duration: 3000
+            }
+    
+            this.props.addNotification(message)    
         })
     }
 
@@ -38,7 +49,6 @@ class ConfirmEmailMessage extends Component {
                     <p className="card-text">Konto zostało utworzone.<br/>Na podany adres email została wysłana wiadomość. Aby korzystać
                     w pełni z dostępnych funkcjonalności potwierdź swoją tożsamość klikając w link umieszczony w wiadomości email.</p>
                     <button className="btn btn-primary" onClick={this.send}>Wyślij ponownie wiadomość email</button>
-                    <Notificator ref="notificator"/>
                 </div>
             </div>
         );
@@ -58,4 +68,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { sendConfirmationEmail })(ConfirmEmailMessage);
+export default connect(mapStateToProps, { sendConfirmationEmail, addNotification })(ConfirmEmailMessage);

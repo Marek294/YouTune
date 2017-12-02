@@ -47,7 +47,7 @@ class SearchForm extends Component {
                 <form onSubmit={this.submit}>
                     <div>
                         <select className="form-control" name="select" onChange={this.onChange} value={data.select}>
-                            <option value="title" selected>Tytuł</option>
+                            <option value="title" >Tytuł</option>
                             <option value="author">Autor</option>
                         </select>
                         <input type="text" className="form-control" id="Query" name="query" onChange={this.onChange} value={data.query} />

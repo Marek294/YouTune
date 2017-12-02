@@ -42,13 +42,13 @@ class showBook extends Component {
 
     render() {
         const { book, vote, loading, comments, hasMore } = this.state;
-        const { isLibrarian, user } = this.props;
+        const { isLibrarian, user, history } = this.props;
 
         return (
         <div className="sass-Book container">
             { loading ? <Loader text="Wczytywanie" /> : 
             <div className="book">
-                <BookInfo book={book} isLibrarian={isLibrarian} vote={vote} />
+                <BookInfo book={book} history={history} isLibrarian={isLibrarian} vote={vote} />
                 <Comments book={book} comments={comments} hasMore={hasMore} user={user} />
             </div> }
         </div>

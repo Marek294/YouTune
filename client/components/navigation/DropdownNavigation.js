@@ -103,12 +103,7 @@ class DropdownNavigation extends Component {
 
 DropdownNavigation.propTypes = {
     isAuthenticated: PropTypes.bool.isRequired,
-    isLibrarian: PropTypes.bool.isRequired,
     logout: PropTypes.func.isRequired,
-    personalData: PropTypes.shape({
-        firstname: PropTypes.string.isRequired,
-        lastname: PropTypes.string.isRequired
-    }).isRequired
 }
 
 function mapStateToProps(state) {

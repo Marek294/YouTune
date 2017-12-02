@@ -3,16 +3,15 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-const UserRoute = ({ isAuthenticated, isLibrarian, component: Component, ...rest}) => {
+const LibrarianRoute = ({ isAuthenticated, isLibrarian, component: Component, ...rest}) => {
     return (
         <Route {...rest} render={props => (isAuthenticated && isLibrarian) ? <Component {...props} /> : <Redirect to="/dashboard" />} />
     );
 };
 
-UserRoute.propTypes = {
+LibrarianRoute.propTypes = {
     component: PropTypes.func.isRequired,
-    isAuthenticated: PropTypes.bool.isRequired,
-    isLibrarian: PropTypes.bool.isRequired
+    isAuthenticated: PropTypes.bool.isRequired
 }
 
 function mapStateToProps(state) {
@@ -22,4 +21,4 @@ function mapStateToProps(state) {
     }
 };
 
-export default connect(mapStateToProps)(UserRoute);
+export default connect(mapStateToProps)(LibrarianRoute);

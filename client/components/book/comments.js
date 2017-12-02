@@ -6,9 +6,9 @@ import Modal from 'react-modal'
 
 import LineLoader from '../loader/LineLoader'
 import Loader from '../loader/Loader'
-import Notificator from '../messages//Notificator'
 
 import { comment, getComments } from '../../actions/books';
+import { addNotification } from '../../actions/notifications';
 
 import './_Comments.scss'
 
@@ -82,7 +82,15 @@ class Comments extends Component {
                     loading: false,
                     modalIsOpen: false
                 });
-                this.showNotification('Błąd!', 'Wystąpił błąd przy dodawaniu komentarza. Spróbuj jeszcze raz, bądź zgłoś problem do administratora', 'danger', 3000);
+
+                const message = {
+                    title: 'Błąd!',
+                    body: 'Wystąpił błąd przy dodawaniu komentarza. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
+                    type: 'danger',
+                    duration: 3000
+                }
+        
+                this.props.addNotification(message)
             })
     }
 
@@ -92,10 +100,6 @@ class Comments extends Component {
 
     closeModal() {
         this.setState({modalIsOpen: false, modalOption: ''});
-    }
-
-    showNotification(title, body, type, duration) {
-        this.refs.notificator.show(title, body, type, duration);
     }
 
     addCommentDiv() {
@@ -205,11 +209,9 @@ class Comments extends Component {
                 >
                     {this.addCommentDiv()}
                 </Modal>
-
-                <Notificator ref="notificator"/>
             </div>
         );
     }
 }
 
-export default connect(null, { comment, getComments })(Comments);
+export default connect(null, { comment, getComments, addNotification })(Comments);
