@@ -177,6 +177,7 @@ class BookInfo extends Component {
                             <h4>Informacje</h4>
                         </div>
                         { isLibrarian && <div className="buttons">
+                            <Link to={{ pathname: "/bookLendingHistory", state: { id: book.id } }} className="blue"><i className="fa fa-share-square-o" aria-hidden="true" /></Link>
                             <Link to={{ pathname: "/updateBook", state: { id: book.id } }} className="green"><i className="fa fa-pencil-square-o" aria-hidden="true" /></Link>
                             <button onClick={() => this.openModal('destroying')} className="red"><i className="fa fa-trash" aria-hidden="true" /></button>
                         </div> }

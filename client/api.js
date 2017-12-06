@@ -37,6 +37,7 @@ export default {
         getUserLending: (id) => axios.get(`/api/librarian/lending/${id}`).then(res => res.data),
         getUserLendingHistory: (id) => axios.get(`api/librarian/lending/history/${id}`).then(res => res.data),
         returnBook: (id) => axios.put('/api/librarian/lending/return', { id }).then(res => res.data),
-        addLend: (data) => axios.post('/api/librarian/lending/', { data }).then(res => res.data)
+        addLend: (data) => axios.post('/api/librarian/lending/', { data }).then(res => res.data),
+        getBookLendingHistory: (id, page, initialDate, finalDate) => axios.get(`/api/librarian/lending/history/book/${id}/${page}/${initialDate}/${finalDate}`).then(res => res.data)
     }
 }

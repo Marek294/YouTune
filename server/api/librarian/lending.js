@@ -8,6 +8,43 @@ import authenticate from '../../middlewares/authenticate';
 
 const router = express.Router();
 
+function isValidDate(dateString)
+{
+    // First check for the pattern
+    if(!/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateString))
+        return false;
+
+    // Parse the date parts to integers
+    const parts = dateString.split("-");
+    const day = parseInt(parts[2], 10);
+    const month = parseInt(parts[1], 10);
+    const year = parseInt(parts[0], 10);
+
+    // Check the ranges of month and year
+    if(year < 1000 || year > 3000 || month === 0 || month > 12)
+        return false;
+
+    const monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+    // Adjust for leap years
+    if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0))
+        monthLength[1] = 29;
+
+    // Check the range of the day
+    return day > 0 && day <= monthLength[month - 1];
+};
+
+function date(dateParam) {
+    if(isValidDate(dateParam)) {
+        const parts = dateParam.split('-');
+        parts[2] = parseInt(parts[2], 10) + 1;
+
+        return new Date(`${parts[0]}/${parts[1]}/${parts[2]}`);
+    }
+    
+    return null;
+};
+
 router.get('/:id', authenticate, (req, res) => {
     const { id } = req.params;
 
@@ -31,6 +68,32 @@ router.get('/history/:id', authenticate, (req, res) => {
             .then(lendingHistory => {
                 res.json(lendingHistory);
             })
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
+router.get('/history/book/:id/:page/:initialDateString/:finalDateString', authenticate, (req, res) => {
+    const { id, page, initialDateString, finalDateString } = req.params;
+
+    const initialDate = date(initialDateString);
+    const finalDate = date(finalDateString);
+
+    if(req.currentUser.get('librarian')) {
+    if(initialDate && finalDate) {
+        LendingHistory.query(function(qb) {
+            qb.whereBetween('created_at', [initialDate, finalDate]);
+            qb.where('bookId', id);
+          }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['user']})
+            .then(lendingHistory => {
+                res.json(lendingHistory);
+            })
+    } else {
+        LendingHistory.query({
+            where: { bookId: id }
+        }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['user']})
+            .then(lendingHistory => {
+                res.json(lendingHistory);
+            })
+    }
     } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
 })
 
@@ -59,15 +122,6 @@ router.post('/', authenticate, (req, res) => {
                         Promise.all(pAll).then(lendings => {
                             res.json(lendings);
                         })
-                        // if(values[0].get('availability')) {
-                        //     Lending.forge({ userId: data.userId, bookId: data.bookId, status: 'lent' },{ hasTimestamps: true }).save()
-                        //     .then(lend => {
-                        //         values[0].set('availability', false);
-                        //         values[0].save();
-                        //         res.json(lend);
-                        //     })
-                        //     .catch(err => res.status(400).json({ errors: err }))
-                        // } else res.status(403).json({ errors: { global: 'Pozycja została już wypożyczona' } });
                     } else res.status(403).json({ errors: { global: 'Brak użytkownika' } });
                 } else res.status(403).json({ errors: { global: 'Brak pozycji' } });
             })

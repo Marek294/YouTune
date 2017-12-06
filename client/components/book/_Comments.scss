@@ -76,10 +76,18 @@
                 padding: 0px;
                 color: $delete;
                 font-size: 30px;
+
+                i {
+                    transition: all 0.5s;
+                }
             }
 
             .delete:hover {
                 cursor: pointer;
+
+                i {
+                    color: $secondary-color;
+                }
             }
         }
     }

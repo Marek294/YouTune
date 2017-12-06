@@ -25,7 +25,7 @@ class showBook extends Component {
 
     componentWillMount() {
         const { id } = this.props.location.state;
-        const { page } = this.state;
+        const page = 1;
 
         const p1 = this.props.getBook(id)
 
