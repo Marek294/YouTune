@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import BookLendingHistoryForm from './BookLendingHistoryForm';
 import ShowLendingHistory from './ShowLendingHistory';
+import Loader from '../loader/Loader';
 
 import { getBookLendingHistory } from '../../actions/lending';
 
@@ -15,6 +16,7 @@ class BookLendingHistory extends Component {
             id: '',
             lendingHistory: [],
             page: 1,
+            loading: true,
             errors: {}
         }
     }
@@ -24,16 +26,19 @@ class BookLendingHistory extends Component {
         const { page } = this.state;
 
         this.props.getBookLendingHistory(id, page)
-            .then(lendingHistory => this.setState({ lendingHistory, id }))
-            .catch(err => this.setState({ errors: err.response.data.errors, id }))
+            .then(lendingHistory => this.setState({ lendingHistory, id, loading: false }))
+            .catch(err => this.setState({ errors: err.response.data.errors, id, loading: false }))
     }
 
     render() {
-        const { lendingHistory } = this.state;
+        const { lendingHistory, loading } = this.state;
 
         return (
             <div className="sass-BookLendingHistory container">
-                <BookLendingHistoryForm />
+                <div className="form">
+                    <BookLendingHistoryForm />
+                    { loading && <Loader text="Wczytywanie" /> }
+                </div>
                 <ShowLendingHistory lendingHistory={lendingHistory} />
             </div>
         );

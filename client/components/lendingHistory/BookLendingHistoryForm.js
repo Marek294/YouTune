@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import '../../sass/_DashboardCard.scss';
+import '../../sass/_Card.scss';
 import './_BookLendingHistoryForm.scss';
 
 class BookLendingHistoryForm extends Component {
@@ -17,6 +17,15 @@ class BookLendingHistoryForm extends Component {
 
         this.initialDateChange = this.initialDateChange.bind(this);
         this.finalDateChange = this.finalDateChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        const { initialDate, finalDate } = this.state;
+
+        console.log(initialDate._d);
     }
 
     initialDateChange(date) {
@@ -37,18 +46,44 @@ class BookLendingHistoryForm extends Component {
         moment.locale('pl'); 
 
         return (
-            <div className="sass-BookLendingHistoryForm DashboardCard">
-                <DatePicker
-                    selected={initialDate}
-                    onChange={this.initialDateChange}
-                    dateFormat="LL"
-                />
+            <div className="sass-BookLendingHistoryForm myCard">
+                <div className="header">
+                    <i className="fa fa-search" aria-hidden="true" />
+                    <h4>Wyszukiwanie</h4>
+                </div>
+                <div className="body">
+                <form onSubmit={this.onSubmit} >
+                    <div className="form-group row">
+                        <label htmlFor="datePicker1" className="col-sm-2 col-form-label">Od</label>
+                        <div className="col-sm-10">
+                            <DatePicker
+                                id="datePicker1"
+                                className="form-control"
+                                selected={initialDate}
+                                onChange={this.initialDateChange}
+                                dateFormat="LL"
+                            />
+                        </div>
+                    </div>
 
-                <DatePicker
-                    selected={finalDate}
-                    onChange={this.finalDateChange}
-                    dateFormat="LL"
-                />
+                    <div className="form-group row">
+                        <label htmlFor="datePicker2" className="col-sm-2 col-form-label">Do</label>
+                        <div className="col-sm-10">
+                            <DatePicker
+                                id="datePicker2"
+                                className="form-control"
+                                selected={finalDate}
+                                onChange={this.finalDateChange}
+                                dateFormat="LL"
+                            />
+                        </div>
+                    </div>
+                    
+                    <button type="submit" className="btn" >
+                        <i className="fa fa-search" aria-hidden="true" />
+                    </button>
+                </form>
+                </div>
             </div>
         );
     }

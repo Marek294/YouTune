@@ -2,4 +2,15 @@
 
 .sass-BookLendingHistory {
     margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+
+    .form {
+        display: flex;
+        justify-content: space-between;
+
+        .loading {
+            width: 50%;
+        }
+    }
 }

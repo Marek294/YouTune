@@ -58,6 +58,19 @@ router.get('/:id', authenticate, (req, res) => {
     } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
 })
 
+router.get('/getLend/:bookId', authenticate, (req, res) => {
+    const { bookId } = req.params;
+
+    if(req.currentUser.get('librarian')) {
+        Lending.query({
+            where: { bookId }
+        }).fetch({withRelated: ['user']})
+            .then(lending => {
+                res.json(lending);
+            })
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
 router.get('/history/:id', authenticate, (req, res) => {
     const { id } = req.params;
 
