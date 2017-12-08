@@ -1,0 +1,61 @@
+@import '../../sass/colors';
+
+.sass-WhoGotBook {
+    width: 30%;
+    height: 300px;
+    color: $secondary-color;
+
+    .noUser {
+        height: 100%;
+        width: 100%;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .body {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .user {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        p {
+            margin: 0px 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+    }
+
+    .dates {
+        text-align: center;
+        font-size: 15px;
+
+        p {
+            margin: 0px;
+        }
+        
+        span {
+            font-weight: bold;
+        }
+    }
+}

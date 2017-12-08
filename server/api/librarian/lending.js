@@ -97,14 +97,30 @@ router.get('/history/book/:id/:page/:initialDateString/:finalDateString', authen
             qb.where('bookId', id);
           }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['user']})
             .then(lendingHistory => {
-                res.json(lendingHistory);
+                let hasMore = true;
+                if(lendingHistory.pagination.pageCount <= page) hasMore = false;
+        
+                const response = {
+                    lendingHistory,
+                    hasMore
+                }
+        
+                res.json( response );
             })
     } else {
         LendingHistory.query({
             where: { bookId: id }
         }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['user']})
             .then(lendingHistory => {
-                res.json(lendingHistory);
+                let hasMore = true;
+                if(lendingHistory.pagination.pageCount <= page) hasMore = false;
+        
+                const response = {
+                    lendingHistory,
+                    hasMore
+                }
+        
+                res.json( response );
             })
     }
     } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });

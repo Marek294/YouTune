@@ -25,7 +25,7 @@ class BookLendingHistoryForm extends Component {
 
         const { initialDate, finalDate } = this.state;
 
-        console.log(initialDate._d);
+        this.props.getLendingHistoryByDate(initialDate._d, finalDate._d);
     }
 
     initialDateChange(date) {

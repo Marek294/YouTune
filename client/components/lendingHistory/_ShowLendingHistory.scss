@@ -1,8 +1,7 @@
 @import '../../sass/colors';
 
 .sass-ShowLendingHistory {
-    width: 70%;
-    margin: 50px 0px;
+    width: 60%;
     color: $secondary-color;
 
     .list-group {
@@ -12,6 +11,12 @@
 
             .user {
                 display: flex;
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
 
                 p {
                     margin: 0px 20px;
@@ -31,6 +36,10 @@
                 text-align: right;
                 font-size: 15px;
                 align-self: flex-end;
+
+                span {
+                    font-weight: bold;
+                }
             }
         }
     }
