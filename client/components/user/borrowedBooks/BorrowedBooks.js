@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
@@ -10,7 +9,7 @@ import { returnBook } from '../../../actions/lending';
 import { addNotification } from '../../../actions/notifications';
 
 import './_BorrowedBooks.scss';
-import '../_DashboardCard.scss';
+import '../../../sass/_Card.scss';
 
 class BorrowedBooks extends Component {
     constructor(props) {
@@ -107,13 +106,12 @@ class BorrowedBooks extends Component {
         })
 
         return (
-            <div className="sass-UserBorrowedBooks DashboardCard">
+            <div className="sass-UserBorrowedBooks myCard">
                 <div className="header">
                     <div>
                         <i className="fa fa-book" aria-hidden="true" />
                         <h4>Wypożyczenia</h4>
                     </div>
-                    <Link to={{ pathname: "/lend", state: { user: this.props.user } }}><i className="fa fa-plus-circle" aria-hidden="true" /></Link>
                 </div>
                 <div className="body">
                     <ul className="list-group">

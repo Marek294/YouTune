@@ -1,0 +1,21 @@
+@import '../../../sass/colors';
+
+.sass-userLinks {
+    margin-bottom: 100px;
+
+    p {
+        color: $secondary-color;
+        font-size: 15px;
+        font-weight: bold;
+        transition: all 0.5s;
+        margin: 20px 50px;
+    }
+
+    .link:hover {
+        text-decoration: none;
+        
+        p {
+            color: $primary-color;
+        }
+    }
+}

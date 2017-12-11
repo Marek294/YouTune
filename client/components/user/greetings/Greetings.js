@@ -9,7 +9,7 @@ const Greetings = ({ user }) => {
     moment.locale('pl');
 
     return (
-        <div className="sass-Greetings">
+        <div className="sass-UserGreetings">
             <div className="card">
                 <div className="card-body">
                     <img src={user.avatar} alt="" />

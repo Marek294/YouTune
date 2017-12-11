@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Greetings from './greetings/Greetings';
 import BorrowedBooks from './borrowedBooks/BorrowedBooks';
-import LendingHistory from './lendingHistory/LendingHistory';
+// import LendingHistory from './lendingHistory/LendingHistory';
+import Links from './links/Links';
 import Loader from '../loader/Loader';
 import { getUser } from '../../actions/users';
 import { getUserLending, getUserLendingHistory } from '../../actions/lending';
@@ -53,9 +54,12 @@ class showUser extends Component {
             <div className="sass-ShowUser">
                 { loading ? <div className="load"><Loader text="Wczytywanie" /></div> :
                     <div className="container">
-                        <Greetings user={user} />
+                        <div className="flex-column">
+                            <Greetings user={user} />
+                            <Links user={user} />
+                        </div>
                         <BorrowedBooks lending={userLending} addLendHistory={this.addLendHistory} user={user} />
-                        <LendingHistory lendingHistory={userLendingHistory} />
+                        {/* <LendingHistory lendingHistory={userLendingHistory} /> */}
                 </div> }
             </div>
         )
