@@ -13,6 +13,7 @@ import { addBook } from '../../actions/books';
 import { addNotification } from '../../actions/notifications';
 
 import './_AddBook.scss';
+import '../../sass/_Card.scss';
 
 function isSummaryTooLong(name,value) {
     if(name === "summary" && value.length > 2000) return value.slice(0,2000);
@@ -188,7 +189,7 @@ class AddBook extends Component {
                     multiple={false}
                     accept="image/*"
                     onDrop={this.onImageDrop}
-                    className="dropZone text-center">
+                    className="dropZone text-center myCard">
                         { data.cover.preview ? <img src={data.cover.preview} alt=""/> 
                             : <div className="noUploadedFile">
                                 <img src="cover.png" alt="" />
@@ -196,12 +197,12 @@ class AddBook extends Component {
                                 <p>Przeciągnij i upuść tutaj zdjęcie okładki bądź kliknij i wybierz zdjęcie</p>
                                 </div> }
                 </Dropzone>
-                <div className="card form">
-                    <div className="card-header">
+                <div className="form myCard">
+                    <div className="header">
                         <img src="addBook.jpg" alt="" />
                         <h4>Dodawanie pozycji</h4>
                     </div>
-                    <div className="card-body">
+                    <div className="body">
                         { errors.global && <div className="alert alert-danger" role="alert">
                             { errors.global }
                             </div>} 

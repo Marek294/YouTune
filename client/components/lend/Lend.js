@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import _ from 'lodash';
 import Books from './books/Books';
 import SelectedLend from './selectedLend/SelectedLend';
@@ -11,7 +10,7 @@ import { addLend } from '../../actions/lending';
 import { addNotification } from '../../actions/notifications';
 
 import './_Lend.scss';
-import './_DashboardCard.scss';
+import '../../sass/_Card.scss';
 
 class Lend extends Component {
     constructor(props) {
@@ -127,13 +126,13 @@ class Lend extends Component {
                         {user.firstname} {user.lastname}
                     </Link>
                 </div>
-                <div className="DashboardCard">
+                <div className="myCard">
                     <Books addToSelectedBooks={this.addToSelectedBooks} searchBooks={this.searchBooks} books={dispBooks} start={start} />
                 </div>
             </div>
 
             <div className="right">
-                <div className="DashboardCard" >
+                <div className="myCard" >
                     <SelectedLend removeFromSelectedBooks={this.removeFromSelectedBooks} lendBooks={this.lendBooks} selectedBooks={selectedBooks} />
                 </div>
             </div>

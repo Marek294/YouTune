@@ -72,7 +72,7 @@ class Books extends Component {
                     <i className="fa fa-book" aria-hidden="true" />
                     <h4>Dodaj książki</h4>
                 </div>
-                <div className="card-body">
+                <div className="body">
                     <LendForm search={this.search}/>
 
                     <div className="load">

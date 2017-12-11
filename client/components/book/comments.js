@@ -11,7 +11,8 @@ import Loader from '../loader/Loader'
 import { comment, getComments, deleteComment, librarianDeleteComment } from '../../actions/books';
 import { addNotification } from '../../actions/notifications';
 
-import './_Comments.scss'
+import './_Comments.scss';
+import '../../sass/_Card.scss';
 
 function isCommentTooLong(name,value) {
     if(name === "text" && value.length > 255) return value.slice(0,255);
@@ -284,7 +285,7 @@ class Comments extends Component {
         }
 
         return (
-            <div className="sass-comments">
+            <div className="sass-comments myCard">
                 <div className="header">
                     <div>
                         <i className="fa fa-comments" aria-hidden="true" />

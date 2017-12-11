@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 
 import './_BorrowedBooks.scss';
-import '../_DashboardCard.scss';
+import '../../../sass/_Card.scss';
 
 class BorrowedBooks extends Component {
     constructor(props) {
@@ -33,9 +33,9 @@ class BorrowedBooks extends Component {
         })
 
         return (
-            <div className="sass-BorrowedBooks DashboardCard">
+            <div className="sass-BorrowedBooks myCard">
                 <div className="header">
-                    <i className="fa fa-book" aria-hidden="true"></i>
+                    <i className="fa fa-book" aria-hidden="true" />
                     <h4>Moje wypożyczenia</h4>
                 </div>
                 <div className="body">

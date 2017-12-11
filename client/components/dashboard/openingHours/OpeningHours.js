@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './_OpeningHours.scss';
-import '../_DashboardCard.scss';
+import '../../../sass/_Card.scss';
 
-class OpeningHours extends Component {
-    render() {
-        return (
-            <div className="sass-OpeningHours DashboardCard">
+const OpeningHours = () => {
+    return (
+        <div className="sass-OpeningHours myCard">
                 <div>
                     <div className="header">
-                        <i className="fa fa-clock-o" aria-hidden="true"></i>
+                        <i className="fa fa-clock-o" aria-hidden="true" />
                         <h4>Godziny otwarcia</h4>
                     </div>
                     <div className="body">
@@ -44,8 +43,7 @@ class OpeningHours extends Component {
                     </div>
                 </div>
             </div>
-        );
-    }
-}
+    );
+};
 
 export default OpeningHours;

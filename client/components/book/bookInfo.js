@@ -10,6 +10,7 @@ import { setVote, deleteBook } from '../../actions/books'
 import { addNotification } from '../../actions/notifications';
 
 import './_BookInfo.scss';
+import '../../sass/_Card.scss';
 
 function cutSummary(sum) {
     if(sum.length > 300) return sum.slice(0,300)+"...";
@@ -170,7 +171,7 @@ class BookInfo extends Component {
                 <div className="cover">
                     <img src={book.cover ? book.cover : "http://i.imgur.com/sJ3CT4V.gif"} alt="" />
                 </div>
-                <div className="info" >
+                <div className="info myCard" >
                     <div className="header">
                         <div>
                             <i className="fa fa-info-circle" aria-hidden="true" />

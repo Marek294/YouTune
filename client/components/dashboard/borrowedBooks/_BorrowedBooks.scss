@@ -4,8 +4,8 @@
     width: 50%;
 
     .list-group {
+        height: 200px;
         overflow-y: auto;
-        height: 100%;
 
         .list-group-item {
             display: flex;

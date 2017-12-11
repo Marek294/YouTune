@@ -46,7 +46,7 @@ class SelectedLend extends Component {
                     <i className="fa fa-book" aria-hidden="true" />
                     <h4>Wypożyczenia</h4>
                 </div>
-                <div className="card-body">
+                <div className="body">
                     <ul className="list-group">
                         {displaySelectedBooks}
                     </ul>
