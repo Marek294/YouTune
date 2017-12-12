@@ -5,30 +5,20 @@ import moment from 'moment'
 import Modal from 'react-modal'
 import _ from 'lodash'
 
-import LineLoader from '../loader/LineLoader'
-import Loader from '../loader/Loader'
+import LineLoader from '../../loader/LineLoader'
+import Loader from '../../loader/Loader'
 
-import { comment, getComments, deleteComment, librarianDeleteComment } from '../../actions/books';
-import { addNotification } from '../../actions/notifications';
+import { getComments, deleteComment, librarianDeleteComment } from '../../../actions/books';
+import { addNotification } from '../../../actions/notifications';
 
 import './_Comments.scss';
-import '../../sass/_Card.scss';
-
-function isCommentTooLong(name,value) {
-    if(name === "text" && value.length > 255) return value.slice(0,255);
-    
-    return value;
-}
+import '../../../sass/_Card.scss';
 
 class Comments extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: {
-                bookId: '',
-                text: ''
-            },
             comments: [],
             page: 1,
             hasMore: false,
@@ -40,11 +30,8 @@ class Comments extends Component {
 
         this.loadMoreComments = this.loadMoreComments.bind(this);
         this.displayComment = this.displayComment.bind(this);
-        this.openModal = this.openModal.bind(this);
+        this.deleteCommentModal = this.deleteCommentModal.bind(this);
         this.closeModal = this.closeModal.bind(this);
-        this.addCommentDiv = this.addCommentDiv.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-        this.onChange = this.onChange.bind(this);
         this.deleteComment = this.deleteComment.bind(this);
     }
 
@@ -59,78 +46,21 @@ class Comments extends Component {
         })
     }
 
-    onChange(e) {
-        this.setState({ 
-            data: { ...this.state.data, [e.target.name]: isCommentTooLong(e.target.name,e.target.value) }
-        });
+    componentWillReceiveProps(nextProps) {
+        if(this.props.newComment != nextProps.newComment) {
+            const { comments } = this.state;
+            comments.unshift(nextProps.newComment);
+
+            this.setState({comments})
+        }
     }
 
-    onSubmit(e) {
-        e.preventDefault();
-
-        this.setState({
-            loading: true
-        })
-
-        const { data } = this.state;
-        data.bookId = this.props.book.id;
-
-        this.props.comment(data)
-            .then(comment => {
-                const { comments } = this.state;
-                let newComment = comment;
-                newComment.user = this.props.user;
-                comments.unshift(newComment);
-
-                this.setState({ comments, loading: false, modalIsOpen: false, data: { ...this.state.data, text: ''} })              
-            })
-            .catch(err => {
-                this.setState({
-                    loading: false,
-                    modalIsOpen: false
-                });
-
-                const message = {
-                    title: 'Błąd!',
-                    body: 'Wystąpił błąd przy dodawaniu komentarza. Spróbuj jeszcze raz, bądź zgłoś problem do administratora',
-                    type: 'danger',
-                    duration: 3000
-                }
-        
-                this.props.addNotification(message)
-            })
-    }
-
-    openModal(option, deleteItem) {
-        this.setState({modalIsOpen: true, modalOption: option, deleteItem});
+    deleteCommentModal(deleteItem) {
+        this.setState({modalIsOpen: true, deleteItem});
     }
 
     closeModal() {
-        this.setState({modalIsOpen: false, modalOption: '', deleteItem: ''});
-    }
-
-    addCommentDiv() {
-        const { loading, data } = this.state;
-        return (
-            <div className="ModalCard card add">
-                { loading ? <div className="loadPadding"><Loader text="Dodawanie" /></div> :
-                <div>
-                    <div className="card-header">
-                        <i className="fa fa-check-square-o" aria-hidden="true" />
-                        <h4>Komentarz</h4>
-                    </div>
-                    <div className="card-body">
-                        <form onSubmit={this.onSubmit}>
-                            <div className="form-group">
-                                <label htmlFor="Text">Pozostało {255-data.text.length} znaków</label>
-                                <textarea className="form-control" id="Text" rows="3" name="text" onChange={this.onChange} value={data.text} />
-                            </div>
-                            <button type="submit" className="btn addComment">Dodaj</button>
-                        </form>
-                    </div>
-                </div> }
-            </div>
-        )
+        this.setState({modalIsOpen: false, deleteItem: ''});
     }
 
     deleteCommentDiv() {
@@ -263,13 +193,13 @@ class Comments extends Component {
                     </div>
                     <pre className="text">{item.text}</pre>
                 </div>
-                { ( isLibrarian || isOwner ) && <button onClick={() => this.openModal('delete', item)} className="btn delete"><i className="fa fa-minus-circle" aria-hidden="true" /></button> }
+                { ( isLibrarian || isOwner ) && <button onClick={() => this.deleteCommentModal( item)} className="btn delete"><i className="fa fa-minus-circle" aria-hidden="true" /></button> }
             </li>
         )
     }
 
     render() {
-        const { comments, hasMore, modalOption } = this.state;
+        const { hasMore, comments } = this.state;
 
         moment.locale('pl');
 
@@ -291,9 +221,6 @@ class Comments extends Component {
                         <i className="fa fa-comments" aria-hidden="true" />
                         <h4>Komentarze</h4>
                     </div>
-                    <div className="buttons">
-                        <button onClick={() => this.openModal('add')} className="green"><i className="fa fa-plus-circle" aria-hidden="true" /></button>
-                    </div>
                 </div>
                 <ul className="list-group">
                 <InfiniteScroll
@@ -312,12 +239,11 @@ class Comments extends Component {
                     className="ReactModal"
                     overlayClassName="Overlay"
                 >
-                    { modalOption === 'add' && this.addCommentDiv() }
-                    { modalOption === 'delete' && this.deleteCommentDiv() }
+                    { this.deleteCommentDiv() }
                 </Modal>
             </div>
         );
     }
 }
 
-export default connect(null, { comment, getComments, addNotification, deleteComment, librarianDeleteComment })(Comments);
+export default connect(null, { getComments, addNotification, deleteComment, librarianDeleteComment })(Comments);

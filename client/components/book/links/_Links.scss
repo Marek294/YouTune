@@ -1,21 +1,28 @@
 @import '../../../sass/colors';
 
-.sass-userLinks {
+.sass-bookLinks {
     margin-bottom: 100px;
+    width: 25%;
 
     p {
         color: $secondary-color;
         font-size: 15px;
         font-weight: bold;
         transition: all 0.5s;
-        margin: 20px 30px;
+        margin: 10px 30px;
     }
 
     .link:hover {
         text-decoration: none;
+        cursor: pointer;
         
         p {
             color: $primary-color;
         }
     }
+
+    .red {
+        color: #D9534F;
+    }
+
 }
