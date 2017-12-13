@@ -126,6 +126,48 @@ router.get('/history/book/:id/:page/:initialDateString/:finalDateString', authen
     } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
 })
 
+router.get('/history/user/:id/:page/:initialDateString/:finalDateString', authenticate, (req, res) => {
+    const { id, page, initialDateString, finalDateString } = req.params;
+
+    const initialDate = date(initialDateString);
+    const finalDate = date(finalDateString);
+
+    if(req.currentUser.get('librarian')) {
+    if(initialDate && finalDate) {
+        LendingHistory.query(function(qb) {
+            qb.whereBetween('created_at', [initialDate, finalDate]);
+            qb.where('userId', id);
+          }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['book']})
+            .then(lendingHistory => {
+                let hasMore = true;
+                if(lendingHistory.pagination.pageCount <= page) hasMore = false;
+        
+                const response = {
+                    lendingHistory,
+                    hasMore
+                }
+        
+                res.json( response );
+            })
+    } else {
+        LendingHistory.query({
+            where: { userId: id }
+        }).orderBy('created_at', 'DESC').fetchPage({page, pageSize: 10, withRelated: ['book']})
+            .then(lendingHistory => {
+                let hasMore = true;
+                if(lendingHistory.pagination.pageCount <= page) hasMore = false;
+        
+                const response = {
+                    lendingHistory,
+                    hasMore
+                }
+        
+                res.json( response );
+            })
+    }
+    } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
+})
+
 router.post('/', authenticate, (req, res) => {
     const { data } = req.body;
     const { errors, isValid } = lendingValidation(data);

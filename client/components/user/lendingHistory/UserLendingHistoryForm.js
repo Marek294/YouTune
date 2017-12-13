@@ -3,8 +3,8 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import '../../sass/_Card.scss';
-import './_BookLendingHistoryForm.scss';
+import '../../../sass/_Card.scss';
+import './_UserLendingHistoryForm.scss';
 
 class BookLendingHistoryForm extends Component {
     constructor(props) {

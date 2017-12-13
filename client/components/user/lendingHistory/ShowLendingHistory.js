@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
-import LineLoader from '../loader/LineLoader';
+import LineLoader from '../../loader/LineLoader';
 
 import './_ShowLendingHistory.scss';
-import '../../sass/_Card.scss';
+import '../../../sass/_Card.scss';
 
 class ShowLendingHistory extends Component {
     constructor(props) {
@@ -20,17 +20,15 @@ class ShowLendingHistory extends Component {
     render() {
         const { lendingHistory, loading, hasMore } = this.props;
 
-        console.log(hasMore);
-
         moment.locale('pl');
 
         const displayLendingHistory = lendingHistory.map((item, i) => (
             <li key={i} className="list-group-item">           
-                <div className="user">
-                    <img src={item.user.avatar} alt="" />
+                <div className="book">
+                    <img src={item.book.cover} alt="" />
                     <div>
-                        <p>{item.user.firstname}</p>
-                        <p>{item.user.lastname}</p>
+                        <p className="title" >{item.book.title}</p>
+                        <p className="author" >{item.book.author}</p>
                     </div>
                 </div>
                 <div className="dates">

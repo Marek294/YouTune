@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 import './_WhoGotBook.scss';
-import '../../sass/_Card.scss';
+import '../../../sass/_Card.scss';
 
 const WhoGotBook = ({ lend, loading }) => {
     moment.locale('pl');

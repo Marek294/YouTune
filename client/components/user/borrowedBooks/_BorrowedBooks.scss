@@ -8,27 +8,6 @@ $coverSize: 60;
     position: absolute;
     right: 20%;
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-
-        div {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 80%;
-        }
-
-        .fa-plus-circle {
-            color: $accept;
-            transition: all 0.5s;
-        }
-
-        .fa-plus-circle:hover {
-            color: $secondary-color;
-        }
-    }
-
     .body {
         max-height:100%;
         position:relative;

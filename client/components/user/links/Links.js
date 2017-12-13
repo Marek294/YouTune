@@ -10,7 +10,7 @@ const Links = ({ user }) => {
         <div className="sass-userLinks myCard">
             <div className="body">
                 <Link to={{ pathname: "/lend", state: { user } }} className="link" ><p>Dodaj wypożyczenia</p></Link>
-                <Link to="/Dashboard" className="link" ><p>Historia wypożyczeń</p></Link>
+                <Link to={{ pathname: "/userLendingHistory", state: { id: user.id } }} className="link" ><p>Historia wypożyczeń</p></Link>
                 <Link to="/Dashboard" className="link" ><p>Wyślij wiadomość</p></Link>
             </div>
         </div>

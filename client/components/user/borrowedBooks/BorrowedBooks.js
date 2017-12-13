@@ -108,10 +108,8 @@ class BorrowedBooks extends Component {
         return (
             <div className="sass-UserBorrowedBooks myCard">
                 <div className="header">
-                    <div>
-                        <i className="fa fa-book" aria-hidden="true" />
-                        <h4>Wypożyczenia</h4>
-                    </div>
+                    <i className="fa fa-book" aria-hidden="true" />
+                    <h4>Wypożyczenia</h4>
                 </div>
                 <div className="body">
                     <ul className="list-group">

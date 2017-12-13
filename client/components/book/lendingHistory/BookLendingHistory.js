@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import BookLendingHistoryForm from './BookLendingHistoryForm';
 import ShowLendingHistory from './ShowLendingHistory';
 import WhoGotBook from './WhoGotBook';
-import Loader from '../loader/Loader';
+import Loader from '../../loader/Loader';
 
-import { getBookLendingHistory, getLend } from '../../actions/lending';
+import { getBookLendingHistory, getLend } from '../../../actions/lending';
 
 import './_BookLendingHistory.scss';
 

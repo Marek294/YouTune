@@ -1,0 +1,22 @@
+@import '../../../sass/colors';
+
+.sass-BookLendingHistory {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+
+    .form {
+        display: flex;
+        justify-content: space-between;
+
+        .loading {
+            width: 50%;
+        }
+    }
+
+    .data {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px 0px;
+    }
+}
