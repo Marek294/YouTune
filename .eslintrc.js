@@ -16,6 +16,7 @@ module.exports = {
       "class-methods-use-this": [0],
       "linebreak-style": [0],
       "arrow-body-style": [0],
-      "no-underscore-dangle": [0]
+      "no-underscore-dangle": [0],
+      "no-lonely-if": [0]
     }
   }

@@ -76,6 +76,10 @@ class DropdownNavigation extends Component {
                                                 <i className="fa fa-users" aria-hidden="true" />
                                                 <p>Czytelnicy</p>
                                             </Link>
+                                            <Link to="/openingHours" className="nav-link">
+                                                <i className="fa fa-clock-o" aria-hidden="true" />
+                                                <p>Godziny otwarcia</p>
+                                            </Link>
                                             <div className="dropdown-divider"></div>
                                         </div>                 
                                     }

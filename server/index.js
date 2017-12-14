@@ -20,6 +20,7 @@ import comments from './api/comments';
 import lending from './api/lending';
 import librarianComments from './api/librarian/comments';
 import librarianLending from './api/librarian/lending';
+import librarianOpeningHours from './api/librarian/openingHours';
 
 dotenv.config();
 const app = express();
@@ -47,6 +48,7 @@ app.use('/api/votes', votes);
 app.use('/api/comments', comments);
 app.use('/api/lending', lending);
 app.use('/api/librarian/lending', librarianLending);
+app.use('/api/librarian/openingHours', librarianOpeningHours);
 
 app.get('/*', (req,res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

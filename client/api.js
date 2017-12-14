@@ -41,5 +41,8 @@ export default {
         getBookLendingHistory: (id, page, initialDate, finalDate) => axios.get(`/api/librarian/lending/history/book/${id}/${page}/${initialDate}/${finalDate}`).then(res => res.data),
         getLend: (bookId) => axios.get(`/api/librarian/lending/getLend/${bookId}`).then(res => res.data),
         getShowUserLendingHistory: (id, page, initialDate, finalDate) => axios.get(`/api/librarian/lending/history/user/${id}/${page}/${initialDate}/${finalDate}`).then(res => res.data),        
+    },
+    openingHours: {
+        setOpeningHours: (data) => axios.post('/api/librarian/openingHours', data).then(res => res.data)
     }
 }

@@ -26,6 +26,7 @@ import ShowUser from './user/showUser';
 import Lend from './lend/Lend';
 import BookLendingHistory from './book/lendingHistory/BookLendingHistory';
 import UserLendingHistory from './user/lendingHistory/UserLendingHistory';
+import OpeningHours from './openingHours/openingHours';
 import Notificator from './messages//Notificator';
 
 require('../sass/_loader.scss');
@@ -52,6 +53,7 @@ const App = ({ location, history }) => {
                 <LibrarianRoute location={location} exact path="/lend" component={Lend} />
                 <LibrarianRoute location={location} exact path="/bookLendingHistory" component={BookLendingHistory} />
                 <LibrarianRoute location={location} exact path="/userLendingHistory" component={UserLendingHistory} />
+                <LibrarianRoute location={location} exact path="/openingHours" component={OpeningHours} />
             </div>
         )
 }
