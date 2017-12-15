@@ -10,30 +10,33 @@ router.post('/', authenticate, (req, res) => {
     const { errors, isValid } = openingHoursValidation(data);
 
     if(req.currentUser.get('librarian')) {
-        if(isValid)
-            OpeningHours.query({ where: { day: data.day} }).fetch()
-            .then(day => {
-                if(day) {
-                    if(data.isOpen) {
-                        day.set('from', data.from)
-                        day.set('to', data.to)
-                    }
-                    day.set('isOpen', data.isOpen)
+        if(isValid) {
+            const promises = [];
 
-                    day.save().then(() => res.json(day))
-                } else {
-                    if(data.isOpen) {
-                        OpeningHours.forge({ day: data.day, from: data.from, to: data.to, isOpen: data.isOpen },{ hasTimestamps: true }).save()
-                        .then(day => {
-                            res.json(day);
-                        })
-                        .catch(err => {
-                            res.status(400).json({ errors: err });
-                        })
-                    }
-                }
-                
-            })
+            data.map( item => promises.push( OpeningHours.query({ where: { day: item.day} }).fetch() ) )
+
+            Promise.all(promises)
+                .then(values => {
+                    values.map( (item, i) => {
+                        if(item) {
+                            if(data[i].isOpen) {
+                                item.set('from', data[i].from)
+                                item.set('to', data[i].to)
+                            }
+                            item.set('isOpen', data[i].isOpen)
+
+                            item.save();
+                        } else {
+                            if(data.isOpen) {
+                                OpeningHours.forge({ day: data[i].day, from: data[i].from, to: data[i].to, isOpen: data[i].isOpen },{ hasTimestamps: true }).save()
+                            }
+                        }
+                    })
+
+                    res.json({ success: true });
+                })
+                .catch(err => res.status(403).json(err))
+        }
         else res.status(403).json(errors);
     } else res.status(403).json({ errors: { global: 'Zalogowany użytkownik nie jest pracownikiem' } });
 });

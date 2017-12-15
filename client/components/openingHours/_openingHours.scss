@@ -25,46 +25,65 @@
     }
 
     .row {
-        label {
-            display: flex;
-            align-items: center;
-            width: 100px;
-            margin: 0px;
-            color: $secondary-color;
-            font-weight: bold;
-        }
-
-        select {
-            text-align: center;
-            width: 150px;
-            color: $secondary-color;
-            font-weight: bold;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            background: transparent;
-        }
+        display: flex;
+        flex-direction: column;
 
         div {
             display: flex;
-            align-items: center;
 
-            .time {
-                width: 250px;
-            }
-
-            .long {
-                width: 250px;
-            }
-            input {
-                margin: 0px 20px;
-                padding: 0px;
-                font-family: 'Lato';
+            label {
+                display: flex;
+                align-items: center;
+                width: 100px;
+                margin: 0px;
+                color: $secondary-color;
                 font-weight: bold;
             }
 
-            i {
-                font-size: 10px;
+            select {
+                text-align: center;
+                width: 150px;
+                color: $secondary-color;
+                font-weight: bold;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                appearance: none;
+                background: transparent;
+            }
+
+            .item {
+                display: flex;
+                align-items: center;
+
+                .time {
+                    width: 250px;
+                }
+
+                .long {
+                    width: 250px;
+                }
+
+                input {
+                    margin: 0px 20px;
+                    padding: 0px;
+                    font-family: 'Lato';
+                    font-weight: bold;
+                }
+
+                i {
+                    font-size: 10px;
+                }
+            }
+        }
+
+        .error {
+            display: flex;
+            justify-content: center;
+            
+            p {
+                color: $delete;
+                font-weight: bold;
+                margin: 0px;
             }
         }
     }

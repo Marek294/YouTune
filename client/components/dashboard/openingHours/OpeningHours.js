@@ -3,7 +3,43 @@ import React from 'react';
 import './_OpeningHours.scss';
 import '../../../sass/_Card.scss';
 
-const OpeningHours = () => {
+function convertDay(dayString) {
+    switch(dayString) {
+        case 'monday':
+            return 'Poniedziałek'
+        case 'tuesday':
+            return 'Wtorek'
+        case 'wednesday':
+            return 'Środa'
+        case 'thursday':
+            return 'Czwartek'
+        case 'friday':
+            return 'Piątek'
+        case 'saturday':
+            return 'Sobota'
+        case 'sunday':
+            return 'Niedziela'
+        default:
+            return null
+    }
+}
+
+function convertTime(time) {
+    const response = time.split(':');
+    return response[0]+":"+response[1];
+}
+
+const OpeningHours = ({ openingHours }) => {
+    const displayOpeningHours = openingHours.map((item,i) => {
+        return (
+            <div key={i} className="day">
+                <p className="primary">{convertDay(item.day)}</p>
+                { item.isOpen   ? <p className="secondary">{convertTime(item.from)} - {convertTime(item.to)}</p>
+                                : <p className="secondary">Zamknięte</p> }
+            </div>
+        )
+    })
+
     return (
         <div className="sass-OpeningHours myCard">
                 <div>
@@ -12,34 +48,7 @@ const OpeningHours = () => {
                         <h4>Godziny otwarcia</h4>
                     </div>
                     <div className="body">
-                        <div className="day">
-                            <p className="primary">Poniedziałek</p>
-                            <p className="secondary">10:00 - 14:00</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Wtorek</p>
-                            <p className="secondary">10:00 - 14:00</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Środa</p>
-                            <p className="secondary">13:00 - 17:00</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Czwartek</p>
-                            <p className="secondary">10:00 - 14:00</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Piątek</p>
-                            <p className="secondary">13:00 - 17:00</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Sobota</p>
-                            <p className="secondary">Zamknięte</p>
-                        </div>
-                        <div className="day">
-                            <p className="primary">Niedziela</p>
-                            <p className="secondary">Zamknięte</p>
-                        </div>
+                        { displayOpeningHours }
                     </div>
                 </div>
             </div>

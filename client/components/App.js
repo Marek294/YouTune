@@ -53,7 +53,7 @@ const App = ({ location, history }) => {
                 <LibrarianRoute location={location} exact path="/lend" component={Lend} />
                 <LibrarianRoute location={location} exact path="/bookLendingHistory" component={BookLendingHistory} />
                 <LibrarianRoute location={location} exact path="/userLendingHistory" component={UserLendingHistory} />
-                <LibrarianRoute location={location} exact path="/openingHours" component={OpeningHours} />
+                <LibrarianRoute location={location} history={history} exact path="/openingHours" component={OpeningHours} />
             </div>
         )
 }

@@ -13,6 +13,7 @@ import OpeningHours from './openingHours/OpeningHours';
 
 import { getCurrentUser } from '../../actions/users';
 import { getLending } from '../../actions/lending';
+import { getOpeningHours } from '../../actions/openingHours';
 
 import './_DashboardPage.scss';
 
@@ -23,6 +24,7 @@ class DashboardPage extends Component {
         this.state = {
             user: {},
             lending: [],
+            openingHours: [],
             loading: true
         }
     }
@@ -32,17 +34,20 @@ class DashboardPage extends Component {
 
         const p2 = this.props.getLending();
 
-        Promise.all([p1, p2]).then(values => {
+        const p3 = this.props.getOpeningHours();
+
+        Promise.all([p1, p2, p3]).then(values => {
             this.setState({
                 user: values[0],
                 lending: values[1],
+                openingHours: values[2],
                 loading: false
             })
         })
     }
 
     render() {
-        const { loading, lending, user } = this.state;
+        const { loading, lending, user, openingHours } = this.state;
         const { isConfirmed } = this.props;
         
         return (
@@ -53,7 +58,7 @@ class DashboardPage extends Component {
                         <BorrowedBooks lending={lending} />
                         <Messages />
                         <Notifications />
-                        <OpeningHours />
+                        <OpeningHours openingHours={openingHours} />
                     {!isConfirmed && <ConfirmEmailMessage /> } 
                 </div> }
             </div>
@@ -72,4 +77,4 @@ function mapStateToProps(state) {
     }
 };
 
-export default connect(mapStateToProps, { getCurrentUser, getLending })(DashboardPage);
+export default connect(mapStateToProps, { getCurrentUser, getLending, getOpeningHours })(DashboardPage);
