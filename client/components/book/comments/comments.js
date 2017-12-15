@@ -185,7 +185,7 @@ class Comments extends Component {
             <li key={i} className="list-group-item">
                 <div className="comment">
                     <div className="commentHeader">
-                        <img src={item.user.avatar} alt="" />
+                        { item.user.avatar ? <img src={item.user.avatar} alt="" /> : <img src='noAvatar.jpg' alt="" /> }
                         <div className="userInfo">
                             <h5>{item.user.firstname} {item.user.lastname}</h5>
                             <p>{moment(item.created_at).format('LLL')}</p>

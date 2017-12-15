@@ -46,8 +46,8 @@ class ConfirmEmailMessage extends Component {
             <div className="sass-Message card border-primary">
                 <div className="card-header text-primary"><h4>Witamy!</h4></div>
                 <div className="card-body text-primary">
-                    <p className="card-text">Konto zostało utworzone.<br/>Na podany adres email została wysłana wiadomość. Aby korzystać
-                    w pełni z dostępnych funkcjonalności potwierdź swoją tożsamość klikając w link umieszczony w wiadomości email.</p>
+                    <p className="card-text">Konto zostało utworzone.<br/>Aby korzystać z dostępnych funkcjonalności potwierdź 
+                    swoją tożsamość klikając w link umieszczony w wiadomości email, który został do ciebie wysłany.</p>
                     <button className="btn btn-primary" onClick={this.send}>Wyślij ponownie wiadomość email</button>
                 </div>
             </div>

@@ -14,12 +14,12 @@ router.get('/', authenticate, (req, res) => {
         })
 })
 
-router.get('/history', authenticate, (req, res) => {
+router.get('/historyCount', authenticate, (req, res) => {
     LendingHistory.query({
         where: { userId: req.currentUser.get('id') }
     }).fetchAll()
         .then(lendingHistory => {
-            res.json({ lendingHistory });
+            res.json({ lendingHistory: lendingHistory.length });
         })
 })
 

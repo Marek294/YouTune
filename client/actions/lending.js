@@ -2,6 +2,8 @@ import api from '../api';
 
 export const getLending = () => () => api.lending.getLending();
 
+export const getLendingHistoryCount = () => () => api.lending.getLendingHistoryCount();
+
 export const getUserLending = (id) => () => api.lending.getUserLending(id);
 
 export const getUserLendingHistory = (id) => () => api.lending.getUserLendingHistory(id);

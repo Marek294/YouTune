@@ -18,14 +18,14 @@ class Greetings extends Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { user, historyCount } = this.props;
         const date = new Date(user.created_at);
         moment.locale('pl');
 
         return (
             <div style={{backgroundColor: '#0375b0'}} className="myCard sass-Greetings">
                 <div className="body">
-                    <img src={user.avatar} alt="" />
+                    {user.avatar ? <img src={user.avatar} alt="" /> : <img src="noAvatar.jpg" alt="" /> }
                     <h3 className="text-center">{user.firstname} {user.lastname}</h3>
                     <div className="text">
                         <p>Dołączył/a:</p>
@@ -33,7 +33,7 @@ class Greetings extends Component {
                     </div>
                     <div className="text">
                         <p>Łączna liczba wypożyczeń:</p>
-                        <p className="text-rigth">14</p>
+                        <p className="text-rigth">{historyCount}</p>
                     </div>
                 </div>
             </div>

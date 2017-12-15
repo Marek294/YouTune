@@ -17,6 +17,7 @@ module.exports = {
       "linebreak-style": [0],
       "arrow-body-style": [0],
       "no-underscore-dangle": [0],
-      "no-lonely-if": [0]
+      "no-lonely-if": [0],
+      "no-nested-ternary": [0]
     }
   }
