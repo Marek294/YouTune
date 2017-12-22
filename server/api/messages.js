@@ -55,13 +55,7 @@ router.delete('/:id', authenticate, (req, res) => {
     }).fetch()
         .then(message => {
             if(message) {
-                if(!message.get('receiverDelete')) {
-                    if(message.get('senderDelete')) message.destroy().then(() => { res.json({ success: true }) });
-                    else {
-                        message.set('receiverDelete', true);
-                        message.save().then(() => { res.json({ success: true }) });
-                    }
-                } else res.status(403).json({ errors: { global: 'Brak wiadomości' } });
+                message.destroy().then(() => { res.json({ success: true }) });
             } else res.status(403).json({ errors: { global: 'Brak wiadomości' } });
         });
 })

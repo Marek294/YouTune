@@ -7,8 +7,6 @@ exports.up = function(knex, Promise) {
         table.string('title').notNull().defaultTo('');
         table.string('body', 1000).notNull().defaultTo('');
         table.boolean('isReaded').notNull().defaultTo(0);
-        table.boolean('senderDelete').notNull().defaultTo(0);
-        table.boolean('receiverDelete').notNull().defaultTo(0);
         table.timestamps();
     });
 };
