@@ -22,6 +22,8 @@ import openingHours from './api/openingHours';
 import librarianComments from './api/librarian/comments';
 import librarianLending from './api/librarian/lending';
 import librarianOpeningHours from './api/librarian/openingHours';
+import librarianMessages from './api/librarian/messages';
+import messages from './api/messages';
 
 dotenv.config();
 const app = express();
@@ -51,6 +53,8 @@ app.use('/api/lending', lending);
 app.use('/api/librarian/lending', librarianLending);
 app.use('/api/librarian/openingHours', librarianOpeningHours);
 app.use('/api/openingHours', openingHours);
+app.use('/api/librarian/messages', librarianMessages);
+app.use('/api/messages', messages);
 
 app.get('/*', (req,res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
